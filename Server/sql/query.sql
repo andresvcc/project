@@ -12,6 +12,7 @@ DEMARRER NOUVELLEL SESION DANS LE SERVEUR
 chaque fois que le serveur se met en route, il est 
 nécessaire de créer une nouvelle session d'utilisation 
 sur le serveur*/
+use 9uhFiwM7jz;
 INSERT INTO sessions ()
 VALUES();
 

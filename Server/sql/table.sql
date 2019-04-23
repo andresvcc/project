@@ -7,11 +7,10 @@ drop database (nom database) //enlever une BDD
 */
 
 /**Initialiser la base de donnée*/
-use A1;
-DROP DATABASE A1;
-CREATE DATABASE A1;
-use A1;
-show tables;
+use 9uhFiwM7jz;
+DROP DATABASE 9uhFiwM7jz;
+CREATE DATABASE 9uhFiwM7jz;
+use 9uhFiwM7jz;
 
 
 DROP TABLE IF EXISTS users;

@@ -14,10 +14,10 @@ var constants = require('./mysqlRequete');
  |           MySQL CONFIG CONNECTION             |
  ------------------------------------------------*/
 let connection = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "A1"
+    host: "remotemysql.com",
+    user: "9uhFiwM7jz",
+    password: "fo4l68aiyC",
+    database: "9uhFiwM7jz"
 });
 
 connection.connect((err)=>{ 
