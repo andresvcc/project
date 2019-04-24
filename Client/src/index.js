@@ -1,7 +1,10 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import CounterComponent from './containers/CounterComponent'
+import SwitchFormVendeur from './components/swithFormVendeur'
+import MenuVendeur from './menuVendeur'
+import MenuAppBar from './components/bar/MenuAppBar'
+import TypographyMenu from './components/bar/SimpleTabs'
 import store from './store'
 
 import * as serviceWorker from './serviceWorker';
@@ -9,7 +12,11 @@ import * as serviceWorker from './serviceWorker';
 
 render(
   <Provider store={store}>
-    <CounterComponent />
+    <MenuAppBar></MenuAppBar>
+    <MenuVendeur/>
+    <TypographyMenu></TypographyMenu>
+    
+    <SwitchFormVendeur></SwitchFormVendeur>
   </Provider>,
   document.getElementById('root')
 )

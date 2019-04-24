@@ -39,7 +39,7 @@ const api = (app)=> {
       })
 
     app.get('/categorie', function (req, res) {
-        res.json([{ id: 1, name: "catego1" }, { id: 2, name: "catego2" }, { id: 2, name: "burger" }])
+        res.json([{ id: 1, name: "catego1" }, { id: 2, name: "catego2" }, { id: 3, name: "burger" }])
     })
 
     app.get('/location', function (req, res) {

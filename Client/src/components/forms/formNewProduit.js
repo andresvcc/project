@@ -48,6 +48,10 @@ export default class FormNewProduit extends Component {
         return ok
     }
 
+    onAnuller  = () =>{
+        this.props.back();
+    }
+
     uploadFile = () => {
         const data = new FormData()
         const ok = this.state.selectedFile != null ? (
@@ -123,6 +127,7 @@ export default class FormNewProduit extends Component {
                     draggable: true
                 }),
                 console.log(data),
+                this.props.back(),
                 true
             ) : (
                 toast.warn(`la produit n'a pas été crée, verifier les champ SVP`, {
@@ -215,6 +220,7 @@ export default class FormNewProduit extends Component {
                             >{Math.round(this.state.loaded, 2)}%</Progress>
                         </div>
                         <button type="button" className="btn btn-success btn-block" onClick={this.onTerminer}>Terminer</button>
+                        <button type="button" className="btn btn-link btn-block border" onClick={this.onAnuller}>Anuler</button>
                     </div>
                 </div>
             </div>

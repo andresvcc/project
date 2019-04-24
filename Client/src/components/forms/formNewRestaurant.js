@@ -40,6 +40,10 @@ export default class FormNewRestaurant extends Component {
         return ok
     }
 
+    onAnuller  = () =>{
+        this.props.back();
+    }
+
     onChangeHandler = event => {
         var files = event.target.files
         // if return true allow to setState
@@ -108,12 +112,27 @@ export default class FormNewRestaurant extends Component {
         }
         
         let ok = data.nom ? (
-            toast.success('le restaurant a été ajouté avec success'),
+            toast.success('le restaurant a été ajouté avec success',{
+                position: "top-center",
+                autoClose: 2500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true
+            }),
             this.setState({ errorNom: false }),
             console.log(data),
+            this.props.back(),
             true
         ):(
-            toast.error('Rentre le nom'),
+            toast.error('Rentre le nom',{
+                position: "top-center",
+                autoClose: 2500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true
+            }),
             this.setState({ errorNom: true }),
             false
         )
@@ -233,6 +252,7 @@ export default class FormNewRestaurant extends Component {
                             >{Math.round(this.state.loaded, 2)}%</Progress>
                         </div>
                         <button type="button" className="btn btn-success btn-block" onClick={this.onTerminer}>Terminer</button>
+                        <button type="button" className="btn btn-link btn-block border" onClick={this.onAnuller}>Anuler</button>
                     </div>
                 </div>
             </div>
