@@ -1,5 +1,0 @@
-export const INCREMENT = 'INCREMENT';
-export const DECREASE = 'DECREASE';
-export const FORM_PRODUIT = 'FORM_PRODUIT';
-export const FORM_RESTAURANT = 'FORM_RESTAURANT';
-export const FORM_CATEGORIE = 'FORM_CATEGORIE';

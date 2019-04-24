@@ -16,11 +16,13 @@
     "react-redux": "^7.0.2",
     "react-scripts": "^3.0.0",
     "react-strap": "^0.0.1",
+    "react-swipeable-views": "^0.13.1",
     "react-toastify": "^5.1.0",
     "reactstrap": "^8.0.0",
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "superagent": "^5.0.2"
   },
   "scripts": {
     "start": "react-scripts start",

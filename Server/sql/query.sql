@@ -150,7 +150,7 @@ values (
         AND users.password = 'password'
         AND vendeurs.id_user = users.id_user
     ), 
-    'burger KING',
+    'burger max',
     'description',
     13139070,
     0,

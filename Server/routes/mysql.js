@@ -14,10 +14,10 @@ var constants = require('./mysqlRequete');
  |           MySQL CONFIG CONNECTION             |
  ------------------------------------------------*/
 let connection = mysql.createConnection({
-    host: "remotemysql.com",
-    user: "9uhFiwM7jz",
-    password: "fo4l68aiyC",
-    database: "9uhFiwM7jz"
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "A1"
 });
 
 connection.connect((err)=>{ 
@@ -128,7 +128,7 @@ const routerMysql = (app)=>{
     app.post('/listRestaurants', (req, res) => {
         let sqlQuery = constants.LIST_RESTAURANTS
         connection.query(sqlQuery, (err, resultat) => {
-            err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
+            err ? res.json({ ok: false, error: err }) : res.json({ ok: true, resultat })
         })
     })
 
@@ -137,7 +137,7 @@ const routerMysql = (app)=>{
     app.post('/listCategories', (req, res) => {
         let sqlQuery = constants.LIST_CATEGORIES
         connection.query(sqlQuery, (err, resultat) => {
-            err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
+            err ? res.json({ ok: false, error: err }) : res.json({ ok: true, reponse: resultat })
         })
     })
 
