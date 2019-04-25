@@ -13,12 +13,12 @@ chaque fois que le serveur se met en route, il est
 nécessaire de créer une nouvelle session d'utilisation 
 sur le serveur*/
 use 9uhFiwM7jz;
-INSERT INTO sessions ()
+INSERT INTO s_server ()
 VALUES();
 
 /*******************************************************/
-/*voir la liste des sessions*/
-SELECT * FROM sessions;
+/*voir la liste des s_server*/
+SELECT * FROM s_server;
 
 /*find user */
 SELECT surname 
@@ -51,7 +51,7 @@ values (
 /*  3   */
 INSERT INTO log (id_user, id_session, action)
 SELECT  (SELECT id_user FROM users WHERE surname = 'surnom'),
-        (SELECT MAX( id_session ) FROM sessions ),
+        (SELECT MAX( id_session ) FROM s_server ),
         'CREATION'
 /*******************************************************/
 /*liste des acheteurs*/
@@ -84,7 +84,7 @@ values (
 /*  3   */
 INSERT INTO log (id_user, id_session, action)
 SELECT  (SELECT id_user FROM users WHERE surname = 'pikachu'),
-        (SELECT MAX( id_session ) FROM sessions ),
+        (SELECT MAX( id_session ) FROM s_server ),
         'CREATION'
 /*******************************************************/
 /*liste des vendeurs*/
@@ -97,7 +97,7 @@ SE CONNECTER
 nous générons un log (journal)avec cette demande */
 INSERT INTO log (id_user, id_session, action, value)
 SELECT  (SELECT id_user FROM users WHERE surname = 'pikachu'),
-        (SELECT MAX( id_session ) FROM sessions ),
+        (SELECT MAX( id_session ) FROM s_server ),
         'LOGIN',
         'value'
 /*******************************************************/
@@ -120,7 +120,7 @@ SELECT surname, 1 as typeuser
 /*liste des utilisateurs connectés la dernier sesion du serveur*/
 SELECT * 
 FROM log 
-WHERE id_session = ( SELECT MAX(id_session) FROM sessions) 
+WHERE id_session = ( SELECT MAX(id_session) FROM s_server) 
 AND action = 'LOGIN';
 
 /*liste des utilisateurs qui se sont connectés dans une sesion donné*/
@@ -134,14 +134,14 @@ SE DECONNECTER
 pour se deconnecter nous générons un log (journal) */
 INSERT INTO log (id_user, id_session, action)
 SELECT  (SELECT id_user FROM users WHERE surname = 'pikachu'),
-        (SELECT MAX( id_session ) FROM sessions ),
+        (SELECT MAX( id_session ) FROM s_server ),
         'LOGOUT';
 
 /*******************************************************/
 
 
-/*liste des sessions*/
-SELECT * FROM sessions;
+/*liste des s_server*/
+SELECT * FROM s_server;
 
 /*voir le journal des action (log)*/
 SELECT users.id_user, users.surname, log.action, log.value, log.id_session, log.time_date
@@ -161,7 +161,7 @@ values (
         AND users.password = 'password'
         AND vendeurs.id_user = users.id_user
     ), 
-    'burger max',
+    'burger KING',
     'description',
     13139070,
     0,

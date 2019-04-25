@@ -9,9 +9,9 @@
 
 module.exports = Object.freeze({   
     
-/*1*/ LIST_SESSIONS: `Select * FROM sessions`,  
+/*1*/ LIST_SESSIONS: `Select * FROM s_server`,  
 
-/*2*/ CURRENT_SESSION: `SELECT MAX( id_session ) FROM sessions`, 
+/*2*/ CURRENT_SESSION: `SELECT MAX( id_session ) FROM s_server`, 
 
 /*3*/ LIST_USERS: `SELECT * FROM users`,
 
@@ -70,12 +70,12 @@ module.exports = Object.freeze({
                     AND users.password = '${password}'`
     },
 
-/*14*/ NEW_SESSION: `INSERT INTO sessions () VALUES();`,
+/*14*/ NEW_SESSION: `INSERT INTO s_server () VALUES();`,
 
 /*15*/ USER_ACTION: (surname, action, value) => { 
      return    `INSERT INTO log (id_user, id_session, action, value)
                 SELECT  (SELECT id_user FROM users WHERE surname = '${surname}'),
-                    (SELECT MAX( id_session ) FROM sessions ),
+                    (SELECT MAX( id_session ) FROM s_server ),
                     '${action}',
                     '${value}'` 
      },

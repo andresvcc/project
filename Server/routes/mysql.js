@@ -27,7 +27,7 @@ connection.connect((err)=>{
 /*-------------------------------------------------
 |                    ROUTER                       |
 -------------------------------------------------*/
-const routerMysql = (app)=>{
+const routerMysql = (app, sessionStore)=>{
 
     userAction = (surname, action, value) =>{
         let sqlQuery = constants.USER_ACTION(surname, action, value)
@@ -36,8 +36,14 @@ const routerMysql = (app)=>{
         }) 
     }
 
-    sessionName = (req) => req.session.surname ? req.session.surname : ''
-    sessionPass = (req) => req.session.password ? req.session.surname : '' 
+    userSession = (req, res, callBack) => {
+        let sid = req.body.id
+        sessionStore.get(sid, (err, session)=>{
+            err ? res.json({ok:false, err:err}) : (
+                callBack(session)
+            )
+        })
+    }
 
     /*---------------------
     |        SI           |
@@ -174,8 +180,9 @@ const routerMysql = (app)=>{
             req.session.surname = resultat[0].surname,
             req.session.password = req.body.password,
             req.session.typeuser = resultat[0].typeuser,
+            req.session.sessID = req.session.id,
             userAction(req.session.surname, 'LOGIN', req.body.password), //(surname, action, value)
-            { ok: true, surname: req.session.surname, typeUser:  req.session.typeuser}
+            { ok: true, surname: req.session.surname, typeUser:  req.session.typeuser, sessID: req.sessionID}
         )
         return status 
     }
@@ -186,7 +193,6 @@ const routerMysql = (app)=>{
         let surname = req.body.surname ? req.body.surname : ''
         let password = req.body.password ? req.body.password : ''
         let sqlQuery = constants.FIND_USER(surname, password)
-        //console.log(sqlQuery)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) :
                 res.json(login(resultat, req))
@@ -196,31 +202,30 @@ const routerMysql = (app)=>{
     /* fn 14 demande de logout
         LOGOUT(surname, password) */
     app.post('/userLogout', (req, res) => {
-        let name = req.session.surname ? req.session.surname : ''
-        let ok = name !== '' ? (
-            userAction(req.session.surname, 'LOGOUT', ''),
-            console.log(name),
-            true
-        ):(
-            false
-        )
-
-        ok ? req.session.destroy() : console.log('pas connecté')
-        res.json({ok:ok})
+        userSession(req, res, (session)=>{
+            let ok = session ? (
+                sessionStore.destroy(req.body.id, (err)=>{
+                    err? console.log(err) : userAction(session.surname, 'LOGOUT', '')
+                }),
+                true
+            ):false
+            res.json({ok:ok})           
+        })
     })
 
     /* fn 15 fournir action de session
         USER_ACTION(surname, password, action) */
     app.post('/userAction', (req, res) => {
-        userAction(sessionName(req), req.body.action, req.body.value)
-        res.json({ok:'ok'})
-        
+        userSession(req, res, (session)=>{
+            userAction(session.surname, req.body.action, req.body.value)
+            res.json({ok:'ok'})
+        })
     })
 
     /* fn 16 changer password
         CHANGE_PASSWORD(surname, password, newPassword) */
     app.post('/changePassword', (req, res) => {
-        let sqlQuery = constants.CHANGE_PASSWORD(sessionName(req), sessionPass(req), req.body.newPassword)
+        let sqlQuery = constants.CHANGE_PASSWORD(req.body.surname, req.body.password, req.body.newPassword)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
         })
@@ -229,7 +234,7 @@ const routerMysql = (app)=>{
     /* fn 17 fermer une compte
         CLOSE_ACCOUNT(surname, password) */
     app.post('/closeAccount', (req, res) => {
-        let sqlQuery = constants.CLOSE_ACCOUNT(sessionName(req), sessionPass(req))
+        let sqlQuery = constants.CLOSE_ACCOUNT(req.body.surname, req.body.password)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
         })
@@ -242,7 +247,7 @@ const routerMysql = (app)=>{
     /* fn 18 chercher un Produit par nom
         FIND_PRODUIT_NOM(nomProduit, surname) */
     app.post('/findProduitNom', (req, res) => {
-        let sqlQuery = constants.FIND_PRODUIT_NOM(req.body.nomProduit, sessionName(req))
+        let sqlQuery = constants.FIND_PRODUIT_NOM(req.body.nomProduit, req.body.surname)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
         })
@@ -269,7 +274,7 @@ const routerMysql = (app)=>{
     /* fn 21 chercher un Produit dans mon quartier
         FIND_PRODUIT_QUARTIER(nomProduit, surname) */
     app.post('/findProduit', (req, res) => {
-        let sqlQuery = constants.FIND_PRODUIT_QUARTIER(req.body.nomProduit, sessionName(req))
+        let sqlQuery = constants.FIND_PRODUIT_QUARTIER(req.body.nomProduit, req.body.surname)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
         })
@@ -278,7 +283,7 @@ const routerMysql = (app)=>{
     /* fn 22 dernières categorie acheté
         CATEGORIE_ACHETEUR(surname) */
     app.post('/categorieAcheteur', (req, res) => {
-        let sqlQuery = constants.CATEGORIE_ACHETEUR(sessionName(req))
+        let sqlQuery = constants.CATEGORIE_ACHETEUR(req.body.surname)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
         })
@@ -287,7 +292,7 @@ const routerMysql = (app)=>{
     /* fn 23 liste de produits recommande
         RECOMMANDATION(surname) */
     app.post('/recommandation', (req, res) => {
-        let sqlQuery = constants.RECOMMANDATION(sessionName(req))
+        let sqlQuery = constants.RECOMMANDATION(req.body.surname)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
         })
@@ -345,7 +350,7 @@ const routerMysql = (app)=>{
     /* fn 29 ajouter un produits au panier
         ADD_PRODUIT_PANIER(surname, password, produit, quantite) */
     app.post('/addProduitPanier', (req, res) => {
-        let sqlQuery = constants.ADD_PRODUIT_PANIER(sessionName(req), sessionPass(req), req.body.produit, req.body.quantite)
+        let sqlQuery = constants.ADD_PRODUIT_PANIER(req.body.surname, req.body.password, req.body.produit, req.body.quantite)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
         })
@@ -354,7 +359,7 @@ const routerMysql = (app)=>{
     /* fn 30 effacer un produits du panier
         DEL_PRODUIT_PANIER(surname, password, produit) */
     app.post('/delProduitPanier', (req, res) => {
-        let sqlQuery = constants.DEL_PRODUIT_PANIER(sessionName(req), sessionPass(req), req.body.produit)
+        let sqlQuery = constants.DEL_PRODUIT_PANIER(req.body.surname, req.body.password, req.body.produit)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
         })
@@ -363,7 +368,7 @@ const routerMysql = (app)=>{
     /* fn 31 éditer un produits du panier
         EDIT_PRODUIT_PANIER(surname, password, produit, quantite) */
     app.post('/editProduitPanier', (req, res) => {
-        let sqlQuery = constants.EDIT_PRODUIT_PANIER(sessionName(req), sessionPass(req), req.body.produit, req.body.quantite)
+        let sqlQuery = constants.EDIT_PRODUIT_PANIER(req.body.surname, req.body.password, req.body.produit, req.body.quantite)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
         })
@@ -372,7 +377,7 @@ const routerMysql = (app)=>{
     /* fn 32 payer un produits
         PAYER_PRODUIT(surname, password, produit) */
     app.post('/payerProduit', (req, res) => {
-        let sqlQuery = constants.PAYER_PRODUIT(sessionName(req), sessionPass(req), req.body.produit)
+        let sqlQuery = constants.PAYER_PRODUIT(req.body.surname, req.body.password, req.body.produit)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
         })
@@ -381,7 +386,7 @@ const routerMysql = (app)=>{
     /* fn 33 liste des achat déjà effectues
         ACHATS_LIST(surname, password) */
     app.post('/achatList', (req, res) => {
-        let sqlQuery = constants.ACHATS_LIST(sessionName(req), sessionPass(req))
+        let sqlQuery = constants.ACHATS_LIST(req.body.surname, req.body.password)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
         })
@@ -390,7 +395,7 @@ const routerMysql = (app)=>{
     /* fn 34 évaluer un produits acheté
         EVALUER_PRODUIT(surname, password, produit) */
     app.post('/evaluerProduit', (req, res) => {
-        let sqlQuery = constants.EVALUER_PRODUIT(sessionName(req), sessionPass(req), req.body.produit)
+        let sqlQuery = constants.EVALUER_PRODUIT(req.body.surname, req.body.password, req.body.produit)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
         })
@@ -399,7 +404,7 @@ const routerMysql = (app)=>{
     /* fn 35 créer une restaurant
         NEW_RESTAURANT(surname, password, nom, description, photoName, adresse, quartier, telephone) */
     app.post('/newRestaurant', (req, res) => {
-        let sqlQuery = constants.NEW_RESTAURANT(sessionName(req), sessionPass(req), req.body.nom, 
+        let sqlQuery = constants.NEW_RESTAURANT(req.body.surname, req.body.password, req.body.nom, 
                                                 req.body.description, req.body.photoName, req.body.adresse, 
                                                 req.body.quartier, req.body.telephone)
         connection.query(sqlQuery, (err, resultat) => {
@@ -410,7 +415,7 @@ const routerMysql = (app)=>{
     /* fn 36 ajouter une catégorie
         NEW_CATEGORIE(surname, password, nom, description) */
     app.post('/newCategorie', (req, res) => {
-        let sqlQuery = constants.NEW_CATEGORIE(sessionName(req), sessionPass(req), req.body.nom, req.body.description)
+        let sqlQuery = constants.NEW_CATEGORIE(req.body.surname, req.body.password, req.body.nom, req.body.description)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
         })
@@ -419,7 +424,7 @@ const routerMysql = (app)=>{
     /* fn 37 ajouter un produits
         NEW_PRODUIT(surname, password, nom, description, photoName, categorie, restaurant, bio, prixBase) */
     app.post('/newProduit', (req, res) => {
-        let sqlQuery = constants.NEW_PRODUIT(sessionName(req), sessionPass(req), req.body.nom, req.body.description, 
+        let sqlQuery = constants.NEW_PRODUIT(req.body.surname, req.body.password, req.body.nom, req.body.description, 
                                              req.body.photoName, req.body.categorie, req.body.restaurant, req.body.bio, req.body.prixBase)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
@@ -429,7 +434,7 @@ const routerMysql = (app)=>{
     /* fn 38 éditer un restaurant
         EDIT_RESTAURANT(restaurant, surname, password, nom, description, photoName, adresse, quartier, telephone) */
     app.post('/editRestaurant', (req, res) => {
-        let sqlQuery = constants.EDIT_RESTAURANT(req.body.restaurant, sessionName(req), sessionPass(req), req.body.nom, req.body.description, 
+        let sqlQuery = constants.EDIT_RESTAURANT(req.body.restaurant, req.body.surname, req.body.password, req.body.nom, req.body.description, 
                                                  req.body.photoName, req.body.adresse, req.body.quartier, req.body.telephone)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
@@ -439,7 +444,7 @@ const routerMysql = (app)=>{
     /* fn 39 éditer un produit
         EDIT_PRODUIT(produit, surname, password, nom, description, photoName, categorie, restaurant, bio, prixBase) */
     app.post('/editProduit', (req, res) => {
-        let sqlQuery = constants.EDIT_PRODUIT(req.body.produit, sessionName(req), sessionPass(req), req.body.nom, req.body.description, 
+        let sqlQuery = constants.EDIT_PRODUIT(req.body.produit, req.body.surname, req.body.password, req.body.nom, req.body.description, 
                                               req.body.photoName, req.body.categorie, req.body.restaurant, req.body.bio, req.body.prixBase)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
@@ -449,7 +454,7 @@ const routerMysql = (app)=>{
     /* fn 40 éliminer un restaurant
         DEL_RESTAURANT(restaurant, surname, password, nom, description, photoName, adresse, quartier, telephone) */
     app.post('/delRestaurant', (req, res) => {
-        let sqlQuery = constants.DEL_RESTAURANT(req.body.restaurant, sessionName(req), sessionPass(req), req.body.nom, req.body.description, 
+        let sqlQuery = constants.DEL_RESTAURANT(req.body.restaurant, req.body.surname, req.body.password, req.body.nom, req.body.description, 
                                                 req.body.photoName, req.body.adresse, req.body.quartier, req.body.telephone)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
@@ -459,7 +464,7 @@ const routerMysql = (app)=>{
     /* fn 41 éliminer un produits
         DEL_PRODUIT(produit, surname, password, nom, description, photoName, categorie, restaurant, bio, prixBase) */
     app.post('/delProduit', (req, res) => {
-        let sqlQuery = constants.DEL_PRODUIT(req.body.produit, sessionName(req), sessionPass(req), req.body.nom, req.body.description, 
+        let sqlQuery = constants.DEL_PRODUIT(req.body.produit, req.body.surname, req.body.password, req.body.nom, req.body.description, 
                                              req.body.photoName, req.body.categorie, req.body.restaurant, req.body.bio, req.body.prixBase)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
@@ -469,7 +474,7 @@ const routerMysql = (app)=>{
     /* fn 42 voir les produits
         LIST_PRODUIT_VENDEUR(surname, password) */
     app.post('/listProduitVendeur', (req, res) => {
-        let sqlQuery = constants.LIST_PRODUIT_VENDEUR(sessionName(req), sessionPass(req))
+        let sqlQuery = constants.LIST_PRODUIT_VENDEUR(req.body.surname, req.body.password)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
         })
@@ -478,7 +483,7 @@ const routerMysql = (app)=>{
     /* fn 43 voir les restaurant
         LIST_RESTAURANT_VENDEUR(surname, password) */
     app.post('/listRestaurantVendeur', (req, res) => {
-        let sqlQuery = constants.LIST_RESTAURANT_VENDEUR(sessionName(req), sessionPass(req))
+        let sqlQuery = constants.LIST_RESTAURANT_VENDEUR(req.body.surname, req.body.password)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
         })
@@ -487,7 +492,7 @@ const routerMysql = (app)=>{
     /* fn 44 voir moyenne des évaluations des produits
         EVALUATION_VENDEUR(surname, password) */
     app.post('/evaluationVendeur', (req, res) => {
-        let sqlQuery = constants.EVALUATION_VENDEUR(sessionName(req), sessionPass(req))
+        let sqlQuery = constants.EVALUATION_VENDEUR(req.body.surname, req.body.password)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
         })
@@ -496,7 +501,7 @@ const routerMysql = (app)=>{
     /* fn 45 voir moyenne évaluation des produits d'un restaurant
         EVAL_RESTAURANT(surname, password, restaurant) */
     app.post('/evalRestaurant', (req, res) => {
-        let sqlQuery = constants.EVAL_RESTAURANT(sessionName(req), sessionPass(req), req.body.restaurant)
+        let sqlQuery = constants.EVAL_RESTAURANT(req.body.surname, req.body.password, req.body.restaurant)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
         })
@@ -505,7 +510,7 @@ const routerMysql = (app)=>{
     /* fn 46 liste des produits vendu
         LIST_VENTES(surname, password) */
     app.post('/listVentes', (req, res) => {
-        let sqlQuery = constants.LIST_VENTES(sessionName(req), sessionPass(req))
+        let sqlQuery = constants.LIST_VENTES(req.body.surname, req.body.password)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
         })
@@ -514,7 +519,7 @@ const routerMysql = (app)=>{
     /* fn 47 liste des produits vendu dans un restaurant
         LIST_VENTES_RESTAURANT(surname, password, restaurant) */
     app.post('/listVentesRestaurant', (req, res) => {
-        let sqlQuery = constants.LIST_VENTES_RESTAURANT(sessionName(req), sessionPass(req), req.body.restaurant)
+        let sqlQuery = constants.LIST_VENTES_RESTAURANT(req.body.surname, req.body.password, req.body.restaurant)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
         })
