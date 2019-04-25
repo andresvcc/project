@@ -55,13 +55,18 @@ const api = (app)=> {
         let name = req.session.surname ? req.session.surname : 'inconue'
         if (req.session.page_views) {
             req.session.page_views++;
-            res.send(name + " You visited this page " + req.session.page_views + " times");
+            res.json({ ok: name + " You visited this page " + req.session.page_views + " times"});
 
         } else {
 
             req.session.page_views = 1;
-            res.send("Welcome to this page for the first time!");
+            res.json({ok: name + " Welcome to this page for the first time!"});
         }
+    });
+
+    app.get('/surnamesession', function(req,res){
+        console.log("# Client Username check "+ req.session.surname);
+        res.json({ok: req.session.surname})
     });
 
     app.post('/upload', function (req, res) {

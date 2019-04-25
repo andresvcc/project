@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import axios from 'axios';
+import { toast } from 'react-toastify';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -15,12 +17,52 @@ class LoginScreenButton extends Component{
   };
 
   handleBtnActionLogout = () => {
+
     this.props.onLogoutClick()
   }
 
+  /*
+  logoutQuery = () =>{
+    axios.post(`http://localhost:4000/userLogout`)
+    .then(res => {
+      let ok = res.data.ok ? this.handleBtnActionLogout() : console.log('probleme')
+      console.log('logout API response:', res.data, ok);
+    })
+    .catch(err => { // then print response status
+      toast.error('un probleme est survenue')
+      console.log(err)
+    })
+}
+*/
+
+logoutQuery = () =>{
+  axios.post(`http://localhost:4000/userLogout`)
+  .then(res => {
+    let ok = res.data.ok ? this.handleBtnActionLogout() : console.log('probleme')
+    console.log('logout API response:', res.data, ok);
+  })
+  .catch(err => { // then print response status
+    toast.error('un probleme est survenue')
+    console.log(err)
+  })
+
+  axios.interceptors.response.use(function (response) {
+    // Do something with response data
+    return response;
+  }, function (error) {
+    // Do something with response error
+    if (error.status === 401) {
+      // DELETE YOUR AUTHENTICATE_USER item from localStorage 
+    }
+    return Promise.reject(error);
+  });
+}
+
+
+
 
   handleClickOpen = () => {
-    this.props.loginStatus ? this.handleBtnActionLogout(): this.setState({ open: true });
+    this.props.loginStatus ? this.logoutQuery(): this.setState({ open: true });
   };
 
   handleClose = () => {

@@ -19,8 +19,8 @@ class FormLogin extends Component {
         errorPassword:false
     }
     
-    handleBtnActionLogin = () => {
-        this.props.onLoginClick(1)
+    handleBtnActionLogin = (typeUser) => {
+        this.props.onLoginClick(typeUser)
     }
 
     onAnuller  = () =>{
@@ -62,8 +62,8 @@ class FormLogin extends Component {
     loginQuery = (data) =>{
         axios.post(`http://localhost:4000/userlogin`, data )
         .then(res => {
-            let ok = res.data.ok ? (
-                this.handleBtnActionLogin(),
+            let ok = res.data.ok && res.data.typeUser? (
+                this.handleBtnActionLogin(res.data.typeUser),
                 this.props.back(),
                 true
             ):(

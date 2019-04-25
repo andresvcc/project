@@ -29,24 +29,10 @@ connection.connect((err)=>{
 -------------------------------------------------*/
 const routerMysql = (app)=>{
 
-    logout = (resultat, req) => {
-        
-        let status = resultat == '' ? (
-            console.log(`-/${resultat}/-`),
-            { ok: false}
-        ) : (  
-                userAction(req.session.surname, 'LOGOUT', ''),
-                req.session.destroy(),
-                { ok: true}
-            )
-    
-        return status
-    }
-
     userAction = (surname, action, value) =>{
         let sqlQuery = constants.USER_ACTION(surname, action, value)
         connection.query(sqlQuery, (err, resultat) => {
-            err ? console.log(err) : console.log(action)
+            err ? console.log(err) : console.log(surname, action, value)
         }) 
     }
 
@@ -200,7 +186,7 @@ const routerMysql = (app)=>{
         let surname = req.body.surname ? req.body.surname : ''
         let password = req.body.password ? req.body.password : ''
         let sqlQuery = constants.FIND_USER(surname, password)
-        console.log(sqlQuery)
+        //console.log(sqlQuery)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) :
                 res.json(login(resultat, req))
@@ -209,16 +195,18 @@ const routerMysql = (app)=>{
 
     /* fn 14 demande de logout
         LOGOUT(surname, password) */
-    app.post('/logout', (req, res) => {
-        let surname = req.session.surname ? req.session.surname : ''
-        let password = req.session.password ? req.session.password : ''
-        //res.json({n:surname, p:password})
-        console.log('/'+surname+' '+password)
-        let sqlQuery = constants.FIND_USER(surname, password)
-        connection.query(sqlQuery, (err, resultat) => {
-            err ? res.json({ ok: false, error: err }) :
-                res.json(logout(resultat, req))
-        })
+    app.post('/userLogout', (req, res) => {
+        let name = req.session.surname ? req.session.surname : ''
+        let ok = name !== '' ? (
+            userAction(req.session.surname, 'LOGOUT', ''),
+            console.log(name),
+            true
+        ):(
+            false
+        )
+
+        ok ? req.session.destroy() : console.log('pas connecté')
+        res.json({ok:ok})
     })
 
     /* fn 15 fournir action de session

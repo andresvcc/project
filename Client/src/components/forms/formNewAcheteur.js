@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import { Progress } from 'reactstrap';
+//import axios from 'axios';
+//import { Progress } from 'reactstrap';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
