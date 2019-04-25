@@ -2,6 +2,8 @@ const initialState = {
     count: 0,
     loginStatus:false,
     typeUser:0,
+    surname:'inconue',
+    sessID:'vide',
     incrireVisibility:'visible'
 }
 

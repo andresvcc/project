@@ -19,8 +19,8 @@ class FormLogin extends Component {
         errorPassword:false
     }
     
-    handleBtnActionLogin = (typeUser) => {
-        this.props.onLoginClick(typeUser)
+    handleBtnActionLogin = (dataUser) => {
+        this.props.onLoginClick(dataUser)
     }
 
     onAnuller  = () =>{
@@ -63,7 +63,7 @@ class FormLogin extends Component {
         axios.post(`http://localhost:4000/userlogin`, data )
         .then(res => {
             let ok = res.data.ok && res.data.typeUser? (
-                this.handleBtnActionLogin(res.data.typeUser),
+                this.handleBtnActionLogin(res.data),
                 this.props.back(),
                 true
             ):(
@@ -125,14 +125,16 @@ const mapStateToProps = (state) => {
     return {
       count: state.counter.count,
       loginStatus: state.counter.loginStatus,
-      typeUser: state.counter.typeUser
+      typeUser: state.counter.typeUser,
+      surname: state.counter.surname,
+      sessID: state.counter.sessID
     }
   }
   
   const mapDispatchToProps = (dispatch) => {
     return {
-      onLoginClick: (typeUser) => {
-        dispatch(login(typeUser))
+      onLoginClick: (dataUser) => {
+        dispatch(login(dataUser))
       },
       onLogoutClick: () => {
         dispatch(logout())

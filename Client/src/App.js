@@ -12,38 +12,11 @@ class App extends Component{
     values:'vide'
   }
 
-/*
-  componentDidMount() {
-    axios.get(`http://localhost:4000/times`)
-        .then(res => {
-            const values = res.data.ok;
-            console.log(values)
-            this.setState({values:values});
-        })
-  }
-
-  timesQuery = () =>{
-    axios.get(`http://localhost:4000/times`)
-    .then(res => {
-      this.setState({values:res.data.ok});
-      console.log('logout API response:', res.data);
-    })
-    .catch(err => { // then print response status
-      console.log(err)
-    })
-}
-
-
-  handleClick = () => {
-    this.timesQuery()
-  };
-*/
-
   render() {
-    const {count, loginStatus, typeUser}=this.props
+    const {count, loginStatus, typeUser, surname, sessID}=this.props
     return(
         <div>
-        <h6>Count: {count}, Login: {loginStatus.toString()}, TypeUser: {typeUser}</h6>
+        <h6>Count: {count}, Login :{loginStatus.toString()}, TypeUser :{typeUser}, Surname :{surname}, sessID :{sessID}</h6>
         <AppBar/>       
         <ToastContainer autoClose={2000} position={'top-center'}/>
 
@@ -57,7 +30,9 @@ const mapStateToProps = (state) => {
   return {
     count: state.counter.count,
     loginStatus: state.counter.loginStatus,
-    typeUser: state.counter.typeUser
+    typeUser: state.counter.typeUser,
+    surname: state.counter.surname,
+    sessID: state.counter.sessID
   }
 }
 

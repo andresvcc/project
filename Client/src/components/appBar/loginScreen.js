@@ -17,48 +17,20 @@ class LoginScreenButton extends Component{
   };
 
   handleBtnActionLogout = () => {
-
     this.props.onLogoutClick()
   }
 
-  /*
-  logoutQuery = () =>{
-    axios.post(`http://localhost:4000/userLogout`)
-    .then(res => {
-      let ok = res.data.ok ? this.handleBtnActionLogout() : console.log('probleme')
-      console.log('logout API response:', res.data, ok);
-    })
-    .catch(err => { // then print response status
-      toast.error('un probleme est survenue')
-      console.log(err)
-    })
-}
-*/
-
 logoutQuery = () =>{
-  axios.post(`http://localhost:4000/userLogout`)
+  axios.post(`http://localhost:4000/userLogout`,{id:this.props.sessID})
   .then(res => {
-    let ok = res.data.ok ? this.handleBtnActionLogout() : console.log('probleme')
+    let ok = res.data.ok ? (this.handleBtnActionLogout(),true) : (console.log('probleme'),false)
     console.log('logout API response:', res.data, ok);
   })
   .catch(err => { // then print response status
     toast.error('un probleme est survenue')
     console.log(err)
   })
-
-  axios.interceptors.response.use(function (response) {
-    // Do something with response data
-    return response;
-  }, function (error) {
-    // Do something with response error
-    if (error.status === 401) {
-      // DELETE YOUR AUTHENTICATE_USER item from localStorage 
-    }
-    return Promise.reject(error);
-  });
 }
-
-
 
 
   handleClickOpen = () => {
@@ -100,7 +72,9 @@ const mapStateToProps = (state) => {
   return {
     count: state.counter.count,
     loginStatus: state.counter.loginStatus,
-    typeUser: state.counter.typeUser
+    typeUser: state.counter.typeUser,
+    surname: state.counter.surname,
+    sessID: state.counter.sessID
   }
 }
 
