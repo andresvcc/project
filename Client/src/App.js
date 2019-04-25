@@ -37,8 +37,6 @@ class App extends Component{
   handleClick = () => {
     this.timesQuery()
   };
-
-
 */
 
   render() {
