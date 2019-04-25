@@ -104,7 +104,18 @@ SELECT  (SELECT id_user FROM users WHERE surname = 'pikachu'),
 /*liste des utilisateurs connectés*/
 SELECT * FROM log;
 
-
+/*chercher un user et identifier son type (acheteur/vendeur)*/
+SELECT surname, 1 as typeuser
+                    FROM users, vendeurs 
+                    WHERE users.surname = 'pikachu'
+                    AND users.id_user = vendeurs.id_user
+                    AND users.password = 'password'
+               UNION
+               SELECT surname, 2 as typeuser
+                    FROM users, acheteurs 
+                    WHERE users.surname = 'pikachu'
+                    AND users.id_user = acheteurs.id_user
+                    AND users.password = 'password';
 
 /*liste des utilisateurs connectés la dernier sesion du serveur*/
 SELECT * 

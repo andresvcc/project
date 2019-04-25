@@ -57,10 +57,17 @@ module.exports = Object.freeze({
      },
 
 /*13*/ FIND_USER: (surname, password) => {
-        return `SELECT surname 
-                FROM users 
-                WHERE surname = '${surname}' 
-                AND password = '${password}';`
+        return `SELECT surname, 1 as typeuser
+                    FROM users, vendeurs 
+                    WHERE users.surname = '${surname}'
+                    AND users.id_user = vendeurs.id_user
+                    AND users.password = '${password}'
+               UNION
+               SELECT surname, 2 as typeuser
+                    FROM users, acheteurs 
+                    WHERE users.surname = '${surname}'
+                    AND users.id_user = acheteurs.id_user
+                    AND users.password = '${password}'`
     },
 
 /*14*/ NEW_SESSION: `INSERT INTO sessions () VALUES();`,

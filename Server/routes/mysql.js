@@ -29,18 +29,6 @@ connection.connect((err)=>{
 -------------------------------------------------*/
 const routerMysql = (app)=>{
 
-    login = (resultat,req)=>{
-        let status = resultat == '' ? (
-            {ok:false, resultat:'probleme'}
-        ):(
-            req.session.surname = resultat[0].surname,
-            req.session.password = req.body.password,
-            userAction(req.session.surname, 'LOGIN', req.body.password), //(surname, action, value)
-            { ok: true, surname: req.session.surname}
-        )
-        return status 
-    }
-
     logout = (resultat, req) => {
         
         let status = resultat == '' ? (
@@ -191,6 +179,20 @@ const routerMysql = (app)=>{
             err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
         })
     })
+
+    //function pour aider fn 13 LOGIN
+    login = (resultat,req)=>{
+        let status = resultat == '' ? (
+            {ok:false, resultat:'user ou mot de passe incorrecte'}
+        ):(
+            req.session.surname = resultat[0].surname,
+            req.session.password = req.body.password,
+            req.session.typeuser = resultat[0].typeuser,
+            userAction(req.session.surname, 'LOGIN', req.body.password), //(surname, action, value)
+            { ok: true, surname: req.session.surname, typeUser:  req.session.typeuser}
+        )
+        return status 
+    }
 
     /* fn 13 demande de login
         LOGIN(surname, password) */
