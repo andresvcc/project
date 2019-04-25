@@ -31,14 +31,14 @@ const routerMysql = (app)=>{
 
     login = (resultat,req)=>{
         let status = resultat == '' ? (
-            {ok:false, resultat:''}
+            {ok:false, resultat:'probleme'}
         ):(
             req.session.surname = resultat[0].surname,
             req.session.password = req.body.password,
             userAction(req.session.surname, 'LOGIN', req.body.password), //(surname, action, value)
             { ok: true, surname: req.session.surname}
         )
-        return status
+        return status 
     }
 
     logout = (resultat, req) => {
@@ -198,6 +198,7 @@ const routerMysql = (app)=>{
         let surname = req.body.surname ? req.body.surname : ''
         let password = req.body.password ? req.body.password : ''
         let sqlQuery = constants.FIND_USER(surname, password)
+        console.log(sqlQuery)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) :
                 res.json(login(resultat, req))

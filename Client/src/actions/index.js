@@ -13,3 +13,21 @@ export const decrementCount = count => {
     count: num
   }
 }
+
+export const login = typeUser => {
+  return {
+    type: 'LOGIN',
+    loginStatus: true,
+    typeUser:typeUser,
+    incrireVisibility:'hidden'
+  }
+}
+
+export const logout = () => {
+  return {
+    type: 'LOGOUT',
+    loginStatus: false,
+    typeUser:0,
+    incrireVisibility:'visible'
+  }
+}
