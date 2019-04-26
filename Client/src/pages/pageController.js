@@ -3,19 +3,35 @@ import {connect} from 'react-redux'
 //import axios from 'axios'
 import { ToastContainer } from "react-toastify";
 
-import AppBar from './components/appBar/appBar'
-import PageController from './pages/pageController';
 //import { Button } from '@material-ui/core';
+import PageVendeur from './pageVendeur'
+import PageAcheteur from './pageAcheteur'
+import PageNotLogin from './pageNotLogin'
 
+class PageController extends Component{
 
-class App extends Component{
+    controllerPage=()=>{
+        let typeUser = this.props.typeUser
+        switch (typeUser) {
+            case 0:
+                return <PageNotLogin/>
+            case 1:
+                return <PageVendeur/>
+            case 2:
+                return <PageAcheteur/>
+            default:
+                return <h1>Page d'error</h1>
+        }
+    }
+
   render() {
     const {count, loginStatus, typeUser, surname, sessID}=this.props
     return(
         <div>
-        <h6>Count: {count}, Login :{loginStatus.toString()}, TypeUser :{typeUser}, Surname :{surname}, sessID :{sessID}</h6>
-        <AppBar/> 
-        <PageController/>
+            <h6>page Controller: </h6>
+            {this.controllerPage()}  
+              
+              
         <ToastContainer autoClose={2000} position={'top-center'}/>
 
         </div>
@@ -40,4 +56,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(PageController)
