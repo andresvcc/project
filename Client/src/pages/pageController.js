@@ -25,7 +25,7 @@ class PageController extends Component{
     }
 
   render() {
-    const {count, loginStatus, typeUser, surname, sessID}=this.props
+   // const {count, loginStatus, typeUser, surname, sessID}=this.props
     return(
         <div>
             <h6>page Controller: </h6>

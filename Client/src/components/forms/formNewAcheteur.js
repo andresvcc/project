@@ -142,8 +142,6 @@ export default class FormNewAcheteur extends Component {
     render() {
         return (
             <div>
-                {this.state.npa}
-                {this.state.surnom}
                 <div className="container">
                     <div className="row">
                         <div className="offset-md-1 col-md-10">

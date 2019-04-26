@@ -8,7 +8,7 @@ import { ToastContainer } from "react-toastify";
 
 class PageNotLogin extends Component{
   render() {
-    const {count, loginStatus, typeUser, surname, sessID}=this.props
+    //const {count, loginStatus, typeUser, surname, sessID}=this.props
     return(
         <div>
             <h1>page NotLogin</h1>

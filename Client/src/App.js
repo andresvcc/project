@@ -17,7 +17,6 @@ class App extends Component{
         <AppBar/> 
         <PageController/>
         <ToastContainer autoClose={2000} position={'top-center'}/>
-
         </div>
     )
   }

@@ -6,10 +6,11 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import FormNewAcheteur from '../forms/formNewAcheteur'
+import FormNewVendeur from '../forms/formNewVendeur'
 
 import {login, logout} from '../../actions/index'
 
-class SignOn extends Component{
+class SignOnAcheteur extends Component{
   state = {
     open: false,
   };
@@ -18,13 +19,14 @@ class SignOn extends Component{
     this.props.onLogoutClick()
   }
 
-
   handleClickOpen = () => {
     this.setState({ open: true });
   };
 
   handleClose = () => {
+    this.props.back ? this.props.back() : void
     this.setState({ open: false });
+    
   };
 
   render() {
@@ -32,8 +34,8 @@ class SignOn extends Component{
     return (
       <div>
         <div style={{visibility:`${this.props.incrireVisibility}`}}>
-        <Button color="inherit" onClick={this.handleClickOpen}>
-          {this.props.loginStatus ? '' : "S'inscrire" }
+        <Button variant="outlined" onClick={this.handleClickOpen} style={{minWidth:'200px'}}>
+          {this.props.loginStatus ? '' : this.props.title }
         </Button>
         </div>
           <Dialog
@@ -48,7 +50,7 @@ class SignOn extends Component{
                 </DialogContentText>
               </DialogContent>
               <div style={{paddingBottom:'30px'}}>
-                <FormNewAcheteur back = {this.handleClose}/>
+                <FormNewVendeur back = {this.handleClose}/>
               </div>
           </Dialog>
       </div>
@@ -76,4 +78,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignOn)
+export default connect(mapStateToProps, mapDispatchToProps)(SignOnAcheteur)

@@ -219,7 +219,7 @@ export default class FormNewAcheteur extends Component {
             <div>
                 <div className="container">
                     <div className="row">
-                        <div className="offset-md-3 col-md-6">
+                        <div className="offset-md-1 col-md-16">
                             <div >
                                 <legend>Informations nouveau Vendeur</legend>
                                 <div>

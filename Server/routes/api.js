@@ -43,7 +43,7 @@ const api = (app, sessionStore)=> {
     })
 
     app.get('/location', function (req, res) {
-        res.json([{ id: 1, name: "Carouge" }, { id: 2, name: "Lignon" },{ id: 3, name: "Lausanne" }])
+        res.json([{ id: 1, name: "Carouge" }, { id: 2, name: "Lignon" },{ id: 3, name: "moillesulaz" },{ id: 4, name: "jonction" }])
     })
 
     app.get('/Villes', function (req, res) {
@@ -71,7 +71,6 @@ const api = (app, sessionStore)=> {
     })
     
     app.post('/storeGet', (req, res) => {
-        
         let sid = req.body.id
         sessionStore.get(sid, (err, session)=>{
             err ? console.log(err) : res.json({session:session})
