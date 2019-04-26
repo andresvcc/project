@@ -5,9 +5,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import FormNewAcheteur from '../forms/formNewAcheteur'
+//import FormNewAcheteur from '../forms/formNewAcheteur'
 import FormNewVendeur from '../forms/formNewVendeur'
-
 import {login, logout} from '../../actions/index'
 
 class SignOnAcheteur extends Component{
@@ -38,7 +37,7 @@ class SignOnAcheteur extends Component{
           {this.props.loginStatus ? '' : this.props.title }
         </Button>
         </div>
-          <Dialog
+        <Dialog
             fullScreen={fullScreen}
             open={this.state.open}
             onClose={this.handleClose}
@@ -46,7 +45,7 @@ class SignOnAcheteur extends Component{
               <DialogTitle id="responsive-dialog-title">{"Inscrivez-vous"}</DialogTitle>
               <DialogContent style ={{minWidth:'600px'}}>
                 <DialogContentText>
-                  Information relative au registre d'un nouveau utilisateur.
+                  Information relative au registre d'un nouveau vendeur.
                 </DialogContentText>
               </DialogContent>
               <div style={{paddingBottom:'30px'}}>

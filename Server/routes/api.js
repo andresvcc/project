@@ -47,7 +47,7 @@ const api = (app, sessionStore)=> {
     })
 
     app.get('/Villes', function (req, res) {
-        res.json([{ id: 1, name: "Geneve" }, { id: 2, name: "Nyon" }, { id: 3, name: "Lausanne" }, { id: 3, name: "Lausanne2" }])
+        res.json([{ id: 1, name: "Geneve" }, { id: 2, name: "Nyon" }, { id: 3, name: "Aire" }, { id: 4, name: "Lausanne" }])
     })
     //***************************************************/
 

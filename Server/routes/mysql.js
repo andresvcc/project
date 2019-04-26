@@ -24,10 +24,12 @@ connection.connect((err)=>{
     err ? console.log(`problème de connection`): console.log(`Connected`);
 });
 
-/*-------------------------------------------------
-|                    ROUTER                       |
--------------------------------------------------*/
+
 const routerMysql = (app, sessionStore)=>{
+
+    /*-------------------------------------------------
+    |             System Fonction Aide                |
+    --------------------------------------------------*/
 
     startSessionServer =()=>{
         let sqlQueryNewSessionServer = constants.NEW_SESSION_SERVER
@@ -58,6 +60,88 @@ const routerMysql = (app, sessionStore)=>{
             err ? res.json({ok:false, err:err}) : (
                 callBack(session)
             )
+        })
+    }
+
+    deleteUser = (surname) =>{
+        connection.query(`DELETE FROM users WHERE surname = '${surname}'`, (err, resultat) => {
+            if(err) throw err 
+        })
+    }
+
+    isDisponible = (req, callback) =>{
+        let sqlQuery = constants.FIND_SIMPLE_USER(req.body.surname)
+        connection.query(sqlQuery, (err, resultat) => {
+            err ? callback( false ) : callback( resultat[0] ? false : true )
+        })
+    }
+
+    newUser = (req, callback) =>{
+        let sqlQuery = constants.NEW_USER(req.body.surname, req.body.password, req.body.email)
+        isDisponible(req,(solve)=>{
+            solve ? (
+                connection.query(sqlQuery, (err, resultat) => {
+                    err ? (console.log(err),callback(2)) : callback(3)
+                })
+            ):callback(1)
+        })
+    }
+
+    newAcheteur = (req, res) =>{
+        newUser(req, (solve)=>{
+            switch (solve) {
+                case 1:                    
+                    res.json({ ok: false, msg:`Surnom: ${req.body.surname} ne pas disponible`})
+                    break;
+                case 2:
+                    res.json({ ok: false, msg:'error creando user'})
+                    break;
+                case 3:
+                    let sqlQuery = constants.NEW_ACHETEUR(req.body.surname, req.body.password, req.body.quartier)
+                    connection.query(sqlQuery, (err, resultat) => {
+                        err ? (
+                            deleteUser(req.body.surname),
+                            console.log(err),
+                            res.json({ ok: false, tp:3, msg:err })
+                        ) : (
+                            userAction(req.body.surname, 'CREATE', 'ACHETEUR'),
+                            res.json({ ok: true, tp:3, msg:'succes'})
+                        )
+                    })
+                    break;
+                default:
+                    res.json({ ok: true, msg:'error inconue'})
+                    break;
+            }
+        })
+    }
+
+    newVendeur = (req, res) =>{
+        newUser(req, (solve)=>{
+            switch (solve) {
+                case 1:                    
+                    res.json({ ok: false, msg:`Surnom: ${req.body.surname} ne pas disponible`})
+                    break;
+                case 2:
+                    res.json({ ok: false, msg:'error creando user'})
+                    break;
+                case 3:
+                    let sqlQuery = constants.NEW_VENDEUR(req.body.surname, req.body.password, req.body.nom, req.body.prenom, req.body.adresse, req.body.bancaire)
+                    connection.query(sqlQuery, (err, resultat) => {
+                        err ? (
+                            deleteUser(req.body.surname),
+                            console.log(err),
+                            res.json({ ok: false, tp:3, msg:err })
+                        ) : (
+                            userAction(req.body.surname, 'CREATE', 'ACHETEUR'),
+                            res.json({ ok: true, tp:3, msg:'succes'})
+                        )
+                    })
+                    break;
+                default:
+                    res.json({ ok: true, msg:'error inconue'})
+                    break;
+            }
         })
     }
 
@@ -159,80 +243,16 @@ const routerMysql = (app, sessionStore)=>{
         })
     });
 
-    deleteUser = (surname) =>{
-        connection.query(`DELETE FROM users WHERE surname = '${surname}'`, (err, resultat) => {
-            if(err) throw err 
-        })
-    }
-
-    isDisponible = (req, callback) =>{
-        let sqlQuery = constants.FIND_SIMPLE_USER(req.body.surname)
-        connection.query(sqlQuery, (err, resultat) => {
-            err ? callback( false ) : callback( resultat[0] ? false : true )
-        })
-    }
-
-    newUser = (req, callback) =>{
-        let sqlQuery = constants.NEW_USER(req.body.surname, req.body.password, req.body.email)
-        isDisponible(req,(solve)=>{
-            solve ? (
-                connection.query(sqlQuery, (err, resultat) => {
-                    err ? (console.log(err),callback(2)) : callback(3)
-                })
-            ):callback(1)
-        })
-    }
-
-    newAcheteur = (req, res) =>{
-        newUser(req, (solve)=>{
-            switch (solve) {
-                case 1:                    
-                    res.json({ ok: false, msg:`Surnom: ${req.body.surname} ne pas disponible`})
-                    break;
-                case 2:
-                    res.json({ ok: false, msg:'error creando user'})
-                    break;
-                case 3:
-                    let sqlQuery = constants.NEW_ACHETEUR(req.body.surname, req.body.password, req.body.quartier, req.body.npa)
-                    connection.query(sqlQuery, (err, resultat) => {
-                        err ? (
-                            deleteUser(req.body.surname),
-                            console.log(err),
-                            res.json({ ok: false, tp:3, msg:err })
-                        ) : (
-                            userAction(req.body.surname, 'CREATE', 'ACHETEUR'),
-                            res.json({ ok: true, tp:3, msg:'succes'})
-                        )
-                    })
-                    break;
-                default:
-                    res.json({ ok: true, msg:'error inconue'})
-                    break;
-            }
-        })
-    }
-
-    app.post('/tester', (req, res) => {
-        newAcheteur(req, res)
-    })
-   
-
     /* fn 11 add un nouveau acheteur
-        NEW_ACHETEUR(surname, password, quartier, npa) */
+        NEW_ACHETEUR(surname, password, quartier) */
     app.post('/newAcheteur', (req, res) => {
         newAcheteur(req, res)        
     })
 
     /* fn 12 add un nouveau vendeur
-        NEW_VENDEUR(surname, password, nom, prénom, adresse, quartier, npa, bancaire, comptePay, adresse) */
+        NEW_VENDEUR(surname, password, nom, prénom, adresse, quartier, bancaire, comptePay, adresse) */
     app.post('/newVendeur', (req, res) => {
-        let sqlQuery = constants.NEW_VENDEUR(req.body.surname, req.body.password, req.body.nom, req.body.prénom, 
-                                             req.body.adresse, req.body.quartier, req.body.npa, req.body.bancaire, 
-                                             req.body.comptePay, req.body.adresse)
-
-        connection.query(sqlQuery, (err, resultat) => {
-            err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
-        })
+        newVendeur(req, res)
     })
 
     //function pour aider fn 13 LOGIN
