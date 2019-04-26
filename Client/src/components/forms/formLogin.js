@@ -19,8 +19,8 @@ class FormLogin extends Component {
         errorPassword:false
     }
     
-    handleBtnActionLogin = (typeUser) => {
-        this.props.onLoginClick(typeUser)
+    handleBtnActionLogin = (dataUser) => {
+        this.props.onLoginClick(dataUser)
     }
 
     onAnuller  = () =>{
@@ -62,15 +62,13 @@ class FormLogin extends Component {
     loginQuery = (data) =>{
         axios.post(`http://localhost:4000/userlogin`, data )
         .then(res => {
-            let ok = res.data.ok && res.data.typeUser? (
-                this.handleBtnActionLogin(res.data.typeUser),
-                this.props.back(),
-                true
-            ):(
-                toast.error('surname ou mot de passe incorrecte'),
-                false
-            )
-            console.log('API response:', ok, res.data);
+            let ok = res.data.ok && res.data.typeUser? (   
+                    this.handleBtnActionLogin(res.data), 
+                    true
+                ):(
+                    this.setState({errorSurname:true, errorPassword:true}), false)
+            ok ?    this.props.back() : toast.error('surname ou mot de passe incorrecte')
+
         })
         .catch(err => { // then print response status
             toast.error('surname ou mot de passe incorrecte')
@@ -95,18 +93,20 @@ class FormLogin extends Component {
     render() {
         return (
             <div className="container">
+            
                 <div className="row">
                     <div className="offset-md-1 col-md-10"> 
                         <TextForm
                             label='Surname'
                             into = "Entrez votre nom d'utilisateur"
+                            msgerror=' '
                             back={this.updateInputSurname}
                             error={this.state.errorSurname}>
                         </TextForm>
                         <PassForm
                             label='Password'
                             into='Entrez votre mot de passe'
-                            msgerror='Probleme avec le mot de passe'
+                            msgerror=' '
                             back={this.updateInputPassword}
                             error={this.state.errorPassword}>
                         </PassForm>
@@ -124,14 +124,16 @@ const mapStateToProps = (state) => {
     return {
       count: state.counter.count,
       loginStatus: state.counter.loginStatus,
-      typeUser: state.counter.typeUser
+      typeUser: state.counter.typeUser,
+      surname: state.counter.surname,
+      sessID: state.counter.sessID
     }
   }
   
   const mapDispatchToProps = (dispatch) => {
     return {
-      onLoginClick: (typeUser) => {
-        dispatch(login(typeUser))
+      onLoginClick: (dataUser) => {
+        dispatch(login(dataUser))
       },
       onLogoutClick: () => {
         dispatch(logout())

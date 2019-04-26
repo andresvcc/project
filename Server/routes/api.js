@@ -8,7 +8,7 @@
 **********************************************************/
 var multer = require('multer')
 
-const api = (app)=> {
+const api = (app, sessionStore)=> {
 
 /*-------------------------------------------------
 |                 MULTER CONFIG                   |
@@ -64,11 +64,31 @@ const api = (app)=> {
         }
     });
 
+    app.post('/sessions', (req, res) => {
+        sessionStore.all((err, session)=>{
+            err ? console.log(err) : res.json({session:session})
+        })
+    })
+    
+    app.post('/storeGet', (req, res) => {
+        
+        let sid = req.body.id
+        sessionStore.get(sid, (err, session)=>{
+            err ? console.log(err) : res.json({session:session})
+        })
+    })
+
     app.get('/surnamesession', function(req,res){
         console.log("# Client Username check "+ req.session.surname);
         res.json({ok: req.session.surname})
     });
 
+    app.post('/upSession', (req, res) => {
+        req.session.sessionID = req.body.id
+        req.session.id = req.body.id
+        res.json({body:req.body.id, session: req.session.sessionID, id:req.session.id})
+    })
+    
     app.post('/upload', function (req, res) {
         upload(req, res, function (err) {
             if (err instanceof multer.MulterError) {
@@ -84,7 +104,7 @@ const api = (app)=> {
             return res.status(200).send(req.files)
             // Everything went fine.
         })
-    });
+    });    
 }
 
 module.exports.api = api;

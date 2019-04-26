@@ -14,11 +14,14 @@ export const decrementCount = count => {
   }
 }
 
-export const login = typeUser => {
+export const login = dataUser => {
+  console.log('de nuevo', dataUser)
   return {
     type: 'LOGIN',
     loginStatus: true,
-    typeUser:typeUser,
+    typeUser:dataUser.typeUser,
+    surname:dataUser.surname,
+    sessID:dataUser.sessID,
     incrireVisibility:'hidden'
   }
 }
@@ -28,6 +31,8 @@ export const logout = () => {
     type: 'LOGOUT',
     loginStatus: false,
     typeUser:0,
+    surname:'inconue',
+    sessID:'vide',
     incrireVisibility:'visible'
   }
 }

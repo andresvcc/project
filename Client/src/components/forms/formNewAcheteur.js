@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-//import axios from 'axios';
+import axios from 'axios';
 //import { Progress } from 'reactstrap';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -19,12 +19,13 @@ export default class FormNewAcheteur extends Component {
             password2: '',
             email: '',
             quartier: 0,
-            npa: '',
+            npa: 0,
             erroSurnom: false,
             errorPassword: false,
             errorPassword2: false,
             errorMail: false,
-            errorNPA: false
+            errorNPA: false,
+            msgerrNom:'le champ Surnom est obligatoire'
         }
     }
 
@@ -35,7 +36,8 @@ export default class FormNewAcheteur extends Component {
     updateInputSurname = (evt) => {
         this.setState({
             surnom: evt.target.value,
-            erroSurnom: false
+            erroSurnom: false,
+            msgerrNom:'le champ Surnom est obligatoire'
         });
     }
 
@@ -63,7 +65,7 @@ export default class FormNewAcheteur extends Component {
     updateInputNpa = (evt) => {
         this.setState({
             npa: evt.target.value,
-            errorMail: false
+            errorNPA: false
         });
     }
 
@@ -75,67 +77,73 @@ export default class FormNewAcheteur extends Component {
 
     terminerSumit = () => {
 
-        let surnom =
+        let surname =
             this.state.surnom !== '' ?
-                this.state.surnom : (this.setState({ erroSurnom: true }), null)
+                this.state.surnom : (this.setState({ erroSurnom: true }), '')
 
         let email =
             this.state.email !== '' ?
-                this.state.surnom : (this.setState({ errorMail: true }), null)
+                this.state.email : (this.setState({ errorMail: true }), '')
 
         let password =
             (this.state.password === this.state.password2) && (this.state.password !== '') ?
-                this.state.password : (this.setState({ errorPassword: true, errorPassword2: true }), null)
+                this.state.password : (this.setState({ errorPassword: true, errorPassword2: true }), '')
 
         let quartier =
             this.state.quartier
 
         let npa =
-            this.state.npa
+        this.state.npa !== '' ?
+        this.state.npa : (this.setState({ errorNPA: true }), '')
 
         let data = {
-            surnom,
+            surname,
             email,
             password,
             quartier,
             npa
         }
 
-        let oksurnom = surnom !== null ? true : (toast.error('Le surnom est vide'), false)
-        let okemail = email !== null ? true : (toast.error('Le email est vide'), false)
-        let okpassword = password !== null ? true : (toast.error(`rentrez le meme mot de passe deux fois`), false)
-
-        let ok = oksurnom && okemail && okpassword ?
-            (
-                toast.success('👍 le compte a été créé avec succès !', {
-                    position: "top-center",
-                    autoClose: 2500,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true
-                }),
-                console.log(data),
+        let oksurname = surname !== '' ? true : (toast.error('Le surnom est vide'), false)
+        let okemail = email !== '' ? true : (toast.error('Le email est vide'), false)
+        let okpassword = password !== '' ? true : (toast.error(`rentrez le meme mot de passe deux fois`), false)
+        let oknpa = npa !== '' ? true : (toast.error(`rentrez le code postal (NPA)`), false)
+        let ok = oksurname && okemail && okpassword && oknpa?
+            (   
+                this.newAcheteurQuery(data),
                 true
             ) : (
-                toast.warn(`la copmte n'a pas été crée, verifier les champ SVP`, {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true
-                }),
+                toast.warn(`la copmte n'a pas été crée, verifier les champ SVP`),
                 false
             )
         console.log('msg? : ',ok)
+    }
 
-
+    newAcheteurQuery = (data) =>{
+        axios.post(`http://localhost:4000/NewAcheteur`, data )
+        .then(res => {
+            console.log(res.data)
+            let ok = res.data.ok ? (
+                console.log('compte crée'), 
+                true 
+            ):(
+                this.setState({msgerrNom:res.data.msg}),
+                toast.error(res.data.msg), 
+                false
+            )
+            ok ?   this.props.back() : console.log('compte ne pas crée')
+        })
+        .catch(err => { // then print response status
+            toast.error('information incorrecte')
+            console.log(err)
+        })
     }
 
     render() {
         return (
             <div>
+                {this.state.npa}
+                {this.state.surnom}
                 <div className="container">
                     <div className="row">
                         <div className="offset-md-1 col-md-10">
@@ -146,6 +154,7 @@ export default class FormNewAcheteur extends Component {
                                         type='text'
                                         label='Surnom'
                                         into='Rentrez le nom'
+                                        msgerror={this.state.msgerrNom}
                                         back={this.updateInputSurname}
                                         error={this.state.erroSurnom}>
                                     </TextForm>
@@ -183,6 +192,7 @@ export default class FormNewAcheteur extends Component {
                                             <TextFormLine
                                                 label='NPA'
                                                 into='code postal'
+                                                msgerror ='NPA incorrecté'
                                                 back={this.updateInputNpa}
                                                 error={this.state.errorNPA}>
                                             </TextFormLine>

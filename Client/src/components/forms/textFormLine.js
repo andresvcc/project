@@ -5,10 +5,14 @@ export default class TextFormLine extends Component {
     state = {
         values: []
     }
+    messageError = () =>{
+        return this.props.msgerror ? this.props.msgerror : 
+                    `le champ ${this.props.label} est obligatoire`
+    }
 
     errorMsg = (v) => {
-        return v ?
-            <h6 style={{ color: 'red' }}>le champ {this.props.label} est obligatoire</h6> :
+        return v ? 
+            <h6 style={{ color:'red'}}>{this.messageError()}</h6> :
             ''
     }
 
@@ -16,10 +20,6 @@ export default class TextFormLine extends Component {
         return v ?
             '2px solid red' :
             ''
-    }
-
-    updateValue =(fn)=>{
-        
     }
 
     render() {
@@ -33,7 +33,7 @@ export default class TextFormLine extends Component {
                         type="number" 
                         className="form-control" 
                         placeholder={this.props.into}
-                        onChange={this.updateValue(this.props.back)}
+                        onChange={this.props.back}
                         required
                         style={{ border: this.errorBorder(this.props.error) }}>
                     </input>        
@@ -43,5 +43,4 @@ export default class TextFormLine extends Component {
             </div>
         );
     }
-
 }

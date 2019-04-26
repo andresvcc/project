@@ -27,8 +27,8 @@ CREATE TABLE users (
    CONSTRAINT pk_users PRIMARY KEY(id_user)
 )ENGINE = InnoDB;
 
-DROP TABLE IF EXISTS sessions;
-CREATE TABLE sessions (
+DROP TABLE IF EXISTS s_server;
+CREATE TABLE s_server (
    id_session INT(255) AUTO_INCREMENT NOT NULL,
    time_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
    CONSTRAINT pk_sesions PRIMARY KEY (id_session)
@@ -43,7 +43,7 @@ CREATE TABLE log (
    time_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
    CONSTRAINT pk_log PRIMARY KEY(id_user,id_session,time_date),
    CONSTRAINT registre FOREIGN KEY(id_session)
-        REFERENCES sessions(id_session) ON UPDATE CASCADE ON DELETE CASCADE,
+        REFERENCES s_server(id_session) ON UPDATE CASCADE ON DELETE CASCADE,
    CONSTRAINT login FOREIGN KEY(id_user)
         REFERENCES users(id_user) ON UPDATE CASCADE ON DELETE CASCADE
 )ENGINE = InnoDB;

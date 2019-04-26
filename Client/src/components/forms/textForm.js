@@ -6,9 +6,14 @@ export default class TextForm extends Component {
         values: [],
     }
 
+    messageError = () =>{
+        return this.props.msgerror ? this.props.msgerror : 
+                    `le champ ${this.props.label} est obligatoire`
+    }
+
     errorMsg = (v) => {
         return v ? 
-            <h6 style={{ color:'red'}}>le champ {this.props.label} est obligatoire</h6> :
+            <h6 style={{ color:'red'}}>{this.messageError()}</h6> :
             ''
     }
 
