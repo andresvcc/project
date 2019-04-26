@@ -42,21 +42,22 @@ module.exports = Object.freeze({
                          email = '${email}';`
      },
 
-/*11*/ NEW_ACHETEUR: (surname, password, quartier, npa) => { 
-            return `INSERT INTO acheteurs (id_user, quartier, npa)
+/*11*/ NEW_ACHETEUR: (surname, password, quartier) => { 
+            return `INSERT INTO acheteurs (id_user, quartier)
                     VALUES(
                         (SELECT id_user FROM users WHERE surname = '${surname}' AND password = '${password}'),
-                        ${quartier},
-                        ${npa});`
+                        ${quartier});`
      },
 
-/*12*/ NEW_VENDEUR: (surname, password, nom, prénom, adresse, quartier, npa, bancaire, comptePay) => {
-           return `INSERT INTO vendeurs (id_user, comptepay, adresse)
+/*12*/ NEW_VENDEUR: (surname, password, nom, prenom, adresse, bancaire) => {
+           return `INSERT INTO vendeurs (id_user, nom, prenom, adresse, bancaire)
                    VALUES(
                        (SELECT id_user FROM users WHERE surname = '${surname}' AND password = '${password}'),
-                       '${comptePay}',
-                       '${adresse}'
-                   );'`
+                       '${nom}',
+                       '${prenom}',
+                       '${adresse}',
+                       '${bancaire}'
+                   );`
      },
 
 /*13*/ FIND_SIMPLE_USER:(surname)=>{

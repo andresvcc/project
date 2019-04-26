@@ -8,7 +8,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import TextForm from './textForm';
 import PassForm from './passForm';
 import ListOption from './option';
-import TextFormLine from './textFormLine';
 
 export default class FormNewAcheteur extends Component {
     constructor(props) {
@@ -19,12 +18,9 @@ export default class FormNewAcheteur extends Component {
             password2: '',
             email: '',
             quartier: 0,
-            npa: 0,
             erroSurnom: false,
             errorPassword: false,
-            errorPassword2: false,
             errorMail: false,
-            errorNPA: false,
             msgerrNom:'le champ Surnom est obligatoire'
         }
     }
@@ -51,7 +47,7 @@ export default class FormNewAcheteur extends Component {
     updateInputPassword2 = (evt) => {
         this.setState({
             password2: evt.target.value,
-            errorPassword2: false
+            errorPassword: false
         });
     }
 
@@ -59,13 +55,6 @@ export default class FormNewAcheteur extends Component {
         this.setState({
             email: evt.target.value,
             errorMail: false
-        });
-    }
-
-    updateInputNpa = (evt) => {
-        this.setState({
-            npa: evt.target.value,
-            errorNPA: false
         });
     }
 
@@ -92,23 +81,17 @@ export default class FormNewAcheteur extends Component {
         let quartier =
             this.state.quartier
 
-        let npa =
-        this.state.npa !== '' ?
-        this.state.npa : (this.setState({ errorNPA: true }), '')
-
         let data = {
             surname,
             email,
             password,
-            quartier,
-            npa
+            quartier
         }
 
         let oksurname = surname !== '' ? true : (toast.error('Le surnom est vide'), false)
         let okemail = email !== '' ? true : (toast.error('Le email est vide'), false)
         let okpassword = password !== '' ? true : (toast.error(`rentrez le meme mot de passe deux fois`), false)
-        let oknpa = npa !== '' ? true : (toast.error(`rentrez le code postal (NPA)`), false)
-        let ok = oksurname && okemail && okpassword && oknpa?
+        let ok = oksurname && okemail && okpassword ?
             (   
                 this.newAcheteurQuery(data),
                 true
@@ -142,8 +125,6 @@ export default class FormNewAcheteur extends Component {
     render() {
         return (
             <div>
-                {this.state.npa}
-                {this.state.surnom}
                 <div className="container">
                     <div className="row">
                         <div className="offset-md-1 col-md-10">
@@ -170,7 +151,7 @@ export default class FormNewAcheteur extends Component {
                                         into='Password'
                                         msgerror=''
                                         back={this.updateInputPassword2}
-                                        error={this.state.errorPassword2}>
+                                        error={this.state.errorPassword}>
                                     </PassForm>
                                     <TextForm
                                         label='Email'
@@ -187,15 +168,6 @@ export default class FormNewAcheteur extends Component {
                                                 default='sans quartier'
                                                 back={this.updateOptionQartier}>
                                             </ListOption>
-                                        </div>
-                                        <div className='form-check mb-2 mr-sm-2'>
-                                            <TextFormLine
-                                                label='NPA'
-                                                into='code postal'
-                                                msgerror ='NPA incorrecté'
-                                                back={this.updateInputNpa}
-                                                error={this.state.errorNPA}>
-                                            </TextFormLine>
                                         </div>
                                     </div>
                                 </div>

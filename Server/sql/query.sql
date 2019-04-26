@@ -52,7 +52,7 @@ SET surname = 'newuser',
 password = '123456',
 email = '12678';
 /*  2   */
-INSERT INTO acheteurs (id_user, quartier, npa)
+INSERT INTO acheteurs (id_user, quartier)
 values (
     (SELECT id_user FROM users WHERE surname = 'surnom' and password = 'password'), 
     1,
@@ -82,7 +82,7 @@ WHERE NOT EXISTS (
     SELECT surname FROM users WHERE surname = 'pikachu'
 ) LIMIT 1;
 /*  2   */
-INSERT INTO vendeurs (id_user, nom, prenom, adresse, npa, bancaire)
+INSERT INTO vendeurs (id_user, nom, prenom, adresse, bancaire)
 values (
     (SELECT id_user FROM users WHERE surname = 'pikachu' and password = 'password'), 
     'andres',
