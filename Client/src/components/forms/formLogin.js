@@ -62,15 +62,13 @@ class FormLogin extends Component {
     loginQuery = (data) =>{
         axios.post(`http://localhost:4000/userlogin`, data )
         .then(res => {
-            let ok = res.data.ok && res.data.typeUser? (
-                this.handleBtnActionLogin(res.data),
-                this.props.back(),
-                true
-            ):(
-                toast.error('surname ou mot de passe incorrecte'),
-                false
-            )
-            console.log('API response:', ok, res.data);
+            let ok = res.data.ok && res.data.typeUser? (   
+                    this.handleBtnActionLogin(res.data), 
+                    true
+                ):(
+                    this.setState({errorSurname:true, errorPassword:true}), false)
+            ok ?    this.props.back() : toast.error('surname ou mot de passe incorrecte')
+
         })
         .catch(err => { // then print response status
             toast.error('surname ou mot de passe incorrecte')
@@ -101,13 +99,14 @@ class FormLogin extends Component {
                         <TextForm
                             label='Surname'
                             into = "Entrez votre nom d'utilisateur"
+                            msgerror=' '
                             back={this.updateInputSurname}
                             error={this.state.errorSurname}>
                         </TextForm>
                         <PassForm
                             label='Password'
                             into='Entrez votre mot de passe'
-                            msgerror='Probleme avec le mot de passe'
+                            msgerror=' '
                             back={this.updateInputPassword}
                             error={this.state.errorPassword}>
                         </PassForm>

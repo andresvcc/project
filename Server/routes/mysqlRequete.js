@@ -8,10 +8,14 @@
 **********************************************************/
 
 module.exports = Object.freeze({   
+ 
+/*0*/ NEW_SESSION_SERVER:`INSERT INTO s_server () VALUES();`,    
     
-/*1*/ LIST_SESSIONS: `Select * FROM s_server`,  
+/*1*/ LIST_SESSIONS_SERVER: `Select * FROM s_server`,  
 
-/*2*/ CURRENT_SESSION: `SELECT MAX( id_session ) FROM s_server`, 
+/*2*/ CURRENT_SESSION_SERVER: `SELECT * 
+                               FROM s_server 
+                               WHERE id_session = (SELECT MAX( id_session )as id FROM s_server);`, 
 
 /*3*/ LIST_USERS: `SELECT * FROM users`,
 
@@ -32,11 +36,10 @@ module.exports = Object.freeze({
 /*9*/ LIST_PLATS: `SELECT * FROM plats`,
 
 /*10*/ NEW_USER: (surname, password, email) => { 
-            return `INSERT INTO users (surname, password, email)
-                    SELECT *
-                    FROM (SELECT '${surname}', '${password}', '${email}') AS tmp
-                    WHERE NOT EXISTS (SELECT surname FROM users WHERE surname = '${surname}')
-                    LIMIT 1;`
+            return `INSERT IGNORE INTO users
+                         SET surname = '${surname}',
+                         password = '${password}',
+                         email = '${email}';`
      },
 
 /*11*/ NEW_ACHETEUR: (surname, password, quartier, npa) => { 
@@ -44,20 +47,24 @@ module.exports = Object.freeze({
                     VALUES(
                         (SELECT id_user FROM users WHERE surname = '${surname}' AND password = '${password}'),
                         ${quartier},
-                        ${npa});'`
+                        ${npa});`
      },
 
 /*12*/ NEW_VENDEUR: (surname, password, nom, prénom, adresse, quartier, npa, bancaire, comptePay) => {
-            return `INSERT INTO vendeurs (id_user, comptepay, adresse)
-                    VALUES(
-                        (SELECT id_user FROM users WHERE surname = '${surname}' AND password = '${password}'),
-                        '${comptePay}',
-                        '${adresse}'
-                    );'`
+           return `INSERT INTO vendeurs (id_user, comptepay, adresse)
+                   VALUES(
+                       (SELECT id_user FROM users WHERE surname = '${surname}' AND password = '${password}'),
+                       '${comptePay}',
+                       '${adresse}'
+                   );'`
      },
 
-/*13*/ FIND_USER: (surname, password) => {
-        return `SELECT surname, 1 as typeuser
+/*13*/ FIND_SIMPLE_USER:(surname)=>{
+          return `SELECT surname FROM users WHERE surname = '${surname}'`
+     },
+
+/*13.2*/ FIND_USER: (surname, password) => {
+          return `SELECT surname, 1 as typeuser
                     FROM users, vendeurs 
                     WHERE users.surname = '${surname}'
                     AND users.id_user = vendeurs.id_user
@@ -74,10 +81,10 @@ module.exports = Object.freeze({
 
 /*15*/ USER_ACTION: (surname, action, value) => { 
      return    `INSERT INTO log (id_user, id_session, action, value)
-                SELECT  (SELECT id_user FROM users WHERE surname = '${surname}'),
-                    (SELECT MAX( id_session ) FROM s_server ),
-                    '${action}',
-                    '${value}'` 
+                SELECT (SELECT id_user FROM users WHERE surname = '${surname}'),
+                       (SELECT MAX( id_session ) FROM s_server ),
+                       '${action}',
+                       '${value}'` 
      },
 
 /*16*/ CHANGE_PASSWORD: (surname, password, newPassword) => { 

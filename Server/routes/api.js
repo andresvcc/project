@@ -88,9 +88,7 @@ const api = (app, sessionStore)=> {
         req.session.id = req.body.id
         res.json({body:req.body.id, session: req.session.sessionID, id:req.session.id})
     })
-
-
-    /*
+    
     app.post('/upload', function (req, res) {
         upload(req, res, function (err) {
             if (err instanceof multer.MulterError) {
@@ -106,9 +104,7 @@ const api = (app, sessionStore)=> {
             return res.status(200).send(req.files)
             // Everything went fine.
         })
-    });
-
-    */
+    });    
 }
 
 module.exports.api = api;

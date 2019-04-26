@@ -8,10 +8,6 @@ import AppBar from './components/appBar/appBar'
 
 
 class App extends Component{
-  state = {
-    values:'vide'
-  }
-
   render() {
     const {count, loginStatus, typeUser, surname, sessID}=this.props
     return(

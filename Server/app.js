@@ -44,6 +44,10 @@ app.use(session({
     saveUninitialized: false
 }));
 
+
+
+
+
 router.api(app, sessionStore) //envoie app vers routage de api
 bd.routerMysql(app, sessionStore ) //envoie app vers routage de mysql
 

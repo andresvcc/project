@@ -29,6 +29,22 @@ connection.connect((err)=>{
 -------------------------------------------------*/
 const routerMysql = (app, sessionStore)=>{
 
+    startSessionServer =()=>{
+        let sqlQueryNewSessionServer = constants.NEW_SESSION_SERVER
+        let sqlQueryCurrenSessionServer = constants.CURRENT_SESSION_SERVER
+        connection.query(sqlQueryNewSessionServer, (err, resultat) => {
+            err ? console.log('error, imposible creer nouvelle sessionServer'): 
+                (
+                    connection.query(sqlQueryCurrenSessionServer, (err, resultat) => {
+                        err ? console.log('probleme avec la session', err): 
+                            console.log(`start session ${resultat[0].id_session} date:`, resultat[0].time_date )
+                    })
+                )
+        })
+    }
+    
+    startSessionServer();
+
     userAction = (surname, action, value) =>{
         let sqlQuery = constants.USER_ACTION(surname, action, value)
         connection.query(sqlQuery, (err, resultat) => {
@@ -143,21 +159,68 @@ const routerMysql = (app, sessionStore)=>{
         })
     });
 
+    deleteUser = (surname) =>{
+        connection.query(`DELETE FROM users WHERE surname = '${surname}'`, (err, resultat) => {
+            if(err) throw err 
+        })
+    }
+
+    isDisponible = (req, callback) =>{
+        let sqlQuery = constants.FIND_SIMPLE_USER(req.body.surname)
+        connection.query(sqlQuery, (err, resultat) => {
+            err ? callback( false ) : callback( resultat[0] ? false : true )
+        })
+    }
+
+    newUser = (req, callback) =>{
+        let sqlQuery = constants.NEW_USER(req.body.surname, req.body.password, req.body.email)
+        isDisponible(req,(solve)=>{
+            solve ? (
+                connection.query(sqlQuery, (err, resultat) => {
+                    err ? (console.log(err),callback(2)) : callback(3)
+                })
+            ):callback(1)
+        })
+    }
+
+    newAcheteur = (req, res) =>{
+        newUser(req, (solve)=>{
+            switch (solve) {
+                case 1:                    
+                    res.json({ ok: false, msg:`Surnom: ${req.body.surname} ne pas disponible`})
+                    break;
+                case 2:
+                    res.json({ ok: false, msg:'error creando user'})
+                    break;
+                case 3:
+                    let sqlQuery = constants.NEW_ACHETEUR(req.body.surname, req.body.password, req.body.quartier, req.body.npa)
+                    connection.query(sqlQuery, (err, resultat) => {
+                        err ? (
+                            deleteUser(req.body.surname),
+                            console.log(err),
+                            res.json({ ok: false, tp:3, msg:err })
+                        ) : (
+                            userAction(req.body.surname, 'CREATE', 'ACHETEUR'),
+                            res.json({ ok: true, tp:3, msg:'succes'})
+                        )
+                    })
+                    break;
+                default:
+                    res.json({ ok: true, msg:'error inconue'})
+                    break;
+            }
+        })
+    }
+
+    app.post('/tester', (req, res) => {
+        newAcheteur(req, res)
+    })
+   
+
     /* fn 11 add un nouveau acheteur
         NEW_ACHETEUR(surname, password, quartier, npa) */
     app.post('/newAcheteur', (req, res) => {
-        let sqlQueryAcheteur = constants.NEW_ACHETEUR(req.body.surname, req.body.password, req.body.quartier, req.body.npa)
-        let sqlQueryUser = constants.NEW_USER(req.body.surname, req.body.password, req.body.email)
-
-        connection.query(sqlQueryUser, (err, resultat1) => {
-            err ? res.json({ ok: false, error: err }) : (
-                connection.query(sqlQueryAcheteur, (err, resultat2) => {
-                    err ? res.json({ ok: false, error: err }) : (
-                        err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: { n1: resultat1, n2: resultat2 } })
-                    )
-                }) 
-            )
-        })
+        newAcheteur(req, res)        
     })
 
     /* fn 12 add un nouveau vendeur

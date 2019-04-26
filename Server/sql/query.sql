@@ -12,7 +12,7 @@ DEMARRER NOUVELLEL SESION DANS LE SERVEUR
 chaque fois que le serveur se met en route, il est 
 nécessaire de créer une nouvelle session d'utilisation 
 sur le serveur*/
-use 9uhFiwM7jz;
+use a1;
 INSERT INTO s_server ()
 VALUES();
 
@@ -29,6 +29,11 @@ SELECT surname
 /*liste des users*/
 SELECT * FROM users;
 
+/*chercher un user (true si truvé)*/
+SELECT surname 
+FROM users
+WHERE surname = 'pikachug'
+
 /******************************************************
 NOUVEAU ACHETEUR
 est composé des trois requetés une premier pour l'ajoute 
@@ -41,6 +46,11 @@ SELECT * FROM (SELECT 'surnom', 'password', 'email') AS tmp
 WHERE NOT EXISTS (
     SELECT surname FROM users WHERE surname = 'surnom'
 ) LIMIT 1;
+
+INSERT IGNORE INTO users
+SET surname = 'newuser',
+password = '123456',
+email = '12678';
 /*  2   */
 INSERT INTO acheteurs (id_user, quartier, npa)
 values (
@@ -106,16 +116,16 @@ SELECT * FROM log;
 
 /*chercher un user et identifier son type (acheteur/vendeur)*/
 SELECT surname, 1 as typeuser
-                    FROM users, vendeurs 
-                    WHERE users.surname = 'pikachu'
-                    AND users.id_user = vendeurs.id_user
-                    AND users.password = 'password'
-               UNION
-               SELECT surname, 2 as typeuser
-                    FROM users, acheteurs 
-                    WHERE users.surname = 'pikachu'
-                    AND users.id_user = acheteurs.id_user
-                    AND users.password = 'password';
+    FROM users, vendeurs 
+    WHERE users.surname = 'andres'
+    AND users.id_user = vendeurs.id_user
+    AND users.password = '1234'
+UNION
+SELECT surname, 2 as typeuser
+    FROM users, acheteurs 
+    WHERE users.surname = 'andres'
+    AND users.id_user = acheteurs.id_user
+    AND users.password = '1234';
 
 /*liste des utilisateurs connectés la dernier sesion du serveur*/
 SELECT * 
@@ -234,3 +244,38 @@ FROM restaurants, categories, plats
 WHERE plats.id_restaurant = restaurants.id_restaurant
 AND plats.id_categorie = categories.id_categorie;
 
+/*effacer acheteur*/
+DELETE FROM acheteurs 
+WHERE acheteur.id_user = (SELECT id_user FROM users WHERE surname = 'yuka')
+
+DELETE FROM users 
+WHERE surname = 'yuka'
+
+
+SELECT * 
+FROM s_server 
+WHERE id_session = (SELECT MAX( id_session )as id FROM s_server);
+
+/*liste des users avec le typeUser(acheteur 2/vender 1)*/
+SELECT users.id_user, users.surname, users.email, 2 as typeUser 
+FROM users, acheteurs
+WHERE users.id_user = acheteurs.id_user
+UNION
+SELECT users.id_user, users.surname, users.email, 1 as typeUser 
+FROM users, vendeurs
+WHERE users.id_user = vendeurs.id_user;
+
+
+
+
+SELECT surname, 1 as typeuser
+    FROM users, vendeurs 
+    WHERE users.surname = 'andres'
+    AND users.id_user = vendeurs.id_user
+    AND users.password = '1234'
+UNION
+SELECT surname, 2 as typeuser
+    FROM users, acheteurs 
+    WHERE users.surname = 'andres'
+    AND users.id_user = acheteurs.id_user
+    AND users.password = '1234';
