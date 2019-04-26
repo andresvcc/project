@@ -34,7 +34,7 @@ class SignOnAcheteur extends Component{
     return (
       <div>
         <div style={{visibility:`${this.props.incrireVisibility}`}}>
-        <Button variant="outlined" color="primary" onClick={this.handleClickOpen} style={{minWidth:'200px'}}>
+        <Button variant="outlined" color={this.props.color} onClick={this.handleClickOpen} style={{minWidth:'200px'}}>
         {this.props.loginStatus ? '' : this.props.title }
         </Button>
         </div>

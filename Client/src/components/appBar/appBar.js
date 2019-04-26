@@ -30,9 +30,6 @@ function ButtonAppBar(props) {
           <Typography variant="h6" color="inherit" className={classes.grow}>
             EastSHOP
           </Typography>
-          <SignOnAcheteur
-                title = {`S'INSCRIRE`}
-          />
           <MenuSignOn/>
           <LoginScreenButton/>
         </Toolbar>
