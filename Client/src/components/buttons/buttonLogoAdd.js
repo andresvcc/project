@@ -1,3 +1,5 @@
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import Button from '@material-ui/core/Button';
@@ -5,11 +7,23 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-//import FormNewAcheteur from '../forms/formNewAcheteur'
-import FormNewVendeur from '../forms/formNewVendeur'
-import {login, logout} from '../../actions/index'
 
-class SignOnAcheteur extends Component{
+import {login, logout} from '../../actions/index'
+import FormNewRestaurant from '../forms/formNewRestaurant';
+
+
+
+const styles = theme => ({
+    margin: {
+      margin: theme.spacing.unit,
+    },
+    extendedIcon: {
+      marginRight: theme.spacing.unit,
+    },
+  });
+
+
+class ButtonAdd extends Component{
   state = {
     open: false,
   };
@@ -17,6 +31,7 @@ class SignOnAcheteur extends Component{
   handleBtnActionLogout = () => {
     this.props.onLogoutClick()
   }
+
 
   handleClickOpen = () => {
     this.setState({ open: true });
@@ -28,19 +43,19 @@ class SignOnAcheteur extends Component{
     
   };
 
-
-  /*ln 51, informations */
-
   render() {
     const { fullScreen } = this.props;
     return (
       <div>
-        <div style={{visibility:`${this.props.incrireVisibility}`}}>
-        <Button variant="outlined" onClick={this.handleClickOpen} style={{minWidth:'200px'}}>
-          {this.props.loginStatus ? '' : this.props.title }
-        </Button>
+        <div style={{visibility:`${this.props.incrireVisibility}`, textAlign:'center'}}>
+        <h6>Restaurant</h6>
+        <Fab size="medium" color="secondary" aria-label="Add" className={'margin'} onClick={this.handleClickOpen} >
+            <AddIcon />
+        </Fab>
+        
+
         </div>
-        <Dialog
+          <Dialog
             fullScreen={fullScreen}
             open={this.state.open}
             onClose={this.handleClose}
@@ -48,11 +63,11 @@ class SignOnAcheteur extends Component{
               <DialogTitle id="responsive-dialog-title">{"Inscrivez-vous"}</DialogTitle>
               <DialogContent style ={{minWidth:'600px'}}>
                 <DialogContentText>
-                 {}
+                  Information relative au registre d'un nouveau acheteur.
                 </DialogContentText>
               </DialogContent>
               <div style={{paddingBottom:'30px'}}>
-                <FormNewVendeur back = {this.handleClose}/>
+                <FormNewRestaurant back = {this.handleClose}/>
               </div>
           </Dialog>
       </div>
@@ -80,4 +95,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignOnAcheteur)
+export default connect(mapStateToProps, mapDispatchToProps) (ButtonAdd)

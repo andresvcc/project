@@ -30,7 +30,7 @@ export default class Noms extends Component {
             )
         })
         return (
-            <div className={'form-inline form-group '}>
+            <div className={'form-inline form-group '} style={{marginLeft:'4%', marginRight:'auto'}}>
                     {values}
             </div>
         )

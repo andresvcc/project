@@ -180,12 +180,12 @@ export default class FormNewAcheteur extends Component {
                     <div className="row">
                         <div className="offset-md-1 col-md-10">
                             <div >
-                                <legend>nouveau acheteur</legend>
+                                <legend>Nouveau vendeur</legend>
                                 <div>
                                     <TextForm
                                         type='text'
-                                        label='Surnom'
-                                        into='Rentrez le nom'
+                                        label= {`Nom d'utilisateur`}
+                                        into= 'User name'
                                         msgerror={this.state.msgerrNom}
                                         back={this.updateInputSurname}
                                         error={this.state.errSurnom}>
@@ -210,18 +210,18 @@ export default class FormNewAcheteur extends Component {
                                     <div className="form-row">
                                         <div className="col">
                                             <TextForm
-                                                label='Nom'
-                                                into='Nom'
-                                                back={this.updateInputNom}
-                                                error={this.state.errNom}>
+                                                label='Prénom'
+                                                into='Prénom'
+                                                back={this.updateInputPrenom}
+                                                error={this.state.errPrenom}>
                                             </TextForm>
                                         </div>
                                         <div className="col">
                                             <TextForm
-                                                label='Prenom'
+                                                label='Nom'
                                                 into='Nom'
-                                                back={this.updateInputPrenom}
-                                                error={this.state.errPrenom}>
+                                                back={this.updateInputNom}
+                                                error={this.state.errNom}>
                                             </TextForm>
                                         </div>
                                     </div>
@@ -246,8 +246,8 @@ export default class FormNewAcheteur extends Component {
                                     </div>
 
                                     <TextForm
-                                        label='Numnéro de compte bancaire'
-                                        into='Numnéro de compte bancaire'
+                                        label='IBAN'
+                                        into='IBAN'
                                         back={this.updateInputBancaire}
                                         error={this.state.errBancaire}>
                                     </TextForm>

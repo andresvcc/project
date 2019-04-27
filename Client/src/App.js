@@ -14,11 +14,16 @@ class App extends Component{
     const {count, loginStatus, typeUser, surname, sessID}=this.props
     return(
         <div>
-        <h6>Count: {count}, Login :{loginStatus.toString()}, TypeUser :{typeUser}, Surname :{surname}, sessID :{sessID}</h6>
         <AppBar/> 
+        
         <PageController/>
+        <div style={{ top:'50%', zIndex:'2'}}>
+        <h6>Count: {count}, Login :{loginStatus.toString()}, TypeUser :{typeUser}, Surname :{surname}, sessID :{sessID}</h6>
+        </div>
         <FooterBar/>
         <ToastContainer autoClose={2000} position={'top-center'}/>
+        
+
         </div>
     )
   }

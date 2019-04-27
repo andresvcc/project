@@ -190,7 +190,7 @@ export default class FormNewRestaurant extends Component {
         return (
             <div className="container">
                 <div className="row">
-                    <div className="offset-md-3 col-md-6">
+                    <div className="offset-sm-1 col-sm-10">
                         <div >
                             <legend>Ajouter un nouveau restaurant</legend>
                             <div>
@@ -205,32 +205,32 @@ export default class FormNewRestaurant extends Component {
                                     into={'Rentez une description'}
                                     back={this.updateInputDescription}>
                                 </TextArea>
-                                <div className='form-inline'>
-                                    <div className='form-check mb-2 mr-sm-2'>
-                                        <TextForm
-                                            label='Address'
-                                            into='Rentrez votre Address'
-                                            back={this.updateInputAddress}
-                                            error={this.state.errorAddress}>
-                                        </TextForm>
+                                <div className="form-row">
+                                        <div className="col">
+                                            <TextForm
+                                                label='Adresse'
+                                                into='Rentrez votre Adresse'
+                                                back={this.updateInputAddress}
+                                                error={this.state.errorAddress}>
+                                            </TextForm>
+                                        </div>
+                                        <div className="col">
+                                            <TextForm
+                                                label='Tel'
+                                                into='Numéro telephonique'
+                                                back={this.updateInputTelephone}
+                                                error={this.state.errorTelephone}>
+                                            </TextForm>
+                                        </div>
                                     </div>
-                                    <div className='form-check mb-2 mr-sm-2'>
-                                        <TextForm
-                                            label='Tel'
-                                            into='numéro telephonique'
-                                            back={this.updateInputTelephone}
-                                            error={this.state.errorTelephone}>
-                                        </TextForm>
-                                    </div>
-                                    <div className='form-check mb-2 mr-sm-2'>
-                                        <ListOption
-                                            label='Quartier'
-                                            categories=':4000/location'
-                                            into={this.state.quartier}
-                                            default='sans quartier'
-                                            back={this.updateOptionQartier}>
-                                        </ListOption>
-                                    </div>
+                                <div>
+                                    <ListOption
+                                        label='Quartier'
+                                        categories=':4000/location'
+                                        into={this.state.quartier}
+                                        default='sans quartier'
+                                        back={this.updateOptionQartier}>
+                                    </ListOption>
                                 </div> 
                             </div>
                             <div className="form-group">

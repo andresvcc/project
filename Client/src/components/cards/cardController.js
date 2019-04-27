@@ -21,9 +21,7 @@ export default class List extends Component {
     render() {
         return (
             <div>
-                <p>------</p>
                 <Noms values={this.state.values}></Noms>
-                <p>------</p>
             </div>
         )
     }

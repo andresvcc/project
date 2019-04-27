@@ -29,6 +29,7 @@ class SignOnAcheteur extends Component{
     
   };
 
+  /*ln DIalogContentText, informations*/
   render() {
     const { fullScreen } = this.props;
     return (
@@ -46,7 +47,7 @@ class SignOnAcheteur extends Component{
               <DialogTitle id="responsive-dialog-title">{"Inscrivez-vous"}</DialogTitle>
               <DialogContent style ={{minWidth:'600px'}}>
                 <DialogContentText>
-                  Information relative au registre d'un nouveau acheteur.
+                {}
                 </DialogContentText>
               </DialogContent>
               <div style={{paddingBottom:'30px'}}>

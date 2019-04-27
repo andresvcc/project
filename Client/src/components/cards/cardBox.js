@@ -43,18 +43,14 @@ function CardBox(props) {
           
           </Typography>
           <Typography component="p">
-          <div>
-          {props.description}
-          </div>          
+          {props.description}          
           </Typography>
           </div>
         </CardContent>
       </CardActionArea>
       <CardContent>
-        <Typography gutterBottom variant="p" component="h6" >
-          <div style={{marginBottom:'-30px'}}>
+        <Typography gutterBottom variant="subheading" component="h6"  style={{marginBottom:'-30px'}} >
           Tel: {props.tel}
-          </div>
         </Typography>
       </CardContent>
       <CardActions>

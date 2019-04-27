@@ -129,12 +129,12 @@ export default class FormNewAcheteur extends Component {
                     <div className="row">
                         <div className="offset-md-1 col-md-10">
                             <div >
-                                <legend>nouveau acheteur</legend>
+                                <legend>Nouvel acheteur</legend>
                                 <div>
                                     <TextForm
                                         type='text'
-                                        label='Surnom'
-                                        into='Rentrez le nom'
+                                        label={`Nom d'utilisateur`}
+                                        into='User name'
                                         msgerror={this.state.msgerrNom}
                                         back={this.updateInputSurname}
                                         error={this.state.erroSurnom}>
@@ -165,7 +165,7 @@ export default class FormNewAcheteur extends Component {
                                                 label='Quartier'
                                                 categories=':4000/location'
                                                 into={this.state.quartier}
-                                                default='sans quartier'
+                                                default='Banlieue'
                                                 back={this.updateOptionQartier}>
                                             </ListOption>
                                         </div>
