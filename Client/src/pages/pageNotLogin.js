@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 //import axios from 'axios'
 import { ToastContainer } from "react-toastify";
+import CardController from '../components/cards/cardController'
 
 //import { Button } from '@material-ui/core';
 
@@ -14,7 +15,7 @@ class PageNotLogin extends Component{
             <h1>page NotLogin</h1>
               
         <ToastContainer autoClose={2000} position={'top-center'}/>
-
+        <CardController></CardController>
         </div>
     )
   }

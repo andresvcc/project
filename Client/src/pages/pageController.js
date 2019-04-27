@@ -27,7 +27,7 @@ class PageController extends Component{
   render() {
    // const {count, loginStatus, typeUser, surname, sessID}=this.props
     return(
-        <div>
+        <div style={{marginBottom:'100px', marginLeft:'50px'}}>
             <h6>page Controller: </h6>
             {this.controllerPage()}  
               

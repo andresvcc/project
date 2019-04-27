@@ -6,6 +6,7 @@ import { ToastContainer } from "react-toastify";
 import AppBar from './components/appBar/appBar'
 import PageController from './pages/pageController';
 import FooterBar from './components/footer/footerBar'
+import CardController from './components/cards/cardController'
 //import { Button } from '@material-ui/core';
 
 

@@ -2,8 +2,8 @@ import React from "react";
 
 var style = {
     backgroundColor: "#FFFBF9",
-    borderTop: "1px solid #FFDECD",
-    padding: "5px",
+    borderTop: "2px solid #FFDECD",
+    padding: "50px",
     position: "fixed",
     left: "0",
     bottom: "0",
@@ -13,8 +13,8 @@ var style = {
 
 var phantom = {
   display: 'block',
-  padding: '10px',
-  height: '15px',
+  padding: '20px',
+  height: '60px',
   width: '100%',
 }
 

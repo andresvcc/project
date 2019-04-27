@@ -88,7 +88,6 @@ values (
     'andres',
     'caballero',
     'avenue du lignon',
-    1219,
     '123456'  
 );
 /*  3   */
