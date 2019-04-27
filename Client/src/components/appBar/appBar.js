@@ -20,11 +20,22 @@ const styles = {
   },
 };
 
+var style = {
+  backgroundColor: "#F48964",
+  borderTop: "2px solid #FFDECD",
+  padding: "10px",
+  position: "fixed",
+  left: "0",
+  top: "0",
+  height: "60px",
+  width: "100%",
+}
+
 function ButtonAppBar(props) {
   const { classes } = props;
   return (
     <div className={classes.root}>
-      <AppBar position="static" style={{backgroundColor:'#F48964'}}>
+      <AppBar position="static" style={style}>
         <Toolbar>
           <Typography variant="h6" color="inherit" className={classes.grow}>
             EastSHOP

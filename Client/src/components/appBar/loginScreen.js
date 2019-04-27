@@ -54,7 +54,7 @@ logoutQuery = () =>{
             onClose={this.handleClose}
             aria-labelledby="responsive-dialog-title">
               <DialogTitle id="responsive-dialog-title">{"Login"}</DialogTitle>
-              <DialogContent style ={{minWidth:'600px'}}>
+              <DialogContent style ={{minWidth:'400px'}}>
                 <DialogContentText>
                   Information relative au login.
                 </DialogContentText>

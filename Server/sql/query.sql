@@ -170,11 +170,11 @@ values (
         AND users.password = 'password'
         AND vendeurs.id_user = users.id_user
     ), 
-    'burger KING',
+    'tenedor',
     'description',
     13139070,
     0,
-    'sdlfkn.img'    
+    'https://www.theforkmanager.com/wp-content/uploads/2017/04/plano-sala-eltenedor.jpg'    
 );
 
 /*******************************************************

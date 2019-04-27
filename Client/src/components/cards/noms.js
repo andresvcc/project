@@ -13,21 +13,16 @@ export default class Noms extends Component {
             }
         
             return (
-                <div key={i}>
-                    <p >
-                        id:{value.id_restaurant}-
-                        nom:{value.nom}-
-                        description:{value.description}-
-                        tel:{value.telephone}-
-                        quartier:{value.quartier}-
-                        photoName:{value.photoName}
-                    </p>
+                <div className ='' key={i} style={{width:'380px'}}>
                     <CardBox
                         title={value.nom}
                         description={value.description}
+                        tel={value.telephone}
+                        quartier={value.quartier}
                         photoName={value.photoName}
                         voirClick ={onVoirClick}
                         eliminerCLick={onEliminerClick}
+
                     />
                 </div>
 
@@ -35,7 +30,7 @@ export default class Noms extends Component {
             )
         })
         return (
-            <div >
+            <div className={'form-inline form-group '}>
                     {values}
             </div>
         )

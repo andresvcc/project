@@ -27,13 +27,13 @@ class PageController extends Component{
   render() {
    // const {count, loginStatus, typeUser, surname, sessID}=this.props
     return(
-        <div style={{marginBottom:'100px', marginLeft:'50px'}}>
+        <div style={{marginBottom:'0px', marginLeft:'20px'}}>
             <h6>page Controller: </h6>
             {this.controllerPage()}  
               
               
         <ToastContainer autoClose={2000} position={'top-center'}/>
-
+        <p>--fin pageController--</p>
         </div>
     )
   }

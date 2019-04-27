@@ -12,6 +12,8 @@ import Typography from '@material-ui/core/Typography';
 const styles = {
   card: {
     maxWidth: 345,
+    minWidth:345,
+    
   },
   media: {
     // ⚠️ object-fit is not supported by IE 11.
@@ -23,25 +25,38 @@ function CardBox(props) {
   const { classes } = props;
 
   return (
-    <Card className={classes.card}>
+    <Card className={classes.card} style={{margin:'20px'}}>
       <CardActionArea>
         <CardMedia
           component="img"
-          alt="Contemplative Reptile"
+          alt={props.photoName}
           className={classes.media}
-          height="140"
-          image="/static/images/cards/contemplative-reptile.jpg"
-          title="Contemplative Reptile"
+          height="150px"
+          image={props.photoName}
+          title={props.photoName}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-           {props.title}
+        <div style={{position:'relative', top:'80%'}}>
+          <Typography gutterBottom variant="h5" component="h6">
+          
+            {props.title}
+          
           </Typography>
           <Typography component="p">
-            {props.description}
+          <div>
+          {props.description}
+          </div>          
           </Typography>
+          </div>
         </CardContent>
       </CardActionArea>
+      <CardContent>
+        <Typography gutterBottom variant="p" component="h6" >
+          <div style={{marginBottom:'-30px'}}>
+          Tel: {props.tel}
+          </div>
+        </Typography>
+      </CardContent>
       <CardActions>
         <Button size="small" color="primary" onClick={props.voirClick}>
           Voir

@@ -13,9 +13,9 @@ class PageNotLogin extends Component{
     return(
         <div>
             <h1>page NotLogin</h1>
-              
+            <CardController></CardController>
         <ToastContainer autoClose={2000} position={'top-center'}/>
-        <CardController></CardController>
+        
         </div>
     )
   }
