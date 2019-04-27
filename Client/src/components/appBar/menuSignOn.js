@@ -46,13 +46,14 @@ class SignOn extends Component{
               <DialogTitle id="responsive-dialog-title">{"Inscrivez-vous"}</DialogTitle>
               <DialogContent >
                 <DialogContentText>
-                  Information relative au registre d'un nouveau utilisateur.
+                choisissez l'une des options suivantes.
                 </DialogContentText>
               </DialogContent>
               <div style={{paddingBottom:'30px'}}>
               <SignOnAcheteur 
                 back = {this.handleClose}
                 title = 'Je suis un Acheteur'
+                color = 'primary'
               />
               <SingOnVendeur 
                 back = {this.handleClose}

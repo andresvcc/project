@@ -5,7 +5,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import LoginScreenButton from './loginScreen'
-import SignOnAcheteur from './signOnAcheteur'
 import MenuSignOn from './menuSignOn'
 
 const styles = {
@@ -25,14 +24,11 @@ function ButtonAppBar(props) {
   const { classes } = props;
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" style={{backgroundColor:'#F48964'}}>
         <Toolbar>
           <Typography variant="h6" color="inherit" className={classes.grow}>
             EastSHOP
           </Typography>
-          <SignOnAcheteur
-                title = {`S'INSCRIRE`}
-          />
           <MenuSignOn/>
           <LoginScreenButton/>
         </Toolbar>
