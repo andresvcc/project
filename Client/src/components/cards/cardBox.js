@@ -32,7 +32,7 @@ function CardBox(props) {
           alt={props.photoName}
           className={classes.media}
           height="150px"
-          image={props.photoName}
+          image= {`http://localhost:4000/photo/${props.photoName}`}
           title={props.photoName}
         />
         <CardContent>

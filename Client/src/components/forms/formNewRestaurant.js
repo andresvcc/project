@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux'
 import axios from 'axios';
 import { Progress } from 'reactstrap';
 import { toast } from 'react-toastify';
@@ -9,7 +10,7 @@ import TextForm from './textForm';
 import ListOption from './option';
 import TextArea from './textarea';
 
-export default class FormNewRestaurant extends Component {
+class FormNewRestaurant extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -83,19 +84,20 @@ export default class FormNewRestaurant extends Component {
 
     terminerSumit = () => {
         /* ici on va mettre la requette pour ajouter un nouveau produit */
-        let surname = this.props.surname
+        let id = this.props.sessID
         
         let nom =
             this.state.name !== '' ?
                 this.state.name : null
 
         let photoName =
-            this.state.filename
+            this.state.filename !== '' ?
+                this.state.filename : 'null.jpg'
 
         let description =
             this.state.description
         
-        let adress =
+        let adresse =
             this.state.address
 
         let quartier =
@@ -103,13 +105,13 @@ export default class FormNewRestaurant extends Component {
 
         let telephone =
             this.state.telephone
-
+            
         let data = {
-            surname,
+            id,
             nom,
             description,
             photoName,
-            adress,
+            adresse,
             quartier,
             telephone
         }
@@ -124,8 +126,7 @@ export default class FormNewRestaurant extends Component {
                 draggable: true
             }),
             this.setState({ errorNom: false }),
-            console.log(data),
-            this.props.back(),
+            this.newAcheteurQuery(data),
             true
         ):(
             toast.error('Rentre le nom',{
@@ -176,6 +177,28 @@ export default class FormNewRestaurant extends Component {
         });
     }
 
+    newAcheteurQuery = (data) =>{
+        console.log('evoie', data)
+        axios.post(`http://localhost:4000/newRestaurant`, data )
+        .then(res => {
+            console.log(res.data)
+            let ok = res.data.ok ? (
+                console.log('Restaurant ajouté avec success'), 
+                this.props.action(),
+                true 
+            ):(
+                this.setState({msgerrNom:res.data.msg}),
+                toast.error(res.data.msg), 
+                false
+            )
+            ok ?   this.props.back() : console.log('restaurant ne pas ajouté')
+        })
+        .catch(err => { // then print response status
+            toast.error('information incorrecte')
+            console.log(err)
+        })
+    }
+
     /*
     
         <div style={{ position: 'absolute' }}>
@@ -190,6 +213,7 @@ export default class FormNewRestaurant extends Component {
     */
 
     render() {
+
         return (
             <div className="container">
                 <div className="row">
@@ -262,4 +286,18 @@ export default class FormNewRestaurant extends Component {
         );
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+      sessID: state.counter.sessID
+    }
+  }
+  
+  const mapDispatchToProps = (dispatch) => {
+    return {
+
+    }
+  }
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(FormNewRestaurant)
 

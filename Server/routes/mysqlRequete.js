@@ -165,7 +165,22 @@ module.exports = Object.freeze({
      },
 
 /*35*/ NEW_RESTAURANT: (surname, password, nom, description, photoName, adresse, quartier, telephone) => { 
-            return `query` 
+            return `INSERT INTO restaurants (id_user, nom, description, adresse, telephone, quartier, photoName)
+                    VALUES (
+                         (
+                              SELECT vendeurs.id_user 
+                              FROM vendeurs, users 
+                              WHERE users.surname = '${surname}' 
+                              AND users.password = '${password}'
+                              AND vendeurs.id_user = users.id_user
+                         ), 
+                         '${nom}',
+                         '${description}',
+                         '${adresse}',
+                         '${telephone}',
+                         ${quartier},
+                         '${photoName}'    
+                    );` 
      },
         
 /*36*/ NEW_CATEGORIE: (surname, password, nom, description) => { 

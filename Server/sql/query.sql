@@ -170,11 +170,11 @@ values (
         AND users.password = 'password'
         AND vendeurs.id_user = users.id_user
     ), 
-    'tenedor',
+    'el chorizo',
     'description',
     13139070,
     0,
-    'https://www.theforkmanager.com/wp-content/uploads/2017/04/plano-sala-eltenedor.jpg'    
+    'http://localhost:4000/Photo/1556438776950-1334.jpeg'    
 );
 
 /*******************************************************

@@ -301,7 +301,7 @@ const routerMysql = (app, sessionStore)=>{
     app.post('/userAction', (req, res) => {
         userSession(req, res, (session)=>{
             userAction(session.surname, req.body.action, req.body.value)
-            res.json({ok:'ok'})
+            res.json({ok:'ok', surname:session.surname})
         })
     })
 
@@ -487,11 +487,14 @@ const routerMysql = (app, sessionStore)=>{
     /* fn 35 créer une restaurant
         NEW_RESTAURANT(surname, password, nom, description, photoName, adresse, quartier, telephone) */
     app.post('/newRestaurant', (req, res) => {
-        let sqlQuery = constants.NEW_RESTAURANT(req.body.surname, req.body.password, req.body.nom, 
-                                                req.body.description, req.body.photoName, req.body.adresse, 
-                                                req.body.quartier, req.body.telephone)
-        connection.query(sqlQuery, (err, resultat) => {
-            err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
+        userSession(req, res, (session)=>{
+            let sqlQuery = constants.NEW_RESTAURANT(session.surname, session.password, req.body.nom, 
+                                                    req.body.description, req.body.photoName, req.body.adresse, 
+                                                    req.body.quartier, req.body.telephone)          
+            
+            connection.query(sqlQuery, (err, resultat) => {
+                err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
+            })
         })
     })
 

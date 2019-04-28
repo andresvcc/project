@@ -47,7 +47,7 @@ class ButtonAdd extends Component{
               <DialogContent style ={{minWidth:'600px'}}>
               </DialogContent>
               <div style={{paddingBottom:'30px'}}>
-                <FormNewRestaurant back = {this.handleClose} surname={surname}/>
+                <FormNewRestaurant back = {this.handleClose} surname={surname} action={this.props.action}/>
               </div>
           </Dialog>
       </div>
