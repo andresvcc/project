@@ -52,7 +52,6 @@ DROP TABLE IF EXISTS acheteurs;
 CREATE TABLE acheteurs (
    id_user INT(255) NOT NULL,
    quartier INT(255) default 0,
-   npa INT(255),
    CONSTRAINT pk_acheteur PRIMARY KEY(id_user),
    CONSTRAINT est_acheteur FOREIGN KEY(id_user)
       REFERENCES users(id_user) ON UPDATE CASCADE ON DELETE CASCADE
@@ -77,7 +76,6 @@ CREATE TABLE vendeurs (
    nom VARCHAR(255) NOT NULL,
    prenom VARCHAR(255) NOT NULL,
    adresse VARCHAR(255),
-   npa INT(255),
    bancaire VARCHAR(255),
    CONSTRAINT pk_vendeurs PRIMARY KEY(id_user),
    CONSTRAINT est_vendeur FOREIGN KEY(id_user)
@@ -91,7 +89,8 @@ CREATE TABLE restaurants (
    id_user INT(255) NOT NULL,
    nom VARCHAR(255) NOT NULL,
    description VARCHAR(255),
-   telephone INT(255),
+   adresse VARCHAR(255),
+   telephone VARCHAR(255),
    quartier INT(255),
    photoName VARCHAR(255),
    CONSTRAINT pk_restaurants PRIMARY KEY(id_restaurant),

@@ -34,7 +34,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors())
-app.use('/img', express.static('public/images'));  
+app.use('/Photo', express.static('public/images'));  
 app.set('trust proxy', 1) // trust first proxy
 app.use(session({
     key: 'session_cookie_name',

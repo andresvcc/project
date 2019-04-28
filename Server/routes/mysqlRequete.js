@@ -42,21 +42,22 @@ module.exports = Object.freeze({
                          email = '${email}';`
      },
 
-/*11*/ NEW_ACHETEUR: (surname, password, quartier, npa) => { 
-            return `INSERT INTO acheteurs (id_user, quartier, npa)
+/*11*/ NEW_ACHETEUR: (surname, password, quartier) => { 
+            return `INSERT INTO acheteurs (id_user, quartier)
                     VALUES(
                         (SELECT id_user FROM users WHERE surname = '${surname}' AND password = '${password}'),
-                        ${quartier},
-                        ${npa});`
+                        ${quartier});`
      },
 
-/*12*/ NEW_VENDEUR: (surname, password, nom, prénom, adresse, quartier, npa, bancaire, comptePay) => {
-           return `INSERT INTO vendeurs (id_user, comptepay, adresse)
+/*12*/ NEW_VENDEUR: (surname, password, nom, prenom, adresse, bancaire) => {
+           return `INSERT INTO vendeurs (id_user, nom, prenom, adresse, bancaire)
                    VALUES(
                        (SELECT id_user FROM users WHERE surname = '${surname}' AND password = '${password}'),
-                       '${comptePay}',
-                       '${adresse}'
-                   );'`
+                       '${nom}',
+                       '${prenom}',
+                       '${adresse}',
+                       '${bancaire}'
+                   );`
      },
 
 /*13*/ FIND_SIMPLE_USER:(surname)=>{
@@ -164,7 +165,22 @@ module.exports = Object.freeze({
      },
 
 /*35*/ NEW_RESTAURANT: (surname, password, nom, description, photoName, adresse, quartier, telephone) => { 
-            return `query` 
+            return `INSERT INTO restaurants (id_user, nom, description, adresse, telephone, quartier, photoName)
+                    VALUES (
+                         (
+                              SELECT vendeurs.id_user 
+                              FROM vendeurs, users 
+                              WHERE users.surname = '${surname}' 
+                              AND users.password = '${password}'
+                              AND vendeurs.id_user = users.id_user
+                         ), 
+                         '${nom}',
+                         '${description}',
+                         '${adresse}',
+                         '${telephone}',
+                         ${quartier},
+                         '${photoName}'    
+                    );` 
      },
         
 /*36*/ NEW_CATEGORIE: (surname, password, nom, description) => { 
@@ -184,8 +200,13 @@ module.exports = Object.freeze({
             return `query` 
      },
 
-/*40*/ DEL_RESTAURANT: (restaurant, surname, password, nom, description, photoName, adresse, quartier, telephone) => { 
-            return `query` 
+/*40*/ DEL_RESTAURANT: (surname, password, nom) => { 
+            return `DELETE FROM restaurants 
+            WHERE restaurants.nom = '${nom}'
+            AND restaurants.id_user =  (SELECT users.id_user 
+                                        FROM users 
+                                        WHERE users.surname = '${surname}'
+                                        AND users.password = '${password}')` 
      },
 
 /*41*/ DEL_PRODUIT: (produit, surname, password, nom, description, photoName, categorie, restaurant, bio, prixBase) => { 
@@ -197,7 +218,11 @@ module.exports = Object.freeze({
      },
 
 /*43*/ LIST_RESTAURANT_VENDEUR: (surname, password) => { 
-            return `query` 
+            return `SELECT restaurants.nom, restaurants.description, restaurants.adresse, restaurants.telephone, restaurants.quartier, restaurants.photoName 
+                    FROM restaurants, vendeurs, users
+                    WHERE restaurants.id_user = vendeurs.id_user
+                    AND vendeurs.id_user = users.id_user
+                    AND users.surname = '${surname}' AND users.password = '${password}'` 
      },
 
 /*44*/ EVALUATION_VENDEUR: (surname, password) => { 

@@ -1,17 +1,16 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import axios from 'axios';
-import { toast } from 'react-toastify';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import FormLogin from '../forms/formLogin'
+import SignOnAcheteur from './signOnAcheteur'
+import SingOnVendeur from './signOnVendeur'
 
 import {login, logout} from '../../actions/index'
 
-class LoginScreenButton extends Component{
+class SignOn extends Component{
   state = {
     open: false,
   };
@@ -20,21 +19,9 @@ class LoginScreenButton extends Component{
     this.props.onLogoutClick()
   }
 
-logoutQuery = () =>{
-  axios.post(`http://localhost:4000/userLogout`,{id:this.props.sessID})
-  .then(res => {
-    let ok = res.data.ok ? (this.handleBtnActionLogout(),true) : (console.log('probleme'),false)
-    console.log('logout API response:', res.data, ok);
-  })
-  .catch(err => { // then print response status
-    toast.error('un probleme est survenue')
-    console.log(err)
-  })
-}
-
 
   handleClickOpen = () => {
-    this.props.loginStatus ? this.logoutQuery(): this.setState({ open: true });
+    this.setState({ open: true });
   };
 
   handleClose = () => {
@@ -45,22 +32,33 @@ logoutQuery = () =>{
     const { fullScreen } = this.props;
     return (
       <div>
+        <div style={{visibility:`${this.props.incrireVisibility}`}}>
         <Button color="inherit" onClick={this.handleClickOpen}>
-          {this.props.loginStatus ? 'LOGOUT' : 'LOGIN' }
+          {this.props.loginStatus ? '' : "S'inscrire" }
         </Button>
+        </div>
           <Dialog
             fullScreen={fullScreen}
             open={this.state.open}
             onClose={this.handleClose}
-            aria-labelledby="responsive-dialog-title">
-              <DialogTitle id="responsive-dialog-title">{"Login"}</DialogTitle>
-              <DialogContent style ={{minWidth:'400px'}}>
+            aria-labelledby="responsive-dialog-title"
+            style ={{minWidth:'600px', textAlign:'center'}}>
+              <DialogTitle id="responsive-dialog-title">{"Inscrivez-vous"}</DialogTitle>
+              <DialogContent >
                 <DialogContentText>
-                  Information relative au login.
+                choisissez l'une des options suivantes.
                 </DialogContentText>
               </DialogContent>
               <div style={{paddingBottom:'30px'}}>
-                <FormLogin back = {this.handleClose}/>
+              <SignOnAcheteur 
+                back = {this.handleClose}
+                title = 'Je suis un Acheteur'
+                color = 'primary'
+              />
+              <SingOnVendeur 
+                back = {this.handleClose}
+                title = 'Je suis un Vendeur'
+              />
               </div>
           </Dialog>
       </div>
@@ -73,8 +71,7 @@ const mapStateToProps = (state) => {
     count: state.counter.count,
     loginStatus: state.counter.loginStatus,
     typeUser: state.counter.typeUser,
-    surname: state.counter.surname,
-    sessID: state.counter.sessID
+    incrireVisibility:state.counter.incrireVisibility
   }
 }
 
@@ -89,4 +86,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginScreenButton)
+export default connect(mapStateToProps, mapDispatchToProps)(SignOn)

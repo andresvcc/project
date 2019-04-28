@@ -19,8 +19,8 @@ const api = (app, sessionStore)=> {
             cb(null, 'public/images')
         },
         filename: function (req, file, cb) {
-            let random = Math.round(Math.random() * (2000 - 1000) + 1000) 
-            const name = Date.now() + '-' + random + file.mimetype.replace('image/', '.') // nom du fichie
+            let random = Math.round(Math.random() * (9000 - 1000) + 1000) 
+            const name = `${Date.now()}-${random + file.mimetype.replace('image/', '.')}` // nom du fichie
             const photoName = cb(null, name)
             return photoName
         }
@@ -43,11 +43,11 @@ const api = (app, sessionStore)=> {
     })
 
     app.get('/location', function (req, res) {
-        res.json([{ id: 1, name: "Carouge" }, { id: 2, name: "Lignon" },{ id: 3, name: "Lausanne" }])
+        res.json([{ id: 1, name: "Carouge" }, { id: 2, name: "Lignon" },{ id: 3, name: "moillesulaz" },{ id: 4, name: "jonction" }])
     })
 
     app.get('/Villes', function (req, res) {
-        res.json([{ id: 1, name: "Geneve" }, { id: 2, name: "Nyon" }, { id: 3, name: "Lausanne" }, { id: 3, name: "Lausanne2" }])
+        res.json([{ id: 1, name: "Geneve" }, { id: 2, name: "Nyon" }, { id: 3, name: "Aire" }, { id: 4, name: "Lausanne" }])
     })
     //***************************************************/
 
@@ -71,7 +71,6 @@ const api = (app, sessionStore)=> {
     })
     
     app.post('/storeGet', (req, res) => {
-        
         let sid = req.body.id
         sessionStore.get(sid, (err, session)=>{
             err ? console.log(err) : res.json({session:session})

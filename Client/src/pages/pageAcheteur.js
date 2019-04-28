@@ -3,26 +3,17 @@ import {connect} from 'react-redux'
 //import axios from 'axios'
 import { ToastContainer } from "react-toastify";
 
-import AppBar from './components/appBar/appBar'
-import PageController from './pages/pageController';
-import FooterBar from './components/footer/footerBar'
 //import { Button } from '@material-ui/core';
 
 
-
-class App extends Component{
-
+class PageAcheteur extends Component{
   render() {
-    //const {count, loginStatus, typeUser, surname, sessID}=this.props
+   // const {count, loginStatus, typeUser, surname, sessID}=this.props
     return(
-        <div>
-
-        <AppBar/> 
-        
-        <PageController/>
-        <FooterBar/>
+        <div >
+            <h1>page Acheteur</h1>
+              
         <ToastContainer autoClose={2000} position={'top-center'}/>
-        
 
         </div>
     )
@@ -46,4 +37,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(PageAcheteur)

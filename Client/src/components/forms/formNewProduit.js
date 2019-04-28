@@ -175,7 +175,7 @@ export default class FormNewProduit extends Component {
                 <div className="row">
                     <div className="offset-md-1 col-md-10">
                         <div >
-                            <legend>Restaurant: {this.props.restaurant}</legend>
+                            <legend>Produit: {this.props.restaurant}</legend>
                             <div>
                                 <TextForm
                                     label='Nom'
