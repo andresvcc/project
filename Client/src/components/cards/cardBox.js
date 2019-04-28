@@ -21,26 +21,27 @@ const styles = {
   },
 };
 
+
+
 function CardBox(props) {
+
   const { classes } = props;
 
   return (
-    <Card className={classes.card} style={{margin:'20px'}}>
+    <Card className={classes.card} style={{margin:'20px', minHeight:'350px', maxHeight:'350px'}}>
       <CardActionArea>
         <CardMedia
           component="img"
           alt={props.photoName}
           className={classes.media}
-          height="150px"
+          height="200px"
           image= {`http://localhost:4000/photo/${props.photoName}`}
           title={props.photoName}
         />
         <CardContent>
         <div style={{position:'relative', top:'80%'}}>
           <Typography gutterBottom variant="h5" component="h6">
-          
-            {props.title}
-          
+           {props.title}
           </Typography>
           <Typography component="p">
           {props.description}          
@@ -49,15 +50,15 @@ function CardBox(props) {
         </CardContent>
       </CardActionArea>
       <CardContent>
-        <Typography gutterBottom variant="subheading" component="h6"  style={{marginBottom:'-30px'}} >
-          Tel: {props.tel}
+        <Typography gutterBottom variant="subheading" component="h6"  style={{position:'relative', bottom:'15px'}} >
+         tel:{props.tel} / adresse:{props.adresse}
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" color="primary" onClick={props.voirClick}>
+        <Button size="small" color="primary" onClick={props.voirClick} style={{position:'relative', bottom:'45px'}}>
           Voir
         </Button>
-        <Button color='secondary' size="small" onClick={props.eliminerCLick}>
+        <Button color='secondary' size="small" onClick={props.eliminerCLick} style={{position:'relative', bottom:'45px'}}>
           Eliminer
         </Button>
       </CardActions>

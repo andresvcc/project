@@ -189,6 +189,15 @@ FROM vendeurs,users,restaurants
 WHERE users.id_user = vendeurs.id_user 
 AND vendeurs.id_user = restaurants.id_user;
 
+/*******************************************************
+liste des restaurant d'un vendeur
+*/
+SELECT * 
+FROM restaurants, vendeurs, users
+WHERE restaurants.id_user = vendeurs.id_user
+AND vendeurs.id_user = users.id_user
+AND users.surname = 'jeisy'
+
 
 /*******************************************************
 nouvelle categorie

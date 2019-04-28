@@ -2,8 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import axios from 'axios'
 import { ToastContainer } from "react-toastify";
-import CardController from '../components/cards/cardController'
-import ButtonAdd from '../components/buttons/buttonLogoAdd'
+
 
 //import { Button } from '@material-ui/core';
 

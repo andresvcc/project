@@ -9,6 +9,8 @@
 
 const mysql = require('mysql');
 var constants = require('./mysqlRequete');
+var fs = require('fs');
+var gutil = require('gulp-util');
 
 /*------------------------------------------------
  |           MySQL CONFIG CONNECTION             |
@@ -50,7 +52,7 @@ const routerMysql = (app, sessionStore)=>{
     userAction = (surname, action, value) =>{
         let sqlQuery = constants.USER_ACTION(surname, action, value)
         connection.query(sqlQuery, (err, resultat) => {
-            err ? console.log(err) : console.log(surname, action, value)
+            err ? console.log(gutil.colors.red(err)) : console.log(gutil.colors.cyan(surname, action, value))
         }) 
     }
 
@@ -143,6 +145,22 @@ const routerMysql = (app, sessionStore)=>{
                     break;
             }
         })
+    }
+
+    console.log(gutil.colors.green('File exists. Deleting now ...'));
+
+    deleteFile=(nom)=>{   
+        fs.unlink(`./public/images/${nom}`, function(err) {
+            if(err && err.code == 'ENOENT') {
+                // file doens't exist
+                console.log(gutil.colors.red("File doesn't exist, won't remove it."));
+            } else if (err) {
+                // other errors, e.g. maybe we don't have enough permission
+                console.log(gutil.colors.red("Error occurred while trying to remove file"));
+            } else {
+                console.log(gutil.colors.green(`file ${nom}removed`));
+            }
+        });
     }
 
     /*---------------------
@@ -426,10 +444,6 @@ const routerMysql = (app, sessionStore)=>{
         })
     })
 
-    /*---------------------
-    |       VENDEUR       |
-    ---------------------*/
-
     /* fn 29 ajouter un produits au panier
         ADD_PRODUIT_PANIER(surname, password, produit, quantite) */
     app.post('/addProduitPanier', (req, res) => {
@@ -484,6 +498,10 @@ const routerMysql = (app, sessionStore)=>{
         })
     })
 
+    /*---------------------
+    |       VENDEUR       |
+    ---------------------*/
+
     /* fn 35 créer une restaurant
         NEW_RESTAURANT(surname, password, nom, description, photoName, adresse, quartier, telephone) */
     app.post('/newRestaurant', (req, res) => {
@@ -493,7 +511,10 @@ const routerMysql = (app, sessionStore)=>{
                                                     req.body.quartier, req.body.telephone)          
             
             connection.query(sqlQuery, (err, resultat) => {
-                err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
+                err ? res.json({ ok: false, error: err }) : (
+                    userAction(session.surname,'CREER_RESTAURANT',req.body.nom),
+                    res.json({ ok: true, response: resultat })
+                    )
             })
         })
     })
@@ -540,12 +561,17 @@ const routerMysql = (app, sessionStore)=>{
     /* fn 40 éliminer un restaurant
         DEL_RESTAURANT(restaurant, surname, password, nom, description, photoName, adresse, quartier, telephone) */
     app.post('/delRestaurant', (req, res) => {
-        let sqlQuery = constants.DEL_RESTAURANT(req.body.restaurant, req.body.surname, req.body.password, req.body.nom, req.body.description, 
-                                                req.body.photoName, req.body.adresse, req.body.quartier, req.body.telephone)
-        connection.query(sqlQuery, (err, resultat) => {
-            err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
+        userSession(req, res, (session)=>{
+            let sqlQuery = constants.DEL_RESTAURANT(session.surname, session.password, req.body.nom)          
+            connection.query(sqlQuery, (err, resultat) => {
+                err ? res.json({ ok: false, error: err }) : (
+                    userAction(session.surname,'EFFACER_RESTAURANT',req.body.nom),
+                    req.body.photoName !== 'null' ?  deleteFile(req.body.photoName) : console.log('not file'),
+                    res.json({ ok: true, response: resultat })
+                )
+            })
         })
-    })
+    })  
 
     /* fn 41 éliminer un produits
         DEL_PRODUIT(produit, surname, password, nom, description, photoName, categorie, restaurant, bio, prixBase) */
@@ -553,7 +579,10 @@ const routerMysql = (app, sessionStore)=>{
         let sqlQuery = constants.DEL_PRODUIT(req.body.produit, req.body.surname, req.body.password, req.body.nom, req.body.description, 
                                              req.body.photoName, req.body.categorie, req.body.restaurant, req.body.bio, req.body.prixBase)
         connection.query(sqlQuery, (err, resultat) => {
-            err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
+            err ? res.json({ ok: false, error: err }) : (
+                
+                res.json({ ok: true, response: resultat })
+            )
         })
     })
 
@@ -569,9 +598,11 @@ const routerMysql = (app, sessionStore)=>{
     /* fn 43 voir les restaurant
         LIST_RESTAURANT_VENDEUR(surname, password) */
     app.post('/listRestaurantVendeur', (req, res) => {
-        let sqlQuery = constants.LIST_RESTAURANT_VENDEUR(req.body.surname, req.body.password)
-        connection.query(sqlQuery, (err, resultat) => {
-            err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
+        userSession(req, res, (session)=>{
+            let sqlQuery = constants.LIST_RESTAURANT_VENDEUR(session.surname, session.password)
+            connection.query(sqlQuery, (err, resultat) => {
+                err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
+            })
         })
     })
 

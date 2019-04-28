@@ -6,10 +6,12 @@ export default class Noms extends Component {
         var values = this.props.values.map((value, i) => {
             let onVoirClick = ()=>{
                 console.log('onVoirClick', i)
+                this.props.voir(value.nom, value.photoName)
             }
         
             let onEliminerClick = ()=>{
-                console.log('onEliminerClick', i)
+                console.log('Click cardBoc', i)
+                this.props.eliminer(value.nom, value.photoName)
             }
         
             return (
@@ -17,18 +19,17 @@ export default class Noms extends Component {
                     <CardBox
                         title={value.nom}
                         description={value.description}
+                        adresse={value.adresse}
                         tel={value.telephone}
                         quartier={value.quartier}
                         photoName={value.photoName}
                         voirClick ={onVoirClick}
                         eliminerCLick={onEliminerClick}
-
                     />
-                </div>
-
-            
+                </div>           
             )
         })
+        
         return (
             <div className={'form-inline form-group '} style={{marginLeft:'4%', marginRight:'auto'}}>
                     {values}

@@ -200,8 +200,13 @@ module.exports = Object.freeze({
             return `query` 
      },
 
-/*40*/ DEL_RESTAURANT: (restaurant, surname, password, nom, description, photoName, adresse, quartier, telephone) => { 
-            return `query` 
+/*40*/ DEL_RESTAURANT: (surname, password, nom) => { 
+            return `DELETE FROM restaurants 
+            WHERE restaurants.nom = '${nom}'
+            AND restaurants.id_user =  (SELECT users.id_user 
+                                        FROM users 
+                                        WHERE users.surname = '${surname}'
+                                        AND users.password = '${password}')` 
      },
 
 /*41*/ DEL_PRODUIT: (produit, surname, password, nom, description, photoName, categorie, restaurant, bio, prixBase) => { 
@@ -213,7 +218,11 @@ module.exports = Object.freeze({
      },
 
 /*43*/ LIST_RESTAURANT_VENDEUR: (surname, password) => { 
-            return `query` 
+            return `SELECT restaurants.nom, restaurants.description, restaurants.adresse, restaurants.telephone, restaurants.quartier, restaurants.photoName 
+                    FROM restaurants, vendeurs, users
+                    WHERE restaurants.id_user = vendeurs.id_user
+                    AND vendeurs.id_user = users.id_user
+                    AND users.surname = '${surname}' AND users.password = '${password}'` 
      },
 
 /*44*/ EVALUATION_VENDEUR: (surname, password) => { 

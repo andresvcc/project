@@ -95,16 +95,19 @@ class FormNewRestaurant extends Component {
                 this.state.filename : 'null.jpg'
 
         let description =
-            this.state.description
+            this.state.description !== '' ?
+                this.state.description : '-'
         
         let adresse =
-            this.state.address
+            this.state.address 
 
         let quartier =
-            this.state.quartier
+            this.state.quartier !== '' ?
+                this.state.quartier : '-'
 
         let telephone =
-            this.state.telephone
+            this.state.telephone !== '' ?
+                this.state.telephone : '-'
             
         let data = {
             id,

@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import axios from 'axios'
 import CardController from '../components/cards/cardController'
-import { ToastContainer } from "react-toastify";
+import { ToastContainer , toast} from "react-toastify";
 import ButtonAdd from '../components/buttons/buttonLogoAdd'
 
 //import { Button } from '@material-ui/core';
@@ -13,42 +13,52 @@ class PageVendeur extends Component{
     values: []
   }
 
-  handlerAddClik = ()=>{
-    axios.post(`http://localhost:4000/listRestaurants`)
+  updateListRestaurant = ()=>{
+    axios.post(`http://localhost:4000/listRestaurantVendeur`,{id:this.props.sessID})
     .then(res => {
-        const values = res.data.resultat;
+        const values = res.data.response;
         console.log('cardController',values)
         this.setState({values:values});
+    })   
+  }
+
+  eliminerRestaurant = (nom, photoName) =>{
+    let photoNameRevise = photoName === 'null.jpg' ? 'null' : photoName
+    axios.post(`http://localhost:4000/delRestaurant`,{id:this.props.sessID, nom:nom, photoName:photoNameRevise})
+    .then(res => {
+        let ok = res.data.ok ? 
+            this.updateListRestaurant() : 
+            toast.error('probleme, imposible emiliner ce restaurant')
+        console.log(ok,res.data)
     })
-    console.log('aqui')
-    
+    console.log('subir delet', nom)
+  }
+
+  voirRestaurant = (nom, photoName) =>{
+    console.log('aqui voir', nom, photoName)
   }
 
   componentWillMount = () => {
-    axios.post(`http://localhost:4000/listRestaurants`)
-    .then(res => {
-        const values = res.data.resultat;
-        console.log('cardController',values)
-        this.setState({values:values});
-    })
-}
-
-
+    this.updateListRestaurant()
+  }
 
   render() {
     //const {count, loginStatus, typeUser, surname, sessID}=this.props
     return(
         <div>
           <div style ={{ position:'fixed', bottom:'20%', left:'90%'}}>
-            <ButtonAdd action ={this.handlerAddClik}/>
+            <ButtonAdd action ={this.updateListRestaurant}/>
           </div>
-          <CardController values ={this.state.values}></CardController>
+          <CardController 
+            values ={this.state.values} 
+            eliminer={this.eliminerRestaurant}
+            voir = {this.voirRestaurant}
+          ></CardController>
           <ToastContainer autoClose={2000} position={'top-center'}/>
         </div>
     )
   }
 }
-
 
 const mapStateToProps = (state) => {
 
