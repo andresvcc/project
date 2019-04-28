@@ -23,17 +23,24 @@ class PageController extends Component{
                 return <h1>Page d'error</h1>
         }
     }
-
+    
   render() {
    const {count, loginStatus, typeUser, surname, sessID}=this.props
     return(
-        <div style={{position:'absolute',top:'70px', marginBottom:'8%', marginLeft:'30px'}}>
-            <h6>Count: {count}, Login :{loginStatus.toString()}, TypeUser :{typeUser}, Surname :{surname}, sessID :{sessID}</h6>
-            {this.controllerPage()}  
-              
-              
+        <div>
+          <div>
+            <div style={{position:'relative',top:'55px', marginBottom:'100px', marginLeft:'0px', background: 'linear-gradient(rgba(255,255,255,.79), rgba(255,255,255,.98)), url("http://localhost:4000/photo/fond.jpg")'}}>
+
+                <h6>Count: {count}, Login :{loginStatus.toString()}, TypeUser :{typeUser}, Surname :{surname}, sessID :{sessID}</h6>
+                 {this.controllerPage()}
+            </div>
+          </div>
         <ToastContainer autoClose={2000} position={'top-center'}/>
         </div>
+        
+
+        
+
     )
   }
 }

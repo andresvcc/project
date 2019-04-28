@@ -20,7 +20,7 @@ export default class List extends Component {
 
     render() {
         return (
-            <div>
+            <div >
                 <Noms values={this.state.values}></Noms>
             </div>
         )

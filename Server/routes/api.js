@@ -19,8 +19,8 @@ const api = (app, sessionStore)=> {
             cb(null, 'public/images')
         },
         filename: function (req, file, cb) {
-            let random = Math.round(Math.random() * (2000 - 1000) + 1000) 
-            const name = Date.now() + '-' + random + file.mimetype.replace('image/', '.') // nom du fichie
+            let random = Math.round(Math.random() * (9000 - 1000) + 1000) 
+            const name = `${Date.now()}-${random + file.mimetype.replace('image/', '.')}` // nom du fichie
             const photoName = cb(null, name)
             return photoName
         }

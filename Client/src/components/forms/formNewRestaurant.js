@@ -83,6 +83,8 @@ export default class FormNewRestaurant extends Component {
 
     terminerSumit = () => {
         /* ici on va mettre la requette pour ajouter un nouveau produit */
+        let surname = this.props.surname
+        
         let nom =
             this.state.name !== '' ?
                 this.state.name : null
@@ -103,6 +105,7 @@ export default class FormNewRestaurant extends Component {
             this.state.telephone
 
         let data = {
+            surname,
             nom,
             description,
             photoName,
@@ -228,7 +231,7 @@ export default class FormNewRestaurant extends Component {
                                         label='Quartier'
                                         categories=':4000/location'
                                         into={this.state.quartier}
-                                        default='sans quartier'
+                                        default='Banlieue'
                                         back={this.updateOptionQartier}>
                                     </ListOption>
                                 </div> 

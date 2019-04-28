@@ -12,6 +12,7 @@ class PageNotLogin extends Component{
 
   handlerAddClik = ()=>{
     console.log('aqui')
+    
   }
 
 

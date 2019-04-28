@@ -10,7 +10,7 @@ class PageAcheteur extends Component{
   render() {
    // const {count, loginStatus, typeUser, surname, sessID}=this.props
     return(
-        <div>
+        <div >
             <h1>page Acheteur</h1>
               
         <ToastContainer autoClose={2000} position={'top-center'}/>
