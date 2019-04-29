@@ -8,6 +8,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import FullVoir from '../forms/formfullVoirRestaurant'
 
 const styles = {
   card: {
@@ -58,9 +59,16 @@ function CardBox(props) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" color="primary" onClick={props.voirClick} style={{position:'relative', bottom:'45px'}}>
-          Voir
-        </Button>
+        <div size="small" color="primary" style={{position:'relative', bottom:'45px'}}>
+          <FullVoir
+            title={props.title}
+            description={props.description}
+            adresse={props.adresse}
+            tel={props.tel}
+            quartier={props.quartier}
+            photoName={props.photoName}
+          />
+        </div>
         <Button color='secondary' size="small" onClick={props.eliminerCLick} style={{position:'relative', bottom:'45px'}}>
           Eliminer
         </Button>
