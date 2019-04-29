@@ -20,17 +20,17 @@ class LoginScreenButton extends Component{
     this.props.onLogoutClick()
   }
 
-logoutQuery = () =>{
-  axios.post(`http://localhost:4000/userLogout`,{id:this.props.sessID})
-  .then(res => {
-    let ok = res.data.ok ? (this.handleBtnActionLogout(),true) : (console.log('probleme'),false)
-    console.log('logout API response:', res.data, ok);
-  })
-  .catch(err => { // then print response status
-    toast.error('un probleme est survenue')
-    console.log(err)
-  })
-}
+  logoutQuery = () =>{
+    axios.post(`http://localhost:4000/userLogout`,{id:this.props.sessID})
+    .then(res => {
+      let ok = res.data.ok ? (this.handleBtnActionLogout(),true) : (console.log('probleme'),false)
+      console.log('logout API response:', res.data, ok);
+    })
+    .catch(err => { // then print response status
+      toast.error('un probleme est survenue')
+      console.log(err)
+    })
+  }
 
 
   handleClickOpen = () => {

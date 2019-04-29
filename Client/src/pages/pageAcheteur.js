@@ -11,7 +11,7 @@ class PageAcheteur extends Component{
    // const {count, loginStatus, typeUser, surname, sessID}=this.props
     return(
         <div >
-            <h1>page Acheteur</h1>
+            <h1 style={{position:'absolute',left:'5%' ,top:'20%'}}>Page pur les acheteur</h1>
               
         <ToastContainer autoClose={2000} position={'top-center'}/>
 

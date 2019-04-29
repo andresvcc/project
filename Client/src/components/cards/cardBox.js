@@ -8,6 +8,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import FullVoir from '../forms/formfullVoirRestaurant'
 
 const styles = {
   card: {
@@ -28,36 +29,46 @@ function CardBox(props) {
   const { classes } = props;
 
   return (
-    <Card className={classes.card} style={{margin:'20px', minHeight:'350px', maxHeight:'350px'}}>
+    <Card className={classes.card} style={{margin:'18px', minHeight:'360px', maxHeight:'360px'}}>
       <CardActionArea>
         <CardMedia
           component="img"
           alt={props.photoName}
           className={classes.media}
-          height="200px"
+          height="180px"
           image= {`http://localhost:4000/photo/${props.photoName}`}
           title={props.photoName}
         />
         <CardContent>
-        <div style={{position:'relative', top:'80%'}}>
-          <Typography gutterBottom variant="h5" component="h6">
-           {props.title}
-          </Typography>
-          <Typography component="p">
-          {props.description}          
-          </Typography>
+          <div style={{position:'relative', bottom:'10px'}}>
+            <Typography gutterBottom variant="h5" component="h6">
+              {props.title}
+            </Typography>
+            <Typography component="p">
+              {props.description}          
+            </Typography>
           </div>
         </CardContent>
       </CardActionArea>
       <CardContent>
         <Typography gutterBottom variant="subheading" component="h6"  style={{position:'relative', bottom:'15px'}} >
-         tel:{props.tel} / adresse:{props.adresse}
+         Tel: {props.tel}
+        </Typography>
+        <Typography gutterBottom variant="subheading" component="h6"  style={{position:'relative', bottom:'15px'}} >
+         Adresse: {props.adresse}
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" color="primary" onClick={props.voirClick} style={{position:'relative', bottom:'45px'}}>
-          Voir
-        </Button>
+        <div size="small" color="primary" style={{position:'relative', bottom:'45px'}}>
+          <FullVoir
+            title={props.title}
+            description={props.description}
+            adresse={props.adresse}
+            tel={props.tel}
+            quartier={props.quartier}
+            photoName={props.photoName}
+          />
+        </div>
         <Button color='secondary' size="small" onClick={props.eliminerCLick} style={{position:'relative', bottom:'45px'}}>
           Eliminer
         </Button>
