@@ -14,7 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import EditRestaurant from './formEditRestaurant'
-import ButtonAdd from '../buttons/buttonProduitAdd'
+import ButtonAddProduit from '../buttons/buttonProduitAdd'
 import CardControllerProduit from '../cards/cardControllerProduit'
 
 const styles = {
@@ -84,7 +84,7 @@ class FullVoir extends React.Component {
                 <List>
                   <CardControllerProduit/>
                   <div>
-                    <ButtonAdd action ={this.updateListRestaurant}/>
+                    <ButtonAddProduit restaurant ={this.props.title} action ={this.updateListRestaurant}/>
                   </div>
                 </List>
             </div>

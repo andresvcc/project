@@ -15,7 +15,7 @@ export default class cardListProduit extends Component {
             }
         
             return (
-                <div className ='' key={i} style={{width:'380px'}}>
+                <div className ='' key={i} style={{width:'40vw'}}>
                     <CardBoxProduit
                         title={value.nom}
                         description={value.description}

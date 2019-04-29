@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux'
 import axios from 'axios';
 import { Progress } from 'reactstrap';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 //composants
-import ListOption from './option';
 import TextForm from './textForm';
+import ListOption from './option';
 import TextArea from './textarea';
-import CheckBox from './checkBox';
+import NumForm from './textFormLine';
+import CheckBox from './checkBox'
 
-export default class FormNewProduit extends Component {
+class FormNewProduit extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -19,12 +21,17 @@ export default class FormNewProduit extends Component {
             filename: '',
             name: '',
             description: '',
-            check: false,
-            categorie: 0,
-            prixBase: 0,
+            prixBase:'',
+            bio:false,
+            categorie:0,
             fileCharged: 'cliker ici pour charger une photo',
-            errorNom: false
+            errorNom: false,
+            errorPrixBase: false
         }
+    }
+
+    onAnuller  = () =>{
+        this.props.back();
     }
 
     onChangeHandler = event => {
@@ -38,23 +45,26 @@ export default class FormNewProduit extends Component {
     }
 
     onTerminer = () => {
-        let ok = this.state.name !== '' ? (
-            this.uploadFile() 
-        ):(
-            this.setState({ errorNom: true }),
+        let okname = this.state.name !== '' ? true : (
             toast.error('Le nom est vide'), 
+            this.setState({ errorNom: true }),
             false
         )
-        return ok
+
+        let okprixbase = this.state.prixBase !== '' ? true : (
+            toast.error('le prix doit etre un nombre'), 
+            this.setState({ errorPrixBase: true }),
+            false
+        )
+        
+        okname && okprixbase  ? this.uploadFile() : toast.warn(`Le produit n'a pas été crée, verifier les champ SVP`)
     }
 
-    onAnuller  = () =>{
-        this.props.back();
-    }
+
 
     uploadFile = () => {
         const data = new FormData()
-        const ok = this.state.selectedFile != null ? (
+        let ok = this.state.selectedFile != null ? (
             data.append('file', this.state.selectedFile[0]),
             axios.post("http://localhost:4000/upload", data, {
                 onUploadProgress: ProgressEvent => {
@@ -63,85 +73,81 @@ export default class FormNewProduit extends Component {
                     })
                 },
             })
-            .then(res => { // then print response status
-                var filename = res.data[0]['filename']
-                this.setState({ filename: filename })
-                this.terminerSumit()
-                
-            })
-            .catch(err => { // then print response status
-                toast.error('probleme avec la photo')
-                this.setState({ filename: 'err' })
-            }),
+                .then(res => { // then print response status
+                    var filename = res.data[0]['filename']
+                    this.setState({ filename: filename })
+                    this.terminerSumit()
+                })
+                .catch(err => { // then print response status
+                    toast.error('upload fail')
+                }),
             true
-        ) : (this.terminerSumit(), false)
-       return  ok
+        ) : (
+                this.terminerSumit(),
+                false
+        )
+        return ok
     }
 
-    terminerSumit = () => {
-        /* ici on va mettre la requette pour ajouter un nouveau produit */
-        let nom =
-            this.state.name !== '' ?
-                this.state.name : (this.setState({ errorNom: true }), null)
 
-        let photoName =
-            this.state.filename !=='err' ?
-                this.state.filename : null
+    terminerSumit = () => {
+
+        let name =
+            this.state.name !== '' ?
+                this.state.name : (this.setState({ errorNom: true }), '')
+
+        let prixBase =
+            this.state.prixBase !== ''  ?
+                this.state.prixBase :  (this.setState({ errorPrixBase: true }), -1)
 
         let description =
             this.state.description
 
         let categorie =
             this.state.categorie
-
-        let bio =
-            this.state.check
-
-        let restaurant =
-            this.props.restaurant
         
-        let prixBase = //aun hay que poner el input
-            this.state.prixBase
+        let bio =
+            this.state.bio
+
+        let restaurant = 
+            this.props.restaurant
+
+            let id = this.props.sessID
 
         let data = {
-            nom,
+            id,
+            name,
             description,
-            photoName,
+            prixBase,
             categorie,
-            restaurant,
             bio,
-            prixBase
+            restaurant
         }
+           
+        console.log(data)
+       // this.newAcheteurQuery(data)
+    }
 
-        let oknom = nom !== null ? true : (toast.error('Le nom est vide'), false)
-        let okphotoName = photoName !== null ? true : (toast.error('upload photo fail'), false)
-
-        let ok = oknom & okphotoName?
-            (
-                toast.success('👍 le produit a été créé avec succès !', {
-                    position: "top-center",
-                    autoClose: 2500,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true
-                }),
-                console.log(data),
-                this.props.back(),
-                true
-            ) : (
-                toast.warn(`la produit n'a pas été crée, verifier les champ SVP`, {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true
-                }),
+    newAcheteurQuery = (data) =>{
+        console.log('evoie', data)
+        axios.post(`http://localhost:4000/newRestaurant`, data )
+        .then(res => {
+            console.log(res.data)
+            let ok = res.data.ok ? (
+                console.log('Restaurant ajouté avec success'), 
+                this.props.action(),
+                true 
+            ):(
+                this.setState({msgerrNom:res.data.msg}),
+                toast.error(res.data.msg), 
                 false
             )
-        
-        return ok
+            ok ?   this.props.back() : console.log('restaurant ne pas ajouté')
+        })
+        .catch(err => { // then print response status
+            toast.error('information incorrecte')
+            console.log(err)
+        })
     }
 
     updateInputName = (evt) => {
@@ -157,8 +163,17 @@ export default class FormNewProduit extends Component {
         });
     }
 
-    updateCkeck = (evt) => {
-        this.setState({ check: !this.state.check });
+    updateInputBio = (evt) => {
+        this.setState({
+            bio: !this.state.bio,
+        });
+    }
+
+    updateInputPrixBase = (evt) => {
+        this.setState({
+            prixBase: evt.target.value,
+            errorPrixBase: false
+        });
     }
 
     updateOptionCategorie = (evt) => {
@@ -167,15 +182,34 @@ export default class FormNewProduit extends Component {
         });
     }
 
+    /*
+    
+        <div style={{ position: 'absolute' }}>
+            <h6>nom:{this.state.name}</h6>
+            <h6>description:{this.state.description}</h6>
+            <h6>address:{this.state.address}</h6>
+            <h6>telephone:{this.state.telephone}</h6>
+            <h6>quartier:{this.state.quartier}</h6>
+            <h6>image:{this.state.filename}</h6>
+        </div>
 
+    */
 
     render() {
+
         return (
             <div className="container">
+        <div style={{ position: 'absolute' }}>
+            <h6>nom:{this.state.name}</h6>
+            <h6>description:{this.state.description}</h6>
+            <h6>categorie:{this.state.categorie}</h6>
+            <h6>prix:{this.state.prixBase}</h6>
+            <h6>bio:{this.state.bio.toString()}</h6>
+        </div>
                 <div className="row">
-                    <div className="offset-md-1 col-md-10">
+                    <div className="offset-sm-1 col-sm-10">
                         <div >
-                            <legend>Produit: {this.props.restaurant}</legend>
+                            <legend>Ajouter un nouveau restaurant</legend>
                             <div>
                                 <TextForm
                                     label='Nom'
@@ -186,20 +220,38 @@ export default class FormNewProduit extends Component {
                                 <TextArea
                                     label='Description'
                                     into={'Rentez une description'}
-                                    back={this.updateInputDescription}>
+                                    back={this.updateInputDescription}
+                                    >
                                 </TextArea>
-                                <ListOption
-                                    label='Categorie'
-                                    categories=':4000/categorie'
-                                    into={this.state.categorie}
-                                    default='sans categorie'
-                                    back={this.updateOptionCategorie}>
-                                </ListOption>
-                                <CheckBox
-                                    label='Bio?'
-                                    back={this.updateCkeck}
-                                    into={this.state.check}>
-                                </CheckBox>
+                                <div className="form-row">
+                                        <div className="col">
+                                            <ListOption
+                                                label='Categorie'
+                                                categories=':4000/categorie'
+                                                into={this.state.categorie}
+                                                default='sans categorie'
+                                                back={this.updateOptionCategorie}
+                                                >
+                                            </ListOption>
+                                        </div>
+                                        <div className="col">
+                                            <NumForm
+                                                label='Prix'
+                                                into= {0}
+                                                error={this.state.errorPrixBase}
+                                                back={this.updateInputPrixBase}
+                                                >
+                                            </NumForm>
+                                        </div>
+                                    </div>
+                                <div>
+                                    <CheckBox
+                                        label = 'Bio?'
+                                        into = {this.state.bio}
+                                        back = {this.updateInputBio}
+                                        >
+                                    </CheckBox>
+                                </div> 
                             </div>
                             <div className="form-group">
                                 <label htmlFor="file" className="label-file">{this.state.fileCharged}
@@ -228,3 +280,16 @@ export default class FormNewProduit extends Component {
     }
 }
 
+const mapStateToProps = (state) => {
+    return {
+      sessID: state.counter.sessID
+    }
+  }
+  
+  const mapDispatchToProps = (dispatch) => {
+    return {
+
+    }
+  }
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(FormNewProduit)

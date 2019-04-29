@@ -9,6 +9,8 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import FullVoir from '../forms/formfullVoirRestaurant'
+import Fab from '@material-ui/core/Fab';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const styles = {
   card: {
@@ -45,7 +47,7 @@ function CardBoxProduit(props) {
           </div>
           <div className="col">
           <CardContent>
-          <div style={{position:'absolute', top:'0%', left:'0%'}}>
+          <div style={{position:'absolute', top:'0%', left:'5%'}}>
             <Typography gutterBottom variant="h5" component="h6">
               {props.title}
             </Typography>
@@ -60,19 +62,9 @@ function CardBoxProduit(props) {
           </div>
       </div>
       <CardActions>
-        <div size="small" color="primary" style={{position:'relative', bottom:'45px', left:'60%'}}>
-          <FullVoir
-            title={props.title}
-            description={props.description}
-            adresse={props.adresse}
-            tel={props.tel}
-            quartier={props.quartier}
-            photoName={props.photoName}
-          />
-        </div>
-        <Button color='secondary' size="small" onClick={props.eliminerCLick} style={{position:'relative', bottom:'45px', left:'60%'}}>
-          Eliminer
-        </Button>
+        <Fab size="small" aria-label="Add" className={'margin'} onClick={props.eliminerCLick} style={{position:'relative', bottom:'80px', left:'90%'}} >
+          <DeleteIcon />
+        </Fab>
       </CardActions>
     </Card>
   );

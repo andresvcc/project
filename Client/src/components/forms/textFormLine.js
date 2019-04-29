@@ -7,7 +7,7 @@ export default class TextFormLine extends Component {
     }
     messageError = () =>{
         return this.props.msgerror ? this.props.msgerror : 
-                    `le champ ${this.props.label} est obligatoire`
+                    `le champ  ${this.props.label} est obligatoire, accepte uniquement les chiffres`
     }
 
     errorMsg = (v) => {
@@ -38,8 +38,8 @@ export default class TextFormLine extends Component {
                         style={{ border: this.errorBorder(this.props.error) }}>
                     </input>        
                     </div>
-                    {this.errorMsg(this.props.error)}
                 </div>
+                {this.errorMsg(this.props.error)}
             </div>
         );
     }
