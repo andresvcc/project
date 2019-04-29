@@ -29,7 +29,7 @@ class PageController extends Component{
     return(
         <div>
           <div>
-            <div style={{position:'relative',top:'55px', marginBottom:'100px', marginLeft:'0px', background: 'linear-gradient(rgba(255,255,255,.79), rgba(255,255,255,.98)), url("http://localhost:4000/photo/fond.jpg")'}}>
+            <div style={{minHeight:'90vh', position:'relative', background: 'linear-gradient(rgba(255,255,255,.91), rgba(255,255,255,.999)), url("http://localhost:4000/photo/fond.jpg")'}}>
 
                 <h6>Count: {count}, Login :{loginStatus.toString()}, TypeUser :{typeUser}, Surname :{surname}, sessID :{sessID}</h6>
                  {this.controllerPage()}

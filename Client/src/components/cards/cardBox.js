@@ -28,30 +28,33 @@ function CardBox(props) {
   const { classes } = props;
 
   return (
-    <Card className={classes.card} style={{margin:'20px', minHeight:'350px', maxHeight:'350px'}}>
+    <Card className={classes.card} style={{margin:'0px', minHeight:'360px', maxHeight:'360px'}}>
       <CardActionArea>
         <CardMedia
           component="img"
           alt={props.photoName}
           className={classes.media}
-          height="200px"
+          height="180px"
           image= {`http://localhost:4000/photo/${props.photoName}`}
           title={props.photoName}
         />
         <CardContent>
-        <div style={{position:'relative', top:'80%'}}>
-          <Typography gutterBottom variant="h5" component="h6">
-           {props.title}
-          </Typography>
-          <Typography component="p">
-          {props.description}          
-          </Typography>
+          <div style={{position:'relative', bottom:'10px'}}>
+            <Typography gutterBottom variant="h5" component="h6">
+              {props.title}
+            </Typography>
+            <Typography component="p">
+              {props.description}          
+            </Typography>
           </div>
         </CardContent>
       </CardActionArea>
       <CardContent>
         <Typography gutterBottom variant="subheading" component="h6"  style={{position:'relative', bottom:'15px'}} >
-         tel:{props.tel} / adresse:{props.adresse}
+         Tel: {props.tel}
+        </Typography>
+        <Typography gutterBottom variant="subheading" component="h6"  style={{position:'relative', bottom:'15px'}} >
+         Adresse: {props.adresse}
         </Typography>
       </CardContent>
       <CardActions>
