@@ -28,7 +28,7 @@ function CardBox(props) {
   const { classes } = props;
 
   return (
-    <Card className={classes.card} style={{margin:'25px', minHeight:'360px', maxHeight:'360px'}}>
+    <Card className={classes.card} style={{margin:'18px', minHeight:'360px', maxHeight:'360px'}}>
       <CardActionArea>
         <CardMedia
           component="img"

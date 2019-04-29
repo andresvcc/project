@@ -34,10 +34,10 @@ class ButtonAdd extends Component{
     return (
       <div>
         <div style={{textAlign:'center'}}>
-        <h6>Restaurant</h6>
         <Fab size="large" color="secondary" aria-label="Add" className={'margin'} onClick={this.handleClickOpen} >
             <AddIcon />
         </Fab>
+        <h6>Restaurant</h6>
         </div>
           <Dialog
             fullScreen={fullScreen}
