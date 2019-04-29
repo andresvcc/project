@@ -39,7 +39,7 @@ class PageNotLogin extends Component{
     //const {count, loginStatus, typeUser, surname, sessID}=this.props
     return(
         <div>
-
+          <h1 style={{position:'absolute',left:'5%' ,top:'20%'}}>Page pour les non login user</h1>
           <ToastContainer autoClose={2000} position={'top-center'}/>
         </div>
     )
