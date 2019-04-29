@@ -41,6 +41,7 @@ class PageNotLogin extends Component{
         <div>
           <div style={{position:'absolute',left:'5%' ,top:'20%'}}>
             <h1 >Page pour les non login user</h1>
+
           </div>
           
           

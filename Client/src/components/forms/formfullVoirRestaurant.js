@@ -15,6 +15,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import EditRestaurant from './formEditRestaurant'
 import ButtonAdd from '../buttons/buttonProduitAdd'
+import CardControllerProduit from '../cards/cardControllerProduit'
 
 const styles = {
   appBar: {
@@ -81,16 +82,10 @@ class FullVoir extends React.Component {
             </div>
             <div className="col" style={{right:'10%'}}>
                 <List>
-                    <ListItem button>
-                        <ListItemText primary="Produit 1" secondary="Description de produit" />
-                    </ListItem>
-                    <Divider />
-                    <ListItem button>
-                        <ListItemText primary="Produit 2" secondary="Description de produit" />
-                    </ListItem>
-                    <div style ={{ position:'fixed', bottom:'20%', left:'90%'}}>
-                      <ButtonAdd action ={this.updateListRestaurant}/>
-                    </div>
+                  <CardControllerProduit/>
+                  <div>
+                    <ButtonAdd action ={this.updateListRestaurant}/>
+                  </div>
                 </List>
             </div>
           </div>
