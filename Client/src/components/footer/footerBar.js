@@ -1,17 +1,32 @@
 import React from 'react'
+import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 import FooterU from './footerU'
 
-export default function FooterBar() {
+const styles={
+    footerBarTitle:{
+        position:'absolute', 
+        top:'8%', 
+        lineHeight :'8px'
+    },
+    footerBarDocuments:{
+        position:'absolute', 
+        top:'8%', 
+        right:'50%', 
+        lineHeight :'5px'
+    }
+}
+
+function FooterBar(props) {
+    const {classes} =  props
     return (
         <FooterU>
-            <div style={{position:'absolute', top:'8%', lineHeight :'5px'}}>
+            <div className= {classes.footerBarTitle}>
                 <h5>Information de contact</h5>
-                <p>
-                Andres Caballero & Alex Erne
-                </p>
-                <label>Project transversal 1, 2019, unige </label>
+                <label>Andres Caballero & Alex Erne</label>
+                <p>Project transversal 1, 2019, unige </p>
             </div>
-            <div style={{position:'absolute', top:'8%', right:'50%', lineHeight :'5px'}}>
+            <div className= {classes.footerBarDocuments}>
                 <h5 className="title">Documents</h5>
                     <ul>
                     <li className="list-unstyled">
@@ -22,3 +37,9 @@ export default function FooterBar() {
         </FooterU>
     )
 }
+
+FooterBar.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(FooterBar);

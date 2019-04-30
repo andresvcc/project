@@ -8,7 +8,7 @@ export default class ListOption extends Component {
     }
 
     componentDidMount() {
-        axios.get(`http://localhost${this.props.categories}`)
+        axios.post(`http://localhost${this.props.categories}`)
             .then(res => {
                 const values = res.data;
                 this.setState({values});
@@ -24,9 +24,8 @@ export default class ListOption extends Component {
                     <div className="drop-down">
                         <select 
                             className="custom-select" 
-                            onChange={this.props.back}
-                            value={this.props.into}>
-                        <option value={0}>{this.props.default}</option>{
+                            onChange={this.props.back}>
+                        {
                             this.state.values.map((obj) => {
                                 return <option key ={obj.id} value={obj.id}>{obj.name}</option>
                             })

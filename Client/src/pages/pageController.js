@@ -27,10 +27,9 @@ class PageController extends Component{
   render() {
    const {count, loginStatus, typeUser, surname, sessID}=this.props
     return(
-        <div>
-          <div>
-            <div style={{minHeight:'90vh', position:'relative', background: 'linear-gradient(rgba(255,255,255,.91), rgba(255,255,255,.999)), url("http://localhost:4000/photo/fond.jpg")'}}>
-
+        <div style={{background: 'linear-gradient(rgba(255,255,255,.91), rgba(255,255,255,.999)), url("http://localhost:4000/photo/fond.jpg")'}}>
+          <div style={{minHeight:'90vh',position:'relative'}}>
+            <div>
                 <h6>Count: {count}, Login :{loginStatus.toString()}, TypeUser :{typeUser}, Surname :{surname}, sessID :{sessID}</h6>
                  {this.controllerPage()}
             </div>

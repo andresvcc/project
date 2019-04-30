@@ -227,9 +227,9 @@ class FormNewRestaurant extends Component {
     render() {
 
         return (
-            <div className="container" style={{position:'relative', right:'-5%', top:'2%'}}>
+            <div className="container">
                 <div className="row">
-                    <div className="col-sm-6">
+                    <div className="offset-md-1 col-md-8">
                         <div >
                             <legend>Editer un restaurant</legend>
                             <div>

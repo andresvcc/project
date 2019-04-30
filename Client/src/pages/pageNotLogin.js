@@ -25,13 +25,8 @@ class PageNotLogin extends Component{
   }
 
   componentWillMount = () => {
-    axios.post(`http://localhost:4000/listRestaurants`)
-    .then(res => {
-        const values = res.data.resultat;
-        console.log('cardController',values)
-        this.setState({values:values});
-    })
-}
+    //this.handlerAddClik()
+  }
 
 
 
@@ -41,6 +36,7 @@ class PageNotLogin extends Component{
         <div>
           <div style={{position:'absolute',left:'5%' ,top:'20%'}}>
             <h1 >Page pour les non login user</h1>
+
           </div>
           
           
