@@ -23,7 +23,7 @@ class FormNewProduit extends Component {
             description: '',
             prixBase:'',
             bio:false,
-            categorie:0,
+            categorie:1,
             fileCharged: 'cliker ici pour charger une photo',
             errorNom: false,
             errorPrixBase: false
@@ -92,7 +92,7 @@ class FormNewProduit extends Component {
 
     terminerSumit = () => {
 
-        let name =
+        let nom =
             this.state.name !== '' ?
                 this.state.name : (this.setState({ errorNom: true }), '')
 
@@ -112,29 +112,31 @@ class FormNewProduit extends Component {
         let restaurant = 
             this.props.restaurant
 
-            let id = this.props.sessID
+        let id = this.props.sessID
+
+        let photoName = this.state.filename
 
         let data = {
             id,
-            name,
+            nom,
             description,
-            prixBase,
+            photoName,
             categorie,
+            restaurant,
             bio,
-            restaurant
+            prixBase
         }
            
-        console.log(data)
-       // this.newAcheteurQuery(data)
+        this.newProduitQuery(data)
     }
 
-    newAcheteurQuery = (data) =>{
+    newProduitQuery = (data) =>{
         console.log('evoie', data)
-        axios.post(`http://localhost:4000/newRestaurant`, data )
+        axios.post(`http://localhost:4000/newProduit`, data )
         .then(res => {
             console.log(res.data)
             let ok = res.data.ok ? (
-                console.log('Restaurant ajouté avec success'), 
+                console.log('Produit ajouté avec success'), 
                 this.props.action(),
                 true 
             ):(
@@ -142,7 +144,7 @@ class FormNewProduit extends Component {
                 toast.error(res.data.msg), 
                 false
             )
-            ok ?   this.props.back() : console.log('restaurant ne pas ajouté')
+            ok ?   this.props.back() : console.log('propduit ne pas ajouté')
         })
         .catch(err => { // then print response status
             toast.error('information incorrecte')
@@ -187,10 +189,9 @@ class FormNewProduit extends Component {
         <div style={{ position: 'absolute' }}>
             <h6>nom:{this.state.name}</h6>
             <h6>description:{this.state.description}</h6>
-            <h6>address:{this.state.address}</h6>
-            <h6>telephone:{this.state.telephone}</h6>
-            <h6>quartier:{this.state.quartier}</h6>
-            <h6>image:{this.state.filename}</h6>
+            <h6>categorie:{this.state.categorie}</h6>
+            <h6>prix:{this.state.prixBase}</h6>
+            <h6>bio:{this.state.bio.toString()}</h6>
         </div>
 
     */
@@ -199,17 +200,10 @@ class FormNewProduit extends Component {
 
         return (
             <div className="container">
-        <div style={{ position: 'absolute' }}>
-            <h6>nom:{this.state.name}</h6>
-            <h6>description:{this.state.description}</h6>
-            <h6>categorie:{this.state.categorie}</h6>
-            <h6>prix:{this.state.prixBase}</h6>
-            <h6>bio:{this.state.bio.toString()}</h6>
-        </div>
                 <div className="row">
                     <div className="offset-sm-1 col-sm-10">
                         <div >
-                            <legend>Ajouter un nouveau restaurant</legend>
+                            <legend>Ajouter un nouveau Produit</legend>
                             <div>
                                 <TextForm
                                     label='Nom'
@@ -227,9 +221,8 @@ class FormNewProduit extends Component {
                                         <div className="col">
                                             <ListOption
                                                 label='Categorie'
-                                                categories=':4000/categorie'
+                                                categories=':4000/listCategories'
                                                 into={this.state.categorie}
-                                                default='sans categorie'
                                                 back={this.updateOptionCategorie}
                                                 >
                                             </ListOption>

@@ -38,33 +38,29 @@ class ScreenEditRestaurant extends Component {
     values: []
   };
 
-  updateListRestaurant = ()=>{
-    axios.post(`http://localhost:4000/listRestaurantVendeur`,{id:this.props.sessID})
+  updateListProduit = ()=>{
+    axios.post(`http://localhost:4000/listProduitRestaurant`,{restaurant:this.props.title})
     .then(res => {
         const values = res.data.response;
-        console.log('cardController',values)
+        console.log('list produits',values)
         this.setState({values:values});
     })   
   }
 
-  eliminerRestaurant = (nom, photoName) =>{
+  eliminerProduit = (nom, photoName) =>{
     let photoNameRevise = photoName === 'null.jpg' ? 'null' : photoName
-    axios.post(`http://localhost:4000/delRestaurant`,{id:this.props.sessID, nom:nom, photoName:photoNameRevise})
+    axios.post(`http://localhost:4000/delProduit`,{id:this.props.sessID, nom:nom, photoName:photoNameRevise, restaurant:this.props.title})
     .then(res => {
         let ok = res.data.ok ? 
-            this.updateListRestaurant() : 
-            toast.error('probleme, imposible emiliner ce restaurant')
-        console.log(ok,res.data)
+            (this.updateListProduit(), 'success'): 
+            (toast.error('probleme, imposible emiliner ce produit'), 'probleme')
+        console.log('eliminer',ok,res.data)
     })
-    console.log('subir delet', nom)
-  }
-
-  voirRestaurant = (nom, photoName) =>{
-    console.log('aqui voir', nom, photoName)
+    console.log('subir del produit', nom)
   }
 
   handleClickOpen = () => {
-    this.updateListRestaurant()
+    this.updateListProduit()
     this.setState({ open: true });
   };
 
@@ -84,8 +80,7 @@ class ScreenEditRestaurant extends Component {
           open={this.state.open}
           onClose={this.handleClose}
           TransitionComponent={Transition}
-          style={{top:'4%'}}
-        >
+          style={{top:'4%'}}>
           <AppBar className={classes.appBar}>
             <Toolbar>
               <IconButton color="inherit" onClick={this.handleClose} aria-label="Close">
@@ -100,7 +95,7 @@ class ScreenEditRestaurant extends Component {
             </Toolbar>
           </AppBar>
           <div className="form-row" style={{marginTop:'80px'}}>
-            <div className="col-md-5">
+            <div className="col-md-4 ">
                 <EditRestaurant
                     nom = {this.props.title}
                     description = {this.props.description}
@@ -109,12 +104,12 @@ class ScreenEditRestaurant extends Component {
                     quartier = {this.props.quartier}
                 />
             </div>
-            <div className="col-md-5">     
+            <div className="col-md-6">     
                 <List>
                   <div>
                     <CardListProduit 
                         values ={this.state.values} 
-                        eliminer={this.eliminerRestaurant}
+                        eliminer={this.eliminerProduit}
                     ></CardListProduit>
                   </div>
                 </List>        
@@ -122,7 +117,7 @@ class ScreenEditRestaurant extends Component {
           </div>
           <div className="col-md-1" style={{position:'fixed', right:'5%', top:'10%'}}>
                 <div>
-                  <ButtonAddProduit restaurant ={this.props.title} action ={this.updateListRestaurant}/>
+                  <ButtonAddProduit restaurant ={this.props.title} action ={this.updateListProduit}/>
                 </div>    
           </div>
         </Dialog>

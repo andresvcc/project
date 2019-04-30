@@ -203,7 +203,7 @@ AND users.surname = 'jeisy'
 nouvelle categorie
 */
 INSERT INTO categories (nom, description)
-values ('burger','texte');
+values ('riz','texte');
 
 /*******************************************************
 liste des categories
@@ -213,44 +213,66 @@ SELECT * FROM categories;
 /*******************************************************
 nouvelle produits
 */
-INSERT INTO plats (id_restaurant, id_categorie, nom, prix_base, description, photoName, bio)
+INSERT INTO produits (id_restaurant, id_categorie, nom, prix_base, description, photoName, bio)
 values 
 (
     (
-        SELECT id_restaurant FROM restaurants, vendeurs, users 
+        SELECT id_restaurant 
+        FROM restaurants, vendeurs, users 
         WHERE users.id_user = vendeurs.id_user
         AND restaurants.id_user = users.id_user
-        AND users.surname = 'pikachu'
-        AND users.password ='password'
-        AND restaurants.nom = 'burger KING'
+        AND users.surname = 'andres'
+        AND users.password ='pass'
+        AND restaurants.nom = 'yuka'
     ),
-    (
-        SELECT id_categorie FROM categories WHERE nom = 'burger'
-    ),
-    'burger chesse',
+    1,
+    'burger chesse sete',
     19,
-    'est une burber avec fromage',
-    'aydjhvfskj.img',
+    'est une burber avec fromage descripcion',
+    'null.jpg',
     true
 );
 
-SELECT * FROM plats;
+select * from produits
+
+SELECT produits.id_produit, produits.nom, produits.description, produits.prix_base, produits.bio, produits.photoName, restaurants.nom as resto
+FROM produits, restaurants
+WHERE produits.id_restaurant = restaurants.id_restaurant
+AND restaurants.nom = 'yuka'
 /*******************************************************
 liste des produits 
 */
-/*plats.nom,*/
-
-SELECT  plats.nom as plats, 
-        restaurants.nom as restaurant, 
+SELECT  produits.id_produit,
+        produits.nom, 
+        restaurants.nom as restaurants, 
         categories.nom as categorie, 
-        plats.prix_base, 
-        plats.description as descriptions, 
+        produits.prix_base, 
+        produits.description, 
         bio, 
-        plats.photoName as photoPlat, 
+        produits.photoName as photoPlat, 
         restaurants.photoName as photoResto 
-FROM restaurants, categories, plats
-WHERE plats.id_restaurant = restaurants.id_restaurant
-AND plats.id_categorie = categories.id_categorie;
+FROM restaurants, categories, produits
+WHERE produits.id_restaurant = restaurants.id_restaurant
+AND produits.id_categorie = categories.id_categorie
+AND restaurants.nom = 'chorizo';
+
+/*effacer produit*/
+DELETE FROM produits 
+WHERE produits.id_produit IN (SELECT * 
+                              FROM (SELECT produits.id_produit
+                                    FROM produits, restaurants, vendeurs, users
+                                    WHERE produits.id_restaurant = restaurants.id_restaurant
+                                    AND produits.nom = 'burger chesse cuatro'
+                                    AND restaurants.nom = 'yuka'
+                                    AND vendeurs.id_user = restaurants.id_user
+                                    AND vendeurs.id_user = users.id_user
+                                    AND users.surname = 'andres'
+                                   ) AS id_produit
+                             )
+
+DELETE FROM produits 
+WHERE produits.id_produit = 3
+
 
 /*effacer acheteur*/
 DELETE FROM acheteurs 
@@ -287,3 +309,5 @@ SELECT surname, 2 as typeuser
     WHERE users.surname = 'andres'
     AND users.id_user = acheteurs.id_user
     AND users.password = '1234';
+
+

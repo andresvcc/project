@@ -14,9 +14,10 @@ const styles = {
     margin:18, 
     minHeight:180, 
     maxHeight:180,
-    minWidth: '80%',
-    maxWidth: '80%',
-    position:'relative'
+    minWidth: '100%',
+    maxWidth: '100%',
+    position:'relative',
+
 
     
   },
@@ -31,10 +32,30 @@ const styles = {
 
 function CardBoxProduit(props) {
 
+  const bio = () =>{
+    let res = props.bio === 1 ? (
+    <div>
+      <img 
+        src="https://carpezen.fr/wp-content/uploads/2018/09/logo-bio.png" 
+        alt="Smiley face" 
+        height="100%" 
+        width="40%" 
+        style={{
+          position:'absolute', 
+          right:'27%', 
+          top:'20%',
+          opacity:'0.175'
+        }}>
+      </img> 
+    </div>): ''
+    return res
+  }
+
   const { classes } = props;
 
   return (
     <Card className={classes.card}>
+    {bio()}
        <div className="form-row">
           <div className="col-5">
           <CardActionArea style={{width:'100%'}}>
@@ -48,17 +69,23 @@ function CardBoxProduit(props) {
             />
           </CardActionArea>
           </div>
-          <div className="col-7">
+          <div className="col-7"> 
             <CardContent>
-            <div style={{position:'absolute', top:'0%', left:'5%'}}>
-              <Typography gutterBottom variant="h5" component="h6">
+            <div style={{position:'absolute', top:'5%', left:'5%' }}>
+              <Typography gutterBottom variant="h6" component="h6"  style={{lineHeight:'20px'}}>
                 {props.title}
               </Typography>
             </div>
             </CardContent>
             <CardContent>
-              <Typography gutterBottom variant="subheading" component="h6"  style={{position:'relative', bottom:'15px'}} >
+              <Typography gutterBottom variant="subheading" component="h6" style={{paddingTop:'8px'}}>
               {props.description}
+              </Typography>
+              <Typography gutterBottom variant="subheading" component="h6" style={{paddingTop:'8px'}}>
+              {props.categorie} 
+              </Typography>
+              <Typography gutterBottom variant="h6" component="h6"  style={{lineHeight:'20px'}}>
+                {props.prixBase} CHF
               </Typography>
             </CardContent>
             <Button color='secondary' size="small" onClick={props.eliminerCLick} style={{position:'absolute', bottom:'1%', right:'2%', width:'10%', height:'20%'}}>

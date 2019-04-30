@@ -31,7 +31,7 @@ module.exports = Object.freeze({
 
 /*7*/ LIST_RESTAURANTS: `SELECT * FROM restaurants`,
 
-/*8*/ LIST_CATEGORIES: `SELECT * FROM categories`,
+/*8*/ LIST_CATEGORIES: `SELECT id_categorie as id, nom as name FROM categories`,
 
 /*9*/ LIST_PLATS: `SELECT * FROM plats`,
 
@@ -105,7 +105,20 @@ module.exports = Object.freeze({
      },
 
 /*20*/ LIST_PRODUIT_RESTAURANT: (restaurant) => { 
-            return `query` 
+            return `SELECT  produits.id_produit,
+                            produits.nom, 
+                            restaurants.nom as restaurants, 
+                            categories.nom as categorie,
+                            produits.id_categorie, 
+                            produits.prix_base, 
+                            produits.description, 
+                            bio, 
+                            produits.photoName, 
+                            restaurants.photoName as photoResto 
+                    FROM restaurants, categories, produits
+                    WHERE produits.id_restaurant = restaurants.id_restaurant
+                    AND produits.id_categorie = categories.id_categorie
+                    AND restaurants.nom = '${restaurant}';` 
      },
 
 /*21*/ FIND_PRODUIT_QUARTIER: (nomProduit, username, password) => { 
@@ -189,7 +202,24 @@ module.exports = Object.freeze({
      },
 
 /*37*/ NEW_PRODUIT: (surname, password, nom, description, photoName, categorie, restaurant, bio, prixBase) => { 
-            return `query` 
+            return `INSERT INTO produits (id_restaurant, id_categorie, nom, prix_base, description, photoName, bio)
+                    VALUES (
+                              (
+                                   SELECT id_restaurant 
+                                   FROM restaurants, vendeurs, users 
+                                   WHERE users.id_user = vendeurs.id_user
+                                   AND restaurants.id_user = users.id_user
+                                   AND users.surname = '${surname}'
+                                   AND users.password ='${password}'
+                                   AND restaurants.nom = '${restaurant}'
+                              ),
+                              ${categorie},
+                              '${nom}',
+                              ${prixBase},
+                              '${description}',
+                              '${photoName}',
+                              ${bio}
+                         );` 
      },
 
 /*38*/ EDIT_RESTAURANT: (restaurant, surname, password, nom, description, photoName, adresse, quartier, telephone) => { 
@@ -209,8 +239,21 @@ module.exports = Object.freeze({
                                         AND users.password = '${password}')` 
      },
 
-/*41*/ DEL_PRODUIT: (produit, surname, password, nom, description, photoName, categorie, restaurant, bio, prixBase) => { 
-            return `query` 
+/*41*/ DEL_PRODUIT: (surname, password, nom, restaurant) => { 
+            return `DELETE FROM produits 
+                    WHERE produits.id_produit IN (
+                         SELECT * 
+                         FROM (SELECT produits.id_produit
+                              FROM produits, restaurants, vendeurs, users
+                              WHERE produits.id_restaurant = restaurants.id_restaurant
+                              AND produits.nom = '${nom}'
+                              AND restaurants.nom = '${restaurant}'
+                              AND vendeurs.id_user = restaurants.id_user
+                              AND vendeurs.id_user = users.id_user
+                              AND users.surname = '${surname}'
+                              AND users.password = '${password}'
+                              ) AS id_produit
+                         )`  
      },
 
 /*42*/ LIST_PRODUIT_VENDEUR: (surname, password) => { 

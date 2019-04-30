@@ -6,7 +6,6 @@ export default class cardListProduit extends Component {
         var values = this.props.values.map((value, i) => {
                     
             let onEliminerClick = ()=>{
-                console.log('Click cardBoc', i)
                 this.props.eliminer(value.nom, value.photoName)
             }
         
@@ -15,9 +14,9 @@ export default class cardListProduit extends Component {
                     <CardBoxProduit
                         title={value.nom}
                         description={value.description}
-                        adresse={value.adresse}
-                        tel={value.telephone}
-                        quartier={value.quartier}
+                        bio={value.bio}
+                        prixBase={value.prix_base}
+                        categorie={value.categorie}
                         photoName={value.photoName}
                         eliminerCLick={onEliminerClick}
                     />

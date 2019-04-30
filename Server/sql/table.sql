@@ -106,9 +106,9 @@ CREATE TABLE categories (
    CONSTRAINT pk_categories PRIMARY KEY(id_categorie)
 )ENGINE = InnoDB;
 
-DROP TABLE IF EXISTS plats;
-CREATE TABLE plats (
-   id_plat INT(255) AUTO_INCREMENT NOT NULL,
+DROP TABLE IF EXISTS produits;
+CREATE TABLE produits (
+   id_produit INT(255) AUTO_INCREMENT NOT NULL,
    id_restaurant INT(255) NOT NULL,
    id_categorie INT(255) NOT NULL,
    nom VARCHAR(255) NOT NULL,
@@ -116,35 +116,35 @@ CREATE TABLE plats (
    description VARCHAR(255),
    photoName VARCHAR(255),
    bio boolean not null default 0,
-   CONSTRAINT pk_plats PRIMARY KEY(id_plat),
+   CONSTRAINT pk_produits PRIMARY KEY(id_produit),
    CONSTRAINT propose FOREIGN KEY(id_restaurant)
       REFERENCES restaurants(id_restaurant) ON UPDATE CASCADE ON DELETE CASCADE,
    CONSTRAINT conserne1 FOREIGN KEY(id_categorie)
       REFERENCES categories(id_categorie) ON UPDATE CASCADE ON DELETE CASCADE 
 )ENGINE = InnoDB;
 
-DROP TABLE IF EXISTS plats_achete;
-CREATE TABLE plats_achete (
+DROP TABLE IF EXISTS produits_achete;
+CREATE TABLE produits_achete (
    id_achat INT(255) NOT NULL,
-   id_plat INT(255) NOT NULL,
+   id_produit INT(255) NOT NULL,
    prix_final INT(255) NOT NULL,
    quantite INT(255) DEFAULT 1,
    evaluation INT(8) DEFAULT 1,
-   CONSTRAINT pk_plats_achete PRIMARY KEY(id_achat,id_plat),
+   CONSTRAINT pk_produits_achete PRIMARY KEY(id_achat,id_produit),
    CONSTRAINT rattache FOREIGN KEY(id_achat) 
       REFERENCES achats(id_achat) ON UPDATE CASCADE ON DELETE CASCADE,
-   CONSTRAINT define FOREIGN KEY(id_plat)
-      REFERENCES plats(id_plat) ON UPDATE CASCADE ON DELETE CASCADE
+   CONSTRAINT define FOREIGN KEY(id_produit)
+      REFERENCES produits(id_produit) ON UPDATE CASCADE ON DELETE CASCADE
 )ENGINE = InnoDB;
 
 DROP TABLE IF EXISTS recommandations;
 CREATE TABLE recommandations (
    id_user INT(255) NOT NULL,
-   id_plat INT(255) NOT NULL,
+   id_produit INT(255) NOT NULL,
    date_recommendation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-   CONSTRAINT pk_recommendations PRIMARY KEY(id_user,id_plat),
-   CONSTRAINT conserne2 FOREIGN KEY(id_plat)
-      REFERENCES plats(id_plat) ON UPDATE CASCADE ON DELETE CASCADE,
+   CONSTRAINT pk_recommendations PRIMARY KEY(id_user,id_produit),
+   CONSTRAINT conserne2 FOREIGN KEY(id_produit)
+      REFERENCES produits(id_produit) ON UPDATE CASCADE ON DELETE CASCADE,
    CONSTRAINT recoit FOREIGN KEY(id_user)
       REFERENCES acheteurs(id_user) ON UPDATE CASCADE ON DELETE CASCADE
 )ENGINE = InnoDB;
@@ -152,11 +152,11 @@ CREATE TABLE recommandations (
 DROP TABLE IF EXISTS produits_panier;
 CREATE TABLE produits_panier (
    id_user INT(255) NOT NULL,
-   id_plat INT(255) NOT NULL,
+   id_produit INT(255) NOT NULL,
    info VARCHAR(255),
-   CONSTRAINT pk_produits_panier PRIMARY KEY(id_user, id_plat),
-   CONSTRAINT contient FOREIGN KEY(id_plat)
-      REFERENCES plats(id_plat) ON UPDATE CASCADE ON DELETE CASCADE,
+   CONSTRAINT pk_produits_panier PRIMARY KEY(id_user, id_produit),
+   CONSTRAINT contient FOREIGN KEY(id_produit)
+      REFERENCES produits(id_produit) ON UPDATE CASCADE ON DELETE CASCADE,
    CONSTRAINT dispose FOREIGN KEY(id_user)
       REFERENCES acheteurs(id_user) ON UPDATE CASCADE ON DELETE CASCADE
 )ENGINE = InnoDB;

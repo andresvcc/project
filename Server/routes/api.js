@@ -42,7 +42,7 @@ const api = (app, sessionStore)=> {
         res.json([{ id: 1, name: "catego1" }, { id: 2, name: "catego2" }, { id: 3, name: "burger" }])
     })
 
-    app.get('/location', function (req, res) {
+    app.post('/location', function (req, res) {
         res.json([{ id: 1, name: "Carouge" }, { id: 2, name: "Lignon" },{ id: 3, name: "moillesulaz" },{ id: 4, name: "jonction" }])
     })
 

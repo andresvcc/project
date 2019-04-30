@@ -25,13 +25,8 @@ class PageNotLogin extends Component{
   }
 
   componentWillMount = () => {
-    axios.post(`http://localhost:4000/listRestaurants`)
-    .then(res => {
-        const values = res.data.resultat;
-        console.log('cardController',values)
-        this.setState({values:values});
-    })
-}
+    //this.handlerAddClik()
+  }
 
 
 

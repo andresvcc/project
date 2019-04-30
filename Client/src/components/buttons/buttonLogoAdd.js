@@ -22,7 +22,7 @@ export default class ButtonAdd extends Component{
   };
 
   render() {
-    const { fullScreen} = this.props;
+    const { fullScreen, Transition} = this.props;
     return (
       <div>
         <div style={{textAlign:'center'}}>
@@ -34,6 +34,7 @@ export default class ButtonAdd extends Component{
           <Dialog
             fullScreen={fullScreen}
             open={this.state.open}
+            TransitionComponent={Transition}
             onClose={this.handleClose}
             aria-labelledby="responsive-dialog-title">
               <DialogContent style ={{minWidth:'600px'}}>
