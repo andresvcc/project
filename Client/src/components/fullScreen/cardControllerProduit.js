@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux'
 import axios from 'axios';
-import CardListProduit from './cardListProduit';
-import { ToastContainer , toast} from "react-toastify";
+import CardListProduit from '../cards/cardListProduit';
+import { toast} from "react-toastify";
 
-class CardController extends Component {
+class CardControllerProduit extends Component {
     state = {
         values: []
       }
@@ -38,11 +38,6 @@ class CardController extends Component {
         this.updateListRestaurant()
       }
 
-
-
-
-
-
     render() {
         return (
             <div >
@@ -73,4 +68,4 @@ const mapStateToProps = (state) => {
     }
   }
   
-  export default connect(mapStateToProps, mapDispatchToProps)(CardController)
+  export default connect(mapStateToProps, mapDispatchToProps)(CardControllerProduit)

@@ -1,25 +1,27 @@
-import React from 'react';
+import React, { Component } from 'react';
+import {connect} from 'react-redux'
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItem from '@material-ui/core/ListItem';
 import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
-import EditRestaurant from './formEditRestaurant'
+import EditRestaurant from '../forms/formEditRestaurant'
 import ButtonAddProduit from '../buttons/buttonProduitAdd'
-import CardControllerProduit from '../cards/cardControllerProduit'
+import CardListProduit from '../cards/cardListProduit';
+import { toast} from "react-toastify";
+import Icon from '@material-ui/core/Icon';
 
 const styles = {
   appBar: {
-    position: 'relative',
+    position: 'fixe',
+    backgroundColor: "#F48964"
   },
   flex: {
     flex: 1,
@@ -30,12 +32,39 @@ function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
 
-class FullVoir extends React.Component {
+class ScreenEditRestaurant extends Component {
   state = {
     open: false,
+    values: []
   };
 
+  updateListRestaurant = ()=>{
+    axios.post(`http://localhost:4000/listRestaurantVendeur`,{id:this.props.sessID})
+    .then(res => {
+        const values = res.data.response;
+        console.log('cardController',values)
+        this.setState({values:values});
+    })   
+  }
+
+  eliminerRestaurant = (nom, photoName) =>{
+    let photoNameRevise = photoName === 'null.jpg' ? 'null' : photoName
+    axios.post(`http://localhost:4000/delRestaurant`,{id:this.props.sessID, nom:nom, photoName:photoNameRevise})
+    .then(res => {
+        let ok = res.data.ok ? 
+            this.updateListRestaurant() : 
+            toast.error('probleme, imposible emiliner ce restaurant')
+        console.log(ok,res.data)
+    })
+    console.log('subir delet', nom)
+  }
+
+  voirRestaurant = (nom, photoName) =>{
+    console.log('aqui voir', nom, photoName)
+  }
+
   handleClickOpen = () => {
+    this.updateListRestaurant()
     this.setState({ open: true });
   };
 
@@ -48,7 +77,7 @@ class FullVoir extends React.Component {
     return (
       <div>
         <Button color='primary' size="small" onClick={this.handleClickOpen}>
-          Editer
+        <Icon>edit_icon</Icon>
         </Button>
         <Dialog
           fullScreen
@@ -57,7 +86,7 @@ class FullVoir extends React.Component {
           TransitionComponent={Transition}
           style={{top:'4%'}}
         >
-          <AppBar className={classes.appBar} style={{backgroundColor: "#F48964"}}>
+          <AppBar className={classes.appBar}>
             <Toolbar>
               <IconButton color="inherit" onClick={this.handleClose} aria-label="Close">
                 <CloseIcon />
@@ -70,8 +99,8 @@ class FullVoir extends React.Component {
               </Button>
             </Toolbar>
           </AppBar>
-          <div className="form-row">
-            <div className="col">
+          <div className="form-row" style={{marginTop:'80px'}}>
+            <div className="col-md-5">
                 <EditRestaurant
                     nom = {this.props.title}
                     description = {this.props.description}
@@ -80,14 +109,21 @@ class FullVoir extends React.Component {
                     quartier = {this.props.quartier}
                 />
             </div>
-            <div className="col" style={{right:'10%'}}>
+            <div className="col-md-5">     
                 <List>
-                  <CardControllerProduit/>
                   <div>
-                    <ButtonAddProduit restaurant ={this.props.title} action ={this.updateListRestaurant}/>
+                    <CardListProduit 
+                        values ={this.state.values} 
+                        eliminer={this.eliminerRestaurant}
+                    ></CardListProduit>
                   </div>
-                </List>
+                </List>        
             </div>
+          </div>
+          <div className="col-md-1" style={{position:'fixed', right:'5%', top:'10%'}}>
+                <div>
+                  <ButtonAddProduit restaurant ={this.props.title} action ={this.updateListRestaurant}/>
+                </div>    
           </div>
         </Dialog>
       </div>
@@ -95,8 +131,15 @@ class FullVoir extends React.Component {
   }
 }
 
-FullVoir.propTypes = {
+const mapStateToProps = (state) => {
+
+  return {
+    sessID: state.counter.sessID
+  }
+}
+
+ScreenEditRestaurant.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(FullVoir);
+export default connect(mapStateToProps)( withStyles(styles)(ScreenEditRestaurant));

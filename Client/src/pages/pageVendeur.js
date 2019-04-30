@@ -1,12 +1,18 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import axios from 'axios'
-import CardController from '../components/cards/cardController'
+import CardListRestaurant from '../components/cards/cardListRestaurant'
 import { ToastContainer , toast} from "react-toastify";
 import ButtonAdd from '../components/buttons/buttonLogoAdd'
 
 //import { Button } from '@material-ui/core';
-
+const styles = {
+  buttonAddRestaurant:{ 
+    position:'fixed', 
+    bottom:'20%', 
+    right:'5%'
+  }
+}
 
 class PageVendeur extends Component{
   state = {
@@ -23,7 +29,7 @@ class PageVendeur extends Component{
   }
 
   eliminerRestaurant = (nom, photoName) =>{
-    let photoNameRevise = photoName === 'null.jpg' ? 'null' : photoName
+    let photoNameRevise = photoName === 'null.jpg' ? 'null' : photoName // s'il n'a pas de photo eviter de eliminer la photo par defaut car ceci est partagé par plusieurs cardbox
     axios.post(`http://localhost:4000/delRestaurant`,{id:this.props.sessID, nom:nom, photoName:photoNameRevise})
     .then(res => {
         let ok = res.data.ok ? 
@@ -34,10 +40,6 @@ class PageVendeur extends Component{
     console.log('subir delet', nom)
   }
 
-  voirRestaurant = (nom, photoName) =>{
-    console.log('aqui voir', nom, photoName)
-  }
-
   componentWillMount = () => {
     this.updateListRestaurant()
   }
@@ -46,14 +48,15 @@ class PageVendeur extends Component{
     //const {count, loginStatus, typeUser, surname, sessID}=this.props
     return(
         <div>
-          <div style ={{ position:'fixed', bottom:'20%', left:'90%'}}>
+          <div style ={styles.buttonAddRestaurant}>
             <ButtonAdd action ={this.updateListRestaurant}/>
           </div>
-          <CardController 
-            values ={this.state.values} 
-            eliminer={this.eliminerRestaurant}
-            voir = {this.voirRestaurant}
-          ></CardController>
+          <div >
+            <CardListRestaurant 
+              values ={this.state.values} 
+              eliminer={this.eliminerRestaurant}
+            ></CardListRestaurant>
+          </div>
           <ToastContainer autoClose={2000} position={'top-center'}/>
         </div>
     )
@@ -63,18 +66,8 @@ class PageVendeur extends Component{
 const mapStateToProps = (state) => {
 
   return {
-    count: state.counter.count,
-    loginStatus: state.counter.loginStatus,
-    typeUser: state.counter.typeUser,
-    surname: state.counter.surname,
     sessID: state.counter.sessID
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(PageVendeur)
+export default connect(mapStateToProps)(PageVendeur)

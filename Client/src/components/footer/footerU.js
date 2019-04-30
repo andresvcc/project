@@ -1,6 +1,9 @@
 import React from "react";
+import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 
-var style = {
+const styles = {
+    flooter: {    
     backgroundColor: "#FFFBF9",
     borderTop: "2px solid #FFDECD",
     padding: "15px",
@@ -9,14 +12,22 @@ var style = {
     bottom: "0%",
     height: "85px",
     width: "100%",
+    }
 }
 
-export default function FooterU({ children }) {
+function FooterU(props) {
+    const {classes, children} = props;
     return (
-        <div style={style}>
+        <div className= {classes.flooter}>
             <div>
                 { children }
             </div>
         </div>
     )
 }
+
+FooterU.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(FooterU);
