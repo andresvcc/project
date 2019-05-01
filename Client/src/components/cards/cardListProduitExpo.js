@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import CardBoxProduit from './cardBoxProduit'
+import CardBoxProduitExpo from './cardBoxProduitExpo'
 
-export default class CardListProduit extends Component {
+export default class CardListProduitExpo extends Component {
     render(){
         var values = this.props.values.map((value, i) => {
                     
@@ -11,14 +11,16 @@ export default class CardListProduit extends Component {
         
             return (
                 <div className ='' key={i} >
-                    <CardBoxProduit
+                    <CardBoxProduitExpo
                         title={value.nom}
                         description={value.description}
                         bio={value.bio}
                         prixBase={value.prix_base}
                         categorie={value.categorie}
-                        photoName={value.photoName}
+                        photoName={value.photoPlat}
                         eliminerCLick={onEliminerClick}
+                        restaurants={value.restaurants}
+
                     />
                 </div>           
             )
