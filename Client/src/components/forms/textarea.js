@@ -6,8 +6,10 @@ export default class TextArea extends Component {
         values: []
     }
 
-    componentDidMount() {
-
+    errorBorder = (v)=>{
+        return v ?
+            '2px solid red' :
+            ''
     }
 
     render() {
@@ -20,7 +22,8 @@ export default class TextArea extends Component {
                         rows="5" 
                         id="comment"
                         placeholder={this.props.into}
-                        onChange={this.props.back}>
+                        onChange={this.props.back}
+                        style={{ border: this.errorBorder(this.props.error)}}>
                     </textarea>
                 </div>
             </div>
