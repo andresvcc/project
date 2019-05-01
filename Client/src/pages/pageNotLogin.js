@@ -29,6 +29,17 @@ class PageNotLogin extends Component{
     //this.handlerAddClik()
   }
 
+  onChangeSearchInput = (evt) => {
+
+    console.log(evt)
+  
+  }
+
+  keyEnterSearchInput = (evt) => {
+
+    console.log(evt)
+  
+  }
 
 
   render() {
@@ -37,13 +48,18 @@ class PageNotLogin extends Component{
         <div>
           <div style={{position:'relative', paddingTop:'24px'}}>
           <div>
-            <SearchBar/>
+            <SearchBar
+              action ={this.onChangeSearchInput}
+              keyDawEnter = {this.keyEnterSearchInput}
+            />
           </div>
           </div>
-          
-          
-          
+          <div style={{position:'absolute', paddingTop:'100px', paddingLeft:'100px'}}>
+            <h1>page pour les non login</h1>
+          </div>
+
           <ToastContainer autoClose={2000} position={'top-center'}/>
+
         </div>
     )
   }

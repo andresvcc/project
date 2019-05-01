@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { withStyles } from '@material-ui/core/styles';
@@ -18,6 +17,7 @@ const styles = theme => ({
     flexGrow: 3,
   },
   menuButton: {
+    position: 'relative',
     color:'white',
     marginLeft: -12,
     marginRight: 20,
@@ -31,12 +31,14 @@ const styles = theme => ({
   },
   search: {
     position: 'relative',
+    right:'45%',
     borderRadius: theme.shape.borderRadius,
     backgroundColor: fade(theme.palette.common.white, .7),
     '&:hover': {
       backgroundColor: fade(theme.palette.common.white, 0.9),
     },
     marginLeft: 0,
+    marginRight:'-10%',
     width: '100%',
     [theme.breakpoints.up('sm')]: {
       marginLeft: theme.spacing.unit,
@@ -57,16 +59,17 @@ const styles = theme => ({
     width: '100%',
   },
   inputInput: {
+    position:'relative',
     paddingTop: theme.spacing.unit,
     paddingRight: theme.spacing.unit,
     paddingBottom: theme.spacing.unit,
-    paddingLeft: theme.spacing.unit * 15,
+    paddingLeft: theme.spacing.unit * 10,
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-      width: 300,
+      width: 250,
       '&:focus': {
-        width: 380,
+        width: 290,
       },
     },
   },
@@ -74,7 +77,7 @@ const styles = theme => ({
 
 var style = {
     color:'#F48964',
-    backgroundColor: "rgba(244,137,100,.4)",
+    backgroundColor: "rgba(244,137,100,.35)",
     borderTop: "2px solid #FFDECD",
     position: "fixed",
     left: "0",
@@ -86,6 +89,17 @@ var style = {
 
 function SearchAppBar(props) {
   const { classes } = props;
+
+  const updateSearchInput = (evt) => {
+    props.action(evt.target.value)
+  }
+
+  const keyPress = (evt)=> {
+    if(evt.keyCode === 13){
+      props.keyDawEnter(evt.target.value);
+    }
+ }
+
   return (
     <div className={classes.root} >
       <AppBar position="static" style={style}>
@@ -100,6 +114,8 @@ function SearchAppBar(props) {
             </div>
             <InputBase
               placeholder="Chercher un plats..."
+              onChange={updateSearchInput}
+              onKeyDown={keyPress}
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
