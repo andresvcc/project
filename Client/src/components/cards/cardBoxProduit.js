@@ -102,7 +102,7 @@ function CardBoxProduit(props) {
             </div>
             </CardContent>
             <CardContent style={{lineHeight:'20px'}}>
-              <Typography gutterBottom variant="subheading" component="h6" style={{paddingTop:'10px'}}>
+              <Typography gutterBottom variant="subheading" component="h6" style={{paddingTop:'0px'}}>
               {description()}
               </Typography>
             </CardContent>

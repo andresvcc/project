@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import axios from 'axios'
 import { ToastContainer } from "react-toastify";
+import SearchBar from '../components/searchBar/searchBar.js'
 
 
 //import { Button } from '@material-ui/core';
@@ -34,9 +35,10 @@ class PageNotLogin extends Component{
     //const {count, loginStatus, typeUser, surname, sessID}=this.props
     return(
         <div>
-          <div style={{position:'absolute',left:'5%' ,top:'20%'}}>
-            <h1 >Page pour les non login user</h1>
-
+          <div style={{position:'relative', paddingTop:'24px'}}>
+          <div>
+            <SearchBar/>
+          </div>
           </div>
           
           

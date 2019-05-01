@@ -95,7 +95,7 @@ class ScreenEditRestaurant extends Component {
             </Toolbar>
           </AppBar>
           <div className="form-row" style={{marginTop:'65px', background: 'linear-gradient(#FFF8F5, rgba(255,255,255,.999))'}}>
-            <div className="col-md-4 ">
+            <div className="col-md-4 " style={{paddingTop:'100px'}}>
                 <EditRestaurant
                     nom = {this.props.title}
                     description = {this.props.description}
