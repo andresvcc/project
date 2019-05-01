@@ -13,6 +13,7 @@ const styles = {
   },
   grow: {
     flexGrow: 1,
+    paddingLeft: 24,
   },
   menuButton: {
     marginLeft: -12,
@@ -35,7 +36,7 @@ function ButtonAppBar(props) {
   return (
     <div className={classes.root}>
       <AppBar position="static" style={style}>
-        <Toolbar style={{margin:'-12px'}}>
+        <Toolbar style={{margin:'-12px', marginRight:'15px'}}>
           <Typography variant="h6" color="inherit" className={classes.grow}>
             EastSHOP
           </Typography>

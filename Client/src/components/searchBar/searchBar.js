@@ -6,8 +6,8 @@ import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { withStyles } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
+import Badge from '@material-ui/core/Badge';
 
 const styles = theme => ({
   root: {
@@ -31,14 +31,14 @@ const styles = theme => ({
   },
   search: {
     position: 'relative',
-    right:'45%',
+    right:'20%',
     borderRadius: theme.shape.borderRadius,
     backgroundColor: fade(theme.palette.common.white, .7),
     '&:hover': {
       backgroundColor: fade(theme.palette.common.white, 0.9),
     },
     marginLeft: 0,
-    marginRight:'-10%',
+    marginRight:'0%',
     width: '100%',
     [theme.breakpoints.up('sm')]: {
       marginLeft: theme.spacing.unit,
@@ -98,16 +98,24 @@ function SearchAppBar(props) {
     <div className={classes.root} >
       <AppBar position="static" style={style}>
         <Toolbar>
-          <IconButton className={classes.menuButton} color="inherit" aria-label="Open drawer">
-            <MenuIcon />
+          <div style={{padding:'40px'}}>
+          <IconButton className={classes.menuButton} color="inherit" aria-label="Open drawer" >
+          <Badge badgeContent={4} color="secondary">
+            <i className="material-icons" style={{fontSize:'48px'}}>
+                shopping_cart
+              </i>
+          </Badge>
           </IconButton>
+          </div>
+
           <div className={classes.grow} />
+
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
             <InputBase
-              placeholder="Chercher un plats..."
+              placeholder="Chercher des plats..."
               onChange={updateSearchInput}
               onKeyDown={keyPress}
               classes={{

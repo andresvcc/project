@@ -5,8 +5,8 @@ export default class CardListProduitExpo extends Component {
     render(){
         var values = this.props.values.map((value, i) => {
                     
-            let onEliminerClick = ()=>{
-                this.props.eliminer(value.nom, value.photoName)
+            let onAddShoppingCart = ()=>{
+                this.props.shopping(value.nom, value.photoPlat, value.restaurants, value.photoResto)
             }
         
             return (
@@ -18,9 +18,7 @@ export default class CardListProduitExpo extends Component {
                         prixBase={value.prix_base}
                         categorie={value.categorie}
                         photoName={value.photoPlat}
-                        eliminerCLick={onEliminerClick}
-                        restaurants={value.restaurants}
-
+                        addShoppingCart={onAddShoppingCart}
                     />
                 </div>           
             )

@@ -5,15 +5,10 @@ import FooterU from './footerU'
 
 const styles={
     footerBarTitle:{
-        position:'absolute', 
-        top:'8%', 
         lineHeight :'8px'
     },
     footerBarDocuments:{
-        position:'absolute', 
-        top:'8%', 
-        right:'50%', 
-        lineHeight :'5px'
+
     }
 }
 
@@ -21,11 +16,15 @@ function FooterBar(props) {
     const {classes} =  props
     return (
         <FooterU>
+        <div className="form-row">
+            <div className="col-md-6">
             <div className= {classes.footerBarTitle}>
                 <h5>Information de contact</h5>
                 <label>Andres Caballero & Alex Erne</label>
                 <p>Project transversal 1, 2019, unige </p>
             </div>
+            </div>
+            <div className="col-md-5">
             <div className= {classes.footerBarDocuments}>
                 <h5 className="title">Documents</h5>
                     <ul>
@@ -34,6 +33,8 @@ function FooterBar(props) {
                     </li>
                     </ul>
             </div>
+            </div>
+        </div>
         </FooterU>
     )
 }

@@ -15,7 +15,7 @@ class App extends Component{
   render() {
     //const {count, loginStatus, typeUser, surname, sessID}=this.props
     return(
-        <div>
+        <div style={{Width:'95%'}}>
 
         <AppBar/> 
         <PageController/>

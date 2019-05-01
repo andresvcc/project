@@ -4,7 +4,7 @@ import axios from 'axios'
 import { ToastContainer } from "react-toastify";
 import SearchBar from '../components/searchBar/searchBar.js'
 import List from '@material-ui/core/List';
-import CardListProduit from '../components/cards/cardListProduitExpo';
+import CardListProduitExpo from '../components/cards/cardListProduitExpo';
 
 
 
@@ -43,7 +43,7 @@ class PageNotLogin extends Component{
 
   toNormalised =(cadena)=>{
     // Definimos los caracteres que queremos eliminar
-    var specialChars = "!@#$^&%*()+=-[]\/{}|:<>?,.";
+    var specialChars = "!@#$^&%*()+=-[]/{}|:<>?,.";
  
     // Los eliminamos todos
     for (var i = 0; i < specialChars.length; i++) {
@@ -114,8 +114,8 @@ class PageNotLogin extends Component{
     console.log(resultado)
   }
 
-  eliminerProduit = (nom, photo)=>{
-    console.log(nom, photo)
+  shoppingProduit = (nomProduit, photoProduit, nomRestaurant, photoRestaurant)=>{
+    console.log(nomProduit, photoProduit, nomRestaurant, photoRestaurant)
   }
 
   render() {
@@ -130,18 +130,21 @@ class PageNotLogin extends Component{
             />
           </div>
           </div>
-          <div className="form-row" style={{marginTop:'65px'}}>
-            <div className="col-md-6" style={{paddingTop:'100px'}}>
+          <div className="form-row" style={{marginTop:'80px'}}>
+            <div className="col-md-5" style={{paddingTop:'100px'}}>
+
             </div>
-            <div className="col-md-6">     
+            <div className="col-md-6" style={{paddingTop:'15%'}}>     
               <List>
                 <div>
-                  <CardListProduit 
+                  <CardListProduitExpo 
                       values ={this.state.produitsDisplay} 
-                      eliminer={this.eliminerProduit}
-                  ></CardListProduit>
+                      shopping={this.shoppingProduit}
+                  ></CardListProduitExpo>
                 </div>
               </List> 
+            </div>
+            <div className="col-md-1" style={{paddingTop:'160px'}}>
             </div>
           </div>
           <ToastContainer autoClose={2000} position={'top-center'}/>
