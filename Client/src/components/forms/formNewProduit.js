@@ -26,7 +26,8 @@ class FormNewProduit extends Component {
             categorie:1,
             fileCharged: 'cliker ici pour charger une photo',
             errorNom: false,
-            errorPrixBase: false
+            errorPrixBase: false,
+            errorDescription:false
         }
     }
 
@@ -56,8 +57,14 @@ class FormNewProduit extends Component {
             this.setState({ errorPrixBase: true }),
             false
         )
+
+        let okDescriptionSize = this.state.description.length < 240 ? true : (
+            toast.error('la description est trop longe'), 
+            this.setState({ errorDescription: true }),
+            false
+        )
         
-        okname && okprixbase  ? this.uploadFile() : toast.warn(`Le produit n'a pas été crée, verifier les champ SVP`)
+        okname & okprixbase & okDescriptionSize ? this.uploadFile() : toast.warn(`Le produit n'a pas été crée, verifier les champ SVP`)
     }
 
 
@@ -114,7 +121,9 @@ class FormNewProduit extends Component {
 
         let id = this.props.sessID
 
-        let photoName = this.state.filename
+        let photoName =
+            this.state.filename !== '' ?
+            this.state.filename : (this.setState({ errorNom: true }), 'null.jpg')
 
         let data = {
             id,
@@ -154,14 +163,15 @@ class FormNewProduit extends Component {
 
     updateInputName = (evt) => {
         this.setState({
-            name: evt.target.value,
+            name: evt.target.value.replace('"', '').replace('"', ' '),
             errorNom: false
         });
     }
 
     updateInputDescription = (evt) => {
         this.setState({
-            description: evt.target.value
+            description: evt.target.value.replace('"', '').replace('"', ' '),
+            errorDescription: false
         });
     }
 
@@ -215,6 +225,7 @@ class FormNewProduit extends Component {
                                     label='Description'
                                     into={'Rentez une description'}
                                     back={this.updateInputDescription}
+                                    error={this.state.errorDescription}
                                     >
                                 </TextArea>
                                 <div className="form-row">

@@ -39,7 +39,7 @@ module.exports = Object.freeze({
             return `INSERT IGNORE INTO users
                          SET surname = '${surname}',
                          password = '${password}',
-                         email = '${email}';`
+                         email = "${email}";`
      },
 
 /*11*/ NEW_ACHETEUR: (surname, password, quartier) => { 
@@ -53,10 +53,10 @@ module.exports = Object.freeze({
            return `INSERT INTO vendeurs (id_user, nom, prenom, adresse, bancaire)
                    VALUES(
                        (SELECT id_user FROM users WHERE surname = '${surname}' AND password = '${password}'),
-                       '${nom}',
-                       '${prenom}',
-                       '${adresse}',
-                       '${bancaire}'
+                       "${nom}",
+                       "${prenom}",
+                       "${adresse}",
+                       "${bancaire}"
                    );`
      },
 
@@ -84,8 +84,8 @@ module.exports = Object.freeze({
      return    `INSERT INTO log (id_user, id_session, action, value)
                 SELECT (SELECT id_user FROM users WHERE surname = '${surname}'),
                        (SELECT MAX( id_session ) FROM s_server ),
-                       '${action}',
-                       '${value}'` 
+                       "${action}",
+                       "${value}"` 
      },
 
 /*16*/ CHANGE_PASSWORD: (surname, password, newPassword) => { 
@@ -118,7 +118,7 @@ module.exports = Object.freeze({
                     FROM restaurants, categories, produits
                     WHERE produits.id_restaurant = restaurants.id_restaurant
                     AND produits.id_categorie = categories.id_categorie
-                    AND restaurants.nom = '${restaurant}';` 
+                    AND restaurants.nom = "${restaurant}";` 
      },
 
 /*21*/ FIND_PRODUIT_QUARTIER: (nomProduit, username, password) => { 
@@ -187,12 +187,12 @@ module.exports = Object.freeze({
                               AND users.password = '${password}'
                               AND vendeurs.id_user = users.id_user
                          ), 
-                         '${nom}',
-                         '${description}',
-                         '${adresse}',
-                         '${telephone}',
+                         "${nom}",
+                         "${description}",
+                         "${adresse}",
+                         "${telephone}",
                          ${quartier},
-                         '${photoName}'    
+                         "${photoName} "   
                     );` 
      },
         
@@ -211,13 +211,13 @@ module.exports = Object.freeze({
                                    AND restaurants.id_user = users.id_user
                                    AND users.surname = '${surname}'
                                    AND users.password ='${password}'
-                                   AND restaurants.nom = '${restaurant}'
+                                   AND restaurants.nom = "${restaurant}"
                               ),
                               ${categorie},
-                              '${nom}',
+                              "${nom}",
                               ${prixBase},
-                              '${description}',
-                              '${photoName}',
+                              "${description}",
+                             "${photoName}",
                               ${bio}
                          );` 
      },
@@ -232,7 +232,7 @@ module.exports = Object.freeze({
 
 /*40*/ DEL_RESTAURANT: (surname, password, nom) => { 
             return `DELETE FROM restaurants 
-            WHERE restaurants.nom = '${nom}'
+            WHERE restaurants.nom = "${nom}"
             AND restaurants.id_user =  (SELECT users.id_user 
                                         FROM users 
                                         WHERE users.surname = '${surname}'
@@ -247,7 +247,7 @@ module.exports = Object.freeze({
                               FROM produits, restaurants, vendeurs, users
                               WHERE produits.id_restaurant = restaurants.id_restaurant
                               AND produits.nom = '${nom}'
-                              AND restaurants.nom = '${restaurant}'
+                              AND restaurants.nom = "${restaurant}"
                               AND vendeurs.id_user = restaurants.id_user
                               AND vendeurs.id_user = users.id_user
                               AND users.surname = '${surname}'
