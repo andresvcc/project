@@ -21,7 +21,7 @@ const styles = theme => ({
     color:'white',
     marginLeft: -12,
     marginRight: 20,
-    backgroundColor: "rgba(244,137,100,.6)"
+    backgroundColor: "rgba(244,137,100,.3)"
   },
   title: {
     display: 'none',
@@ -32,21 +32,20 @@ const styles = theme => ({
   search: {
     position: 'relative',
     right:'20%',
+    left:'-15%',
     borderRadius: theme.shape.borderRadius,
     backgroundColor: fade(theme.palette.common.white, .7),
     '&:hover': {
       backgroundColor: fade(theme.palette.common.white, 0.9),
     },
-    marginLeft: 0,
-    marginRight:'0%',
     width: '100%',
     [theme.breakpoints.up('sm')]: {
       marginLeft: theme.spacing.unit,
-      width: 'auto',
+      width: '100%',
     },
   },
   searchIcon: {
-    width: theme.spacing.unit * 9,
+    width: theme.spacing.unit * 4,
     height: '100%',
     position: 'absolute',
     pointerEvents: 'none',
@@ -60,10 +59,10 @@ const styles = theme => ({
   },
   inputInput: {
     position:'relative',
-    paddingTop: theme.spacing.unit,
+    paddingTop: theme.spacing.unit * 2,
     paddingRight: theme.spacing.unit,
-    paddingBottom: theme.spacing.unit,
-    paddingLeft: theme.spacing.unit * 10,
+    paddingBottom: theme.spacing.unit * 2,
+    paddingLeft: theme.spacing.unit * 5,
     transition: theme.transitions.create('width'),
     width: '100%',
   },
@@ -74,11 +73,12 @@ var style = {
     backgroundColor: "rgba(244,137,100,.35)",
     borderTop: "2px solid #FFDECD",
     position: "fixed",
-    left: "0",
-    top: "4.5%",
+    left: "25%",
+    right:'25%',
+    top: "25%",
     zIndex:1,
-    height: "80px",
-    width: "100%",
+    height: "auto",
+    width: "50%",
   }
 
 function SearchAppBar(props) {
@@ -98,10 +98,10 @@ function SearchAppBar(props) {
     <div className={classes.root} >
       <AppBar position="static" style={style}>
         <Toolbar>
-          <div style={{padding:'40px'}}>
+          <div style={{paddingLesft:'20%',paddingRight:'20%'}}>
           <IconButton className={classes.menuButton} color="inherit" aria-label="Open drawer" >
           <Badge badgeContent={4} color="secondary">
-            <i className="material-icons" style={{fontSize:'48px'}}>
+            <i className="material-icons" style={{fontSize:'36px'}}>
                 shopping_cart
               </i>
           </Badge>

@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import SearchBar from '../components/searchBar/searchBar.js'
 import List from '@material-ui/core/List';
 import CardListProduitExpo from '../components/cards/cardListProduitExpo';
+import BarnerBar from '../components/barnerBar/barnerBar'
 
 
 
@@ -129,7 +130,9 @@ class PageNotLogin extends Component{
               keyDawEnter = {this.keyEnterSearchInput}
             />
           </div>
+          <BarnerBar/>
           </div>
+          
           <div className="form-row" style={{marginTop:'80px'}}>
             <div className="col-md-5" style={{paddingTop:'100px'}}>
 
