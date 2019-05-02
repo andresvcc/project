@@ -1,24 +1,24 @@
 import React, { Component } from 'react';
-import CardBoxProduit from './cardBoxProduit'
+import CardBoxProduitExpo from './cardBoxProduitExpo'
 
-export default class CardListProduit extends Component {
+export default class CardListProduitExpo extends Component {
     render(){
         var values = this.props.values.map((value, i) => {
                     
-            let onEliminerClick = ()=>{
-                this.props.eliminer(value.nom, value.photoName)
+            let onAddShoppingCart = ()=>{
+                this.props.shopping(value.nom, value.photoPlat, value.restaurants, value.photoResto)
             }
         
             return (
                 <div className ='' key={i} >
-                    <CardBoxProduit
+                    <CardBoxProduitExpo
                         title={value.nom}
                         description={value.description}
                         bio={value.bio}
                         prixBase={value.prix_base}
                         categorie={value.categorie}
-                        photoName={value.photoName}
-                        eliminerCLick={onEliminerClick}
+                        photoName={value.photoPlat}
+                        addShoppingCart={onAddShoppingCart}
                     />
                 </div>           
             )

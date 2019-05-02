@@ -1,47 +1,20 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import axios from 'axios'
+//import axios from 'axios'
 import { ToastContainer } from "react-toastify";
-
 
 //import { Button } from '@material-ui/core';
 
 
 class PageNotLogin extends Component{
-
-  state = {
-    values: []
-  }
-
-  handlerAddClik = ()=>{
-    axios.post(`http://localhost:4000/listRestaurants`)
-    .then(res => {
-        const values = res.data.resultat;
-        console.log('cardController',values)
-        this.setState({values:values});
-    })
-    console.log('aqui')
-    
-  }
-
-  componentWillMount = () => {
-    //this.handlerAddClik()
-  }
-
-
-
   render() {
-    //const {count, loginStatus, typeUser, surname, sessID}=this.props
+   // const {count, loginStatus, typeUser, surname, sessID}=this.props
     return(
-        <div>
-          <div style={{position:'absolute',left:'5%' ,top:'20%'}}>
-            <h1 >Page pour les non login user</h1>
+        <div >
+            <h1 style={{position:'absolute',left:'5%' ,top:'20%'}}>page d'accueil</h1>
+              
+        <ToastContainer autoClose={2000} position={'top-center'}/>
 
-          </div>
-          
-          
-          
-          <ToastContainer autoClose={2000} position={'top-center'}/>
         </div>
     )
   }
@@ -49,7 +22,6 @@ class PageNotLogin extends Component{
 
 
 const mapStateToProps = (state) => {
-
   return {
     count: state.counter.count,
     loginStatus: state.counter.loginStatus,

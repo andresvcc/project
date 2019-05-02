@@ -33,7 +33,18 @@ module.exports = Object.freeze({
 
 /*8*/ LIST_CATEGORIES: `SELECT id_categorie as id, nom as name FROM categories`,
 
-/*9*/ LIST_PLATS: `SELECT * FROM plats`,
+/*9*/ LIST_PRODUITS:`SELECT  produits.id_produit,
+                         produits.nom, 
+                         restaurants.nom as restaurants, 
+                         categories.nom as categorie, 
+                         produits.prix_base, 
+                         produits.description, 
+                         bio, 
+                         produits.photoName as photoPlat, 
+                         restaurants.photoName as photoResto 
+                     FROM restaurants, categories, produits
+                     WHERE produits.id_restaurant = restaurants.id_restaurant
+                     AND produits.id_categorie = categories.id_categorie;`,
 
 /*10*/ NEW_USER: (surname, password, email) => { 
             return `INSERT IGNORE INTO users

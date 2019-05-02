@@ -241,8 +241,8 @@ const routerMysql = (app, sessionStore)=>{
 
     /* fn 9	 iste des plats
         LIST_PLATS */
-    app.post('/listPlats', (req, res) => {
-        let sqlQuery = constants.LIST_PLATS
+    app.post('/listProduits', (req, res) => {
+        let sqlQuery = constants.LIST_PRODUITS
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
         })

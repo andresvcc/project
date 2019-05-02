@@ -6,12 +6,10 @@ const styles = {
     flooter: {    
     backgroundColor: "#FFFBF9",
     borderTop: "2px solid #FFDECD",
-    padding: "15px",
-    position: "relative",
-    left: "0%",
-    bottom: "0%",
-    height: "85px",
-    width: "100%",
+    position: "absolute",
+    paddingLeft:'40px',
+    width:'100%',
+    minHeight:'85px'
     }
 }
 

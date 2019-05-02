@@ -2,21 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
-import DeleteIcon from '@material-ui/icons/Delete';
 import Button from '@material-ui/core/Button';
 import AlertDialog from '../dialog/alertDialog'
+
 
 const styles = {
   card: {
     margin:18, 
-    minHeight:180, 
-    maxHeight:180,
-    minWidth: '100%',
-    maxWidth: '100%',
+    minHeight:190, 
+    maxHeight:190,
+    minWidth: '85%',
+    maxWidth: '85%',
     position:'relative',
 
 
@@ -74,24 +73,21 @@ function CardBoxProduit(props) {
     )
   }
 
-
   const { classes } = props;
 
   return (
     <Card className={classes.card} >
     {bio()}
        <div className="form-row">
-          <div className="col-5">
-          <CardActionArea style={{width:'100%'}}>
+          <div className="col-5" style={{width:'100%'}}>
             <CardMedia
               component="img"
               alt={props.photoName}
               className={classes.media}
-              height="180px"
+              height="190px"
               image= {`http://localhost:4000/photo/${props.photoName}`}
               title={props.photoName}
             />
-          </CardActionArea>
           </div>
           <div className="col-7"> 
             <CardContent>
@@ -114,9 +110,14 @@ function CardBoxProduit(props) {
       <Typography gutterBottom variant="h6" component="h6"  style={{lineHeight:'20px', position:'absolute', bottom:'1%', left:'45%', width:'10%', height:'20%'}}>
           {props.prixBase+'.-CHF'}
       </Typography>
-      <Button color='secondary' size="small" onClick={props.eliminerCLick} style={{position:'absolute', bottom:'1%', right:'2%', width:'10%', height:'20%'}}>
-          <DeleteIcon color='error'/>
+      <div style={{textAlign:'center', position:'absolute', bottom:'28%', right:'5%', width:'20%', height:'20%'}}>
+      <Button size="small" onClick={props.addShoppingCart}  style={{height:'75px'}}>
+        <div style={{textAlign:'center'}}>
+          <i className="material-icons " style={{fontSize: '36px', color:'#FB8C00'}}> add_shopping_cart</i>
+          <p >Ajouter</p>
+        </div>
       </Button>
+      </div>
     </Card>
   );
 }
