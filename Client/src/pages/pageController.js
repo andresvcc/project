@@ -28,9 +28,9 @@ class PageController extends Component{
    const {count, loginStatus, typeUser, surname, sessID}=this.props
     return(
         <div style={{background: 'linear-gradient(rgba(255,255,255,.91), rgba(255,255,255,.999)), url("http://localhost:4000/photo/fond.jpg")'}}>
-          <h6 style={{position:'absolute', top:'15  %' }}>Count: {count}, Login :{loginStatus.toString()}, TypeUser :{typeUser}, Surname :{surname}, sessID :{sessID}</h6>
+          <h6 style={{position:'absolute', top:'50%' }}>Count: {count}, Login :{loginStatus.toString()}, TypeUser :{typeUser}, Surname :{surname}, sessID :{sessID}</h6>
 
-          <div style={{minHeight:'90vh',position:'relative'}}>
+          <div style={{minHeight:'91vh',position:'relative'}}>
             <div>
                  {this.controllerPage()}
             </div>

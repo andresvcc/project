@@ -10,8 +10,8 @@ const styles = theme => ({
     display: 'flex',
     flexWrap: 'wrap',
     minWidth: 300,
-    maxWidth:300,
     width: '100%',
+    zIndex:1
   },
   image: {
     position: 'relative',
@@ -81,19 +81,24 @@ const styles = theme => ({
 
 const images = [
   {
-    url: '/static/images/grid-list/breakfast.jpg',
+    url: 'http://localhost:4000/photo/1556689066745-3083.jpeg',
     title: 'Breakfast',
-    width: '40%',
+    width: '25%',
   },
   {
-    url: '/static/images/grid-list/burgers.jpg',
+    url: 'http://localhost:4000/photo/1556691868179-1566.jpeg',
     title: 'Burgers',
-    width: '30%',
+    width: '25%',
   },
   {
-    url: '/static/images/grid-list/camera.jpg',
+    url: 'http://localhost:4000/photo/1556694794659-6007.jpeg',
     title: 'Camera',
-    width: '30%',
+    width: '25%',
+  },
+  {
+    url: 'http://localhost:4000/photo/1556700130613-8462.jpeg',
+    title: 'camera2',
+    width: '25%',
   },
 ];
 

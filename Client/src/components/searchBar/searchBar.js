@@ -8,10 +8,14 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
 import { withStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import Badge from '@material-ui/core/Badge';
+import CheckBox from '../forms/checkBox'
 
 const styles = theme => ({
   root: {
-    width: '100%'
+    width: '100%',
+    zIndex:2,
+    position:'relative',
+
   },
   grow: {
     flexGrow: 3,
@@ -69,13 +73,13 @@ const styles = theme => ({
 });
 
 var style = {
-    color:'#F48964',
-    backgroundColor: "rgba(244,137,100,.35)",
+    color:'#FFDACE',
+    backgroundColor: "#FFDACE",
     borderTop: "2px solid #FFDECD",
     position: "fixed",
     left: "25%",
     right:'25%',
-    top: "25%",
+    top: "24.3%",
     zIndex:1,
     height: "auto",
     width: "50%",
@@ -107,7 +111,6 @@ function SearchAppBar(props) {
           </Badge>
           </IconButton>
           </div>
-
           <div className={classes.grow} />
 
           <div className={classes.search}>
@@ -123,6 +126,23 @@ function SearchAppBar(props) {
                 input: classes.inputInput,
               }}
             />
+          </div>
+          <div style={{paddingLesft:'20%',paddingRight:'20%'}}>
+          <div>
+             <div className="form-row" style={{textAlign:'center'}}>
+              <div className="col-sm-6">
+                <p style={{color:'red'}}>Bio</p>
+              </div>
+              <div className="col-sm-6">
+                <CheckBox
+                  label = 'Bio?'
+                  into = {props.bioState}
+                  back = {props.bio}
+                  >
+                </CheckBox>               
+              </div>
+             </div>
+            </div> 
           </div>
         </Toolbar>
       </AppBar>
