@@ -5,12 +5,13 @@ import { Progress } from 'reactstrap';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+
 //composants
 import TextForm from './textForm';
 import ListOption from './option';
 import TextArea from './textarea';
 import NumForm from './textFormLine';
-import CheckBox from './checkBox'
+import CheckBox from './checkBox';
 
 class FormNewProduit extends Component {
     constructor(props) {
@@ -27,8 +28,12 @@ class FormNewProduit extends Component {
             fileCharged: 'cliker ici pour charger une photo',
             errorNom: false,
             errorPrixBase: false,
-            errorDescription:false
+            errorDescription:false,
         }
+    }
+
+    onAjouterCategorie = ()=>{
+        console.log('onAjouterCategorie')
     }
 
     onAnuller  = () =>{
@@ -194,6 +199,10 @@ class FormNewProduit extends Component {
         });
     }
 
+    updateCategorieList = () =>{
+        console.log('update list categorie')
+    }
+
     /*
     
         <div style={{ position: 'absolute' }}>
@@ -232,10 +241,10 @@ class FormNewProduit extends Component {
                                         <div className="col">
                                             <ListOption
                                                 label='Categorie'
+                                                ajouter={true}
                                                 categories=':4000/listCategories'
                                                 into={this.state.categorie}
-                                                back={this.updateOptionCategorie}
-                                                >
+                                                back={this.updateOptionCategorie}>
                                             </ListOption>
                                         </div>
                                         <div className="col">
