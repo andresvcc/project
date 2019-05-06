@@ -1,22 +1,20 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import 'react-toastify/dist/ReactToastify.css';
+import ButtonCategorieAdd from '../buttons/buttonCategorieAdd'
 
 export default class ListOption extends Component {
     state = {
-        values: []
+        values: [],
+        page:<p>void</p>
     }
 
     componentDidMount() {
-        axios.post(`http://localhost${this.props.categories}`)
-            .then(res => {
-                const values = res.data;
-                this.setState({values});
-            })
+        this.update()
     }
 
-    render() {
-        return (
+    page=(values)=>{
+        return(
             <div className="">
                 <p></p>
                 <div className="form-group input-group-prepend" >
@@ -26,13 +24,37 @@ export default class ListOption extends Component {
                             className="custom-select" 
                             onChange={this.props.back}>
                         {
-                            this.state.values.map((obj) => {
+                            values.map((obj) => {
                                 return <option key ={obj.id} value={obj.id}>{obj.name}</option>
                             })
                         }</select>
                     </div>
                 </div>
+                {this.buttonAjouter(this.props.ajouter)}
             </div>
+        )
+    }
+
+    update = ()=>{
+        axios.post(`http://localhost${this.props.categories}`)
+        .then(res => {
+            const values = res.data;
+            this.setState({page:this.page(values)});
+        })
+    }
+
+    buttonAjouter = (e)=>{
+        let res = e ? (
+            <ButtonCategorieAdd action={this.update}/>
+        ):(
+            ''
+        )
+        return res
+    }
+
+    render() {
+        return (
+            this.state.page
         );
     }
    

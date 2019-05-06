@@ -6,7 +6,6 @@ import SearchBar from '../components/searchBar/searchBar.js'
 import List from '@material-ui/core/List';
 import CardListProduitExpo from '../components/cards/cardListProduitExpo';
 import BarnerBar from '../components/barnerBar/barnerBar'
-import Divider from '@material-ui/core/Divider';
 
 
 

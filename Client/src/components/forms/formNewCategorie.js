@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Progress } from 'reactstrap';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -58,7 +57,7 @@ export default class FormNewCategorie extends Component {
                 draggable: true
             }),
             this.setState({ errorNom: false }),
-            console.log(data),
+            this.newCategorieQuery(data),
             this.props.back(),
             true
         ):(
@@ -74,6 +73,28 @@ export default class FormNewCategorie extends Component {
             false
         )
         return ok
+    }
+
+    newCategorieQuery = (data) =>{
+        console.log('evoie', data)
+        axios.post(`http://localhost:4000/newCategorie`, data )
+        .then(res => {
+            console.log(res.data)
+            let ok = res.data.ok ? (
+                console.log('Categorie ajouté avec success'),
+                this.props.action(),
+                true 
+            ):(
+                this.setState({msgerrNom:res.data.msg}),
+                toast.error(res.data.msg), 
+                false
+            )
+            ok ?   this.props.back() : console.log('Categorie ne pas ajouté')
+        })
+        .catch(err => { // then print response status
+            toast.error('information incorrecte')
+            console.log(err)
+        })
     }
 
     updateInputName = (evt) => {
@@ -101,9 +122,9 @@ export default class FormNewCategorie extends Component {
                     <div style={{ position: 'absolute' }}>
                     </div>
                 <div className="row">
-                    <div className="offset-md-3 col-md-6">
+                    <div className="offset-md-1 col-md-10">
                         <div >
-                            <legend>Ajouter un nouveau restaurant</legend>
+                            <legend>Ajouter une nouvelle categorie</legend>
                             <div>
                                 <TextForm
                                     label='Nom'
