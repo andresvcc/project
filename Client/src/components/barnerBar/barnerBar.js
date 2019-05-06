@@ -16,7 +16,7 @@ const styles = theme => ({
     position: 'relative',
     height: 200,
     [theme.breakpoints.down('xs')]: {
-      width: '100% !important', // Overrides inline-style
+      width: '100%', // Overrides inline-style
       height: 100,
     },
     '&:hover, &$focusVisible': {
@@ -34,7 +34,7 @@ const styles = theme => ({
   },
   focusVisible: {},
   imageButton: {
-    position: 'absolute',
+    position: 'relative',
     left: 0,
     right: 0,
     top: 0,
@@ -81,22 +81,22 @@ const styles = theme => ({
 const images = [
   {
     url: 'http://localhost:4000/photo/1556689066745-3083.jpeg',
-    title: 'Breakfast',
+    title: 'Mon dernier achat',
     width: '25%',
   },
   {
     url: 'http://localhost:4000/photo/1556691868179-1566.jpeg',
-    title: 'Burgers',
+    title: 'Mon plus acheté',
     width: '25%',
   },
   {
     url: 'http://localhost:4000/photo/1556694794659-6007.jpeg',
-    title: 'Camera',
+    title: 'Top evaluations',
     width: '25%',
   },
   {
     url: 'http://localhost:4000/photo/1556700130613-8462.jpeg',
-    title: 'camera2',
+    title: 'Top plus proche',
     width: '25%',
   },
 ];
