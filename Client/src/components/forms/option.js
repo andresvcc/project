@@ -5,7 +5,6 @@ import ButtonCategorieAdd from '../buttons/buttonCategorieAdd'
 
 export default class ListOption extends Component {
     state = {
-        values: [],
         page:<p>void</p>
     }
 
@@ -13,7 +12,10 @@ export default class ListOption extends Component {
         this.update()
     }
 
+    
+
     page=(values)=>{
+        console.log(values[values.length - 1].name)
         return(
             <div className="">
                 <p></p>
@@ -21,11 +23,16 @@ export default class ListOption extends Component {
                 <label className="input-group-text">{this.props.label}:</label>
                     <div className="drop-down">
                         <select 
+                            size = '1'
+                            selected={values.length}
                             className="custom-select" 
                             onChange={this.props.back}>
                         {
                             values.map((obj) => {
-                                return <option key ={obj.id} value={obj.id}>{obj.name}</option>
+                                return <option 
+                                    key ={obj.id} 
+                                    value={obj.id}
+                                    >{obj.name}</option>
                             })
                         }</select>
                     </div>

@@ -5,11 +5,10 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
-  root: {
+  root1: {
     position:'fixed',
     display: 'flex',
     flexWrap: 'wrap',
-    minWidth: 300,
     width: '100%',
     zIndex:1
   },
@@ -69,8 +68,8 @@ const styles = theme => ({
     padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 4}px ${theme.spacing.unit + 6}px`,
   },
   imageMarked: {
-    height: 3,
-    width: 18,
+    maxheight: 3,
+    maxwidth: 18,
     backgroundColor: theme.palette.common.white,
     position: 'absolute',
     bottom: -2,
@@ -106,7 +105,7 @@ function BarnerBar(props) {
   const { classes } = props;
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root1}>
       {images.map(image => (
         <ButtonBase
           focusRipple

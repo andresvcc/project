@@ -16,13 +16,10 @@ class App extends Component{
     //const {count, loginStatus, typeUser, surname, sessID}=this.props
     return(
         <div>
-
         <AppBar/> 
         <PageController/>
         <FooterBar/>
         <ToastContainer autoClose={2000} position={'top-center'}/>
-        
-
         </div>
     )
   }

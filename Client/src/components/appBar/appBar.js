@@ -6,6 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import LoginScreenButton from './loginScreen'
 import MenuSignOn from './menuSignOn'
+import BarnerBar from '../barnerBar/barnerBar'
 
 const styles = {
   root: {

@@ -141,7 +141,10 @@ class PageAcheteur extends Component{
            
           </div>
           </div>
-          <BarnerBar/>
+          <div>
+            <BarnerBar/>
+          </div>
+          
           <div className="form-row" style={{marginTop:'80px'}}>
             <div className="col-md-5" style={{paddingTop:'15%'}}>
                 <p>Bio:{this.state.bioState.toString()}- dernier:{this.state.dernierRecherche}</p>
