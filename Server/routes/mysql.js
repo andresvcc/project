@@ -522,9 +522,12 @@ const routerMysql = (app, sessionStore)=>{
     /* fn 36 ajouter une catégorie
         NEW_CATEGORIE(surname, password, nom, description) */
     app.post('/newCategorie', (req, res) => {
-        let sqlQuery = constants.NEW_CATEGORIE(req.body.surname, req.body.password, req.body.nom, req.body.description)
+        let sqlQuery = constants.NEW_CATEGORIE(req.body.nom, req.body.description)
         connection.query(sqlQuery, (err, resultat) => {
-            err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
+            err ? res.json({ ok: false, error: err }) : (
+                console.log(gutil.colors.cyan('CREATE CATEGORIE', req.body.nom)),
+                res.json({ ok: true, response: resultat })
+            )
         })
     })
 

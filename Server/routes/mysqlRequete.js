@@ -207,7 +207,7 @@ module.exports = Object.freeze({
                     );` 
      },
         
-/*36*/ NEW_CATEGORIE: (surname, password, nom, description) => { 
+/*36*/ NEW_CATEGORIE: (nom, description) => { 
             return `INSERT INTO categories (nom, description) 
                 values ('${nom}','${description}');` 
      },

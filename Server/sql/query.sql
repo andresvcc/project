@@ -203,7 +203,7 @@ AND users.surname = 'jeisy'
 nouvelle categorie
 */
 INSERT INTO categories (nom, description)
-values ('café','texte');
+values ('pain','texte');
 
 /*******************************************************
 liste des categories
