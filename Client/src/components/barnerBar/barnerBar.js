@@ -5,11 +5,10 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
-  root: {
+  root1: {
     position:'fixed',
     display: 'flex',
     flexWrap: 'wrap',
-    minWidth: 300,
     width: '100%',
     zIndex:1
   },
@@ -17,7 +16,7 @@ const styles = theme => ({
     position: 'relative',
     height: 200,
     [theme.breakpoints.down('xs')]: {
-      width: '100% !important', // Overrides inline-style
+      width: '100%', // Overrides inline-style
       height: 100,
     },
     '&:hover, &$focusVisible': {
@@ -35,7 +34,7 @@ const styles = theme => ({
   },
   focusVisible: {},
   imageButton: {
-    position: 'absolute',
+    position: 'relative',
     left: 0,
     right: 0,
     top: 0,
@@ -69,8 +68,8 @@ const styles = theme => ({
     padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 4}px ${theme.spacing.unit + 6}px`,
   },
   imageMarked: {
-    height: 3,
-    width: 18,
+    maxheight: 3,
+    maxwidth: 18,
     backgroundColor: theme.palette.common.white,
     position: 'absolute',
     bottom: -2,
@@ -82,22 +81,22 @@ const styles = theme => ({
 const images = [
   {
     url: 'http://localhost:4000/photo/1556689066745-3083.jpeg',
-    title: 'Breakfast',
+    title: 'Mon dernier achat',
     width: '25%',
   },
   {
     url: 'http://localhost:4000/photo/1556691868179-1566.jpeg',
-    title: 'Burgers',
+    title: 'Mon plus acheté',
     width: '25%',
   },
   {
     url: 'http://localhost:4000/photo/1556694794659-6007.jpeg',
-    title: 'Camera',
+    title: 'Top evaluations',
     width: '25%',
   },
   {
     url: 'http://localhost:4000/photo/1556700130613-8462.jpeg',
-    title: 'camera2',
+    title: 'Top plus proche',
     width: '25%',
   },
 ];
@@ -106,7 +105,7 @@ function BarnerBar(props) {
   const { classes } = props;
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root1}>
       {images.map(image => (
         <ButtonBase
           focusRipple

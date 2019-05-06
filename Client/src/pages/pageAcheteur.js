@@ -131,17 +131,18 @@ class PageAcheteur extends Component{
         <div>
           <div style={{position:'relative', paddingTop:'24px'}}>
           
-          <div>
-            <SearchBar
-              action ={this.onChangeSearchInput}
-              keyDawEnter = {this.keyEnterSearchInput}
-              bio = {this.updateInputBio}
-              bioState = {this.state.bioState}
-            />
-           
+            <div>
+              <SearchBar
+                action ={this.onChangeSearchInput}
+                keyDawEnter = {this.keyEnterSearchInput}
+                bio = {this.updateInputBio}
+                bioState = {this.state.bioState}
+              />
+              <BarnerBar/>
+            </div>
           </div>
-          </div>
-          <BarnerBar/>
+
+          
           <div className="form-row" style={{marginTop:'80px'}}>
             <div className="col-md-5" style={{paddingTop:'15%'}}>
                 <p>Bio:{this.state.bioState.toString()}- dernier:{this.state.dernierRecherche}</p>

@@ -27,11 +27,11 @@ class PageController extends Component{
   render() {
    const {count, loginStatus, typeUser, surname, sessID}=this.props
     return(
-        <div style={{background: 'linear-gradient(rgba(255,255,255,.91), rgba(255,255,255,.999)), url("http://localhost:4000/photo/fond.jpg")'}}>
-          <h6 style={{position:'absolute', top:'50%' }}>Count: {count}, Login :{loginStatus.toString()}, TypeUser :{typeUser}, Surname :{surname}, sessID :{sessID}</h6>
+        <div style={{background: 'linear-gradient(rgba(255,255,255,.91), rgba(255,255,255,.999)), url("http://localhost:4000/photo/fond.jpg")' }}>
+          <h6 style={{position:'absolute', bottom:'8%' }}>Count: {count}, Login :{loginStatus.toString()}, TypeUser :{typeUser}, Surname :{surname}, sessID :{sessID}</h6>
 
-          <div style={{minHeight:'91vh',position:'relative'}}>
-            <div>
+          <div>
+            <div style={{maxWidth:'80vw',minWidth:'80vw',minHeight:'92vh',position:'relative'}}>
                  {this.controllerPage()}
             </div>
           </div>

@@ -43,8 +43,8 @@ export default class ListOption extends Component {
         })
     }
 
-    buttonAjouter = (e)=>{
-        let res = e ? (
+    buttonAjouter = (ajouter)=>{
+        let res = ajouter ? (
             <ButtonCategorieAdd action={this.update}/>
         ):(
             ''
