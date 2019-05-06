@@ -31,7 +31,7 @@ module.exports = Object.freeze({
 
 /*7*/ LIST_RESTAURANTS: `SELECT * FROM restaurants`,
 
-/*8*/ LIST_CATEGORIES: `SELECT id_categorie as id, nom as name FROM categories`,
+/*8*/ LIST_CATEGORIES: `SELECT id_categorie as id, nom as name FROM categories ORDER BY id`,
 
 /*9*/ LIST_PRODUITS:`SELECT  produits.id_produit,
                          produits.nom, 

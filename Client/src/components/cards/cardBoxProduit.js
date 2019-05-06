@@ -13,8 +13,8 @@ import AlertDialog from '../dialog/alertDialog'
 const styles = {
   card: {
     margin:18, 
-    minHeight:180, 
-    maxHeight:180,
+    minHeight:200, 
+    maxHeight:200,
     minWidth: '100%',
     maxWidth: '100%',
     position:'relative',
@@ -56,7 +56,7 @@ function CardBoxProduit(props) {
   const description = ()=>{
     let photo = `http://localhost:4000/photo/${props.photoName}`
     let smallDescription = (props.description).slice(0,45)
-    let res = props.description.length > 45 ? (
+    let res = props.description.length > 50 ? (
       <AlertDialog
       label='lire plus'
       title={props.title}
@@ -82,36 +82,36 @@ function CardBoxProduit(props) {
     {bio()}
        <div className="form-row">
           <div className="col-5">
-          <CardActionArea style={{width:'100%'}}>
+          <CardActionArea style={{width:'75%'}}>
             <CardMedia
               component="img"
               alt={props.photoName}
               className={classes.media}
-              height="180px"
+              height="200px"
               image= {`http://localhost:4000/photo/${props.photoName}`}
               title={props.photoName}
             />
           </CardActionArea>
           </div>
-          <div className="col-7"> 
+          <div className="col-6" style={{left:'-10%'}}> 
             <CardContent>
-            <div style={{position:'absolute', top:'5%', left:'5%' }}>
+            <div style={{position:'absolute', top:'5%'}}>
               <Typography gutterBottom variant="h6" component="h6"  style={{lineHeight:'20px'}}>
                 {props.title}
               </Typography>
             </div>
             </CardContent>
             <CardContent style={{lineHeight:'20px'}}>
-              <Typography gutterBottom variant="subheading" component="h6" style={{paddingTop:'0px'}}>
+              <Typography gutterBottom variant="subheading" component="h6" style={{paddingTop:'0px', width:'100%'}}>
               {description()}
               </Typography>
             </CardContent>
           </div>
       </div>
-      <Typography gutterBottom variant="subheading" component="h6" style={{lineHeight:'20px', position:'absolute', bottom:'25%', left:'45%'}}>
+      <Typography gutterBottom variant="subheading" component="h6" style={{lineHeight:'20px', position:'absolute', bottom:'25%', left:'35%'}}>
         {props.categorie} 
       </Typography>
-      <Typography gutterBottom variant="h6" component="h6"  style={{lineHeight:'20px', position:'absolute', bottom:'1%', left:'45%', width:'10%', height:'20%'}}>
+      <Typography gutterBottom variant="h6" component="h6"  style={{lineHeight:'20px', position:'absolute', bottom:'1%', left:'35%', width:'10%', height:'20%'}}>
           {props.prixBase+'.-CHF'}
       </Typography>
       <Button color='secondary' size="small" onClick={props.eliminerCLick} style={{position:'absolute', bottom:'1%', right:'2%', width:'10%', height:'20%'}}>
