@@ -360,3 +360,24 @@ INSERT INTO produits_panier (id_user, id_produit, info, quantite)
                          'information',
                          1
                     );
+
+
+UPDATE produits_panier
+                    SET quantite = 3
+                    WHERE produits_panier.id_user = (
+                              SELECT acheteurs.id_user 
+                              FROM acheteurs, users 
+                              WHERE users.surname = 'jeisy' 
+                              AND users.password = 'pass'
+                              AND acheteurs.id_user = users.id_user
+                         )
+                    AND produits_panier.id_produit = (
+                         SELECT produits.id_produit
+                         FROM produits
+                         WHERE produits.nom = 'choco'
+                         AND produits.id_restaurant = (
+                              SELECT restaurants.id_restaurant
+                              FROM restaurants
+                              WHERE restaurants.nom = 'kfc'
+                         )
+                    );

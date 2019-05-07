@@ -101,8 +101,8 @@ function CardBoxProduit(props) {
               </Typography>
             </div>
             </CardContent>
-            <CardContent style={{lineHeight:'20px'}}>
-              <Typography gutterBottom variant="subheading" component="h6" style={{paddingTop:'0px', width:'100%'}}>
+            <CardContent style={{lineHeight:'20px', width:'100%'}}>
+              <Typography gutterBottom variant="subheading" component="h6" style={{paddingTop:'0px'}}>
               {description()}
               </Typography>
             </CardContent>
@@ -111,7 +111,7 @@ function CardBoxProduit(props) {
       <Typography gutterBottom variant="subheading" component="h6" style={{lineHeight:'20px', position:'absolute', bottom:'25%', left:'35%'}}>
         {props.categorie} 
       </Typography>
-      <Typography gutterBottom variant="h6" component="h6"  style={{lineHeight:'20px', position:'absolute', bottom:'1%', left:'35%', width:'10%', height:'20%'}}>
+      <Typography gutterBottom variant="h6" component="h6"  style={{lineHeight:'20px', position:'absolute', bottom:'1%', left:'35%', width:'30%', height:'20%'}}>
           {props.prixBase+'.-CHF'}
       </Typography>
       <Button color='secondary' size="small" onClick={props.eliminerCLick} style={{position:'absolute', bottom:'1%', right:'2%', width:'10%', height:'20%'}}>

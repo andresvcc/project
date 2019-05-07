@@ -99,22 +99,6 @@ module.exports = Object.freeze({
                        "${value}"` 
      },
 
-/*16*/ CHANGE_PASSWORD: (surname, password, newPassword) => { 
-            return `query` 
-     },
-
-/*17*/ CLOSE_ACCOUNT: (surname, password) => { 
-            return `query` 
-     },
-
-/*18*/ FIND_PRODUIT_NOM: (nomProduit, username, password) => { 
-            return `query`
-     },
-
-/*19*/ LIST_PRODUIT_CATEGORIE: (categorie) => { 
-            return `query` 
-     },
-
 /*20*/ LIST_PRODUIT_RESTAURANT: (restaurant) => { 
             return `SELECT  produits.id_produit,
                             produits.nom, 
@@ -159,11 +143,6 @@ module.exports = Object.freeze({
 /*27*/ TOP5_PRODUITS_PLUS_ACHETE: (quartier) => { 
             return `query` 
      },
-
-/*28*/ TOP_RESTAURANT_EVAL_LIS: (quartier) => { 
-            return `query` 
-     },
-
      
 /*29.04*/ PANIER_QUANTITE_PRODUIT:(produit, restaurant)=>{
      return   `SELECT quantite 
@@ -179,27 +158,6 @@ module.exports = Object.freeze({
                          )
                     )`
 },
-/*29.03*/ UPDATE_PANIER_QUANTITE:(surname, password, produit, restaurant, quantite )=>{
-            return `UPDATE produits_panier
-                    SET quantite = ${quantite}
-                    WHERE produits_panier.id_user = (
-                              SELECT acheteurs.id_user 
-                              FROM acheteurs, users 
-                              WHERE users.surname = '${surname}' 
-                              AND users.password = '${password}'
-                              AND acheteurs.id_user = users.id_user
-                         )
-                    AND produits_panier.id_produit = (
-                         SELECT produits.id_produit
-                         FROM produits
-                         WHERE produits.nom = '${produit}'
-                         AND produits.id_restaurant = (
-                              SELECT restaurants.id_restaurant
-                              FROM restaurants
-                              WHERE restaurants.nom = '${restaurant}'
-                         )
-                    );`
-     },
 
 /*29.02*/ PANIER_LIST:(surname, password)=>{
      return   `SELECT *, restaurants.photoName as photoResto, restaurants.description as descriResto, (produits.prix_base * produits_panier.quantite) as prixTotal, restaurants.nom as restaurant
@@ -273,13 +231,27 @@ module.exports = Object.freeze({
                                                   AND users.password = '${password}');` 
      },
 
-/*31*/ EDIT_PRODUIT_PANIER: (surname, password, produit, quantite) => { 
-            return `query` 
-     },
-
-/*32*/ PAYER_PRODUIT: (surname, password, produit) => { 
-            return `query` 
-     },
+/*31*/ UPDATE_PANIER_QUANTITE:(surname, password, produit, restaurant, quantite )=>{
+     return `UPDATE produits_panier
+     SET quantite = ${quantite}
+     WHERE produits_panier.id_user = (
+               SELECT acheteurs.id_user 
+               FROM acheteurs, users 
+               WHERE users.surname = '${surname}' 
+               AND users.password = '${password}'
+               AND acheteurs.id_user = users.id_user
+          )
+     AND produits_panier.id_produit = (
+          SELECT produits.id_produit
+          FROM produits
+          WHERE produits.nom = '${produit}'
+          AND produits.id_restaurant = (
+               SELECT restaurants.id_restaurant
+               FROM restaurants
+               WHERE restaurants.nom = '${restaurant}'
+          )
+     );`
+},
 
 /*33*/ ACHATS_LIST: (surname, password) => { 
             return `query` 
@@ -338,10 +310,6 @@ module.exports = Object.freeze({
             return `query` 
      },
 
-/*39*/ EDIT_PRODUIT: (produit, surname, password, nom, description, photoName, categorie, restaurant, bio, prixBase) => { 
-            return `query` 
-     },
-
 /*40*/ DEL_RESTAURANT: (surname, password, nom) => { 
             return `DELETE FROM restaurants 
             WHERE restaurants.nom = "${nom}"
@@ -366,10 +334,6 @@ module.exports = Object.freeze({
                               AND users.password = '${password}'
                               ) AS id_produit
                          )`  
-     },
-
-/*42*/ LIST_PRODUIT_VENDEUR: (surname, password) => { 
-            return `query` 
      },
 
 /*43*/ LIST_RESTAURANT_VENDEUR: (surname, password) => { 

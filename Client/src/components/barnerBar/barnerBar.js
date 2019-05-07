@@ -80,22 +80,22 @@ const styles = theme => ({
 
 const images = [
   {
-    url: 'http://localhost:4000/photo/1556689066745-3083.jpeg',
+    url: '',
     title: 'Mon dernier achat',
     width: '25%',
   },
   {
-    url: 'http://localhost:4000/photo/1556691868179-1566.jpeg',
+    url: '',
     title: 'Mon plus acheté',
     width: '25%',
   },
   {
-    url: 'http://localhost:4000/photo/1556694794659-6007.jpeg',
+    url: '',
     title: 'Top evaluations',
     width: '25%',
   },
   {
-    url: 'http://localhost:4000/photo/1556700130613-8462.jpeg',
+    url: '',
     title: 'Top plus proche',
     width: '25%',
   },

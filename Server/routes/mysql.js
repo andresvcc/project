@@ -16,9 +16,9 @@ var gutil = require('gulp-util');
  |           MySQL CONFIG CONNECTION             |
  ------------------------------------------------*/
 let connection = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
+    host: "10.194.69.15",
+    user: "A1",
+    password: "LWtmyLtbVRdC10H6",
     database: "A1"
 });
 
@@ -323,45 +323,9 @@ const routerMysql = (app, sessionStore)=>{
         })
     })
 
-    /* fn 16 changer password
-        CHANGE_PASSWORD(surname, password, newPassword) */
-    app.post('/changePassword', (req, res) => {
-        let sqlQuery = constants.CHANGE_PASSWORD(req.body.surname, req.body.password, req.body.newPassword)
-        connection.query(sqlQuery, (err, resultat) => {
-            err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
-        })
-    })
-
-    /* fn 17 fermer une compte
-        CLOSE_ACCOUNT(surname, password) */
-    app.post('/closeAccount', (req, res) => {
-        let sqlQuery = constants.CLOSE_ACCOUNT(req.body.surname, req.body.password)
-        connection.query(sqlQuery, (err, resultat) => {
-            err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
-        })
-    })
-
     /*---------------------
     |      ACHETEUR      |
     ---------------------*/
-
-    /* fn 18 chercher un Produit par nom
-        FIND_PRODUIT_NOM(nomProduit, surname) */
-    app.post('/findProduitNom', (req, res) => {
-        let sqlQuery = constants.FIND_PRODUIT_NOM(req.body.nomProduit, req.body.surname)
-        connection.query(sqlQuery, (err, resultat) => {
-            err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
-        })
-    })
-
-    /* fn 19 liste de produit dans une catégorie
-        LIST_PRODUIT_CATEGORIE(categorie) */
-    app.post('/listProduitCategorie', (req, res) => {
-        let sqlQuery = constants.LIST_PRODUIT_CATEGORIE(req.body.categorie) 
-        connection.query(sqlQuery, (err, resultat) => {
-            err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
-        })
-    })
     
     /* fn 20 liste de Produit dans un restaurant
         LIST_PRODUIT_RESTAURANT(restaurant) */
@@ -435,15 +399,6 @@ const routerMysql = (app, sessionStore)=>{
         })
     })
 
-    /* fn 28 meilleurs restaurant dans un quartier [moyenne évaluation produits]
-        TOP_RESTAURANT_EVAL_LIS(quartier) */
-    app.post('/topRestaurantEvalList', (req, res) => {
-        let sqlQuery = constants.TOP_RESTAURANT_EVAL_LIS(req.body.quartier)
-        connection.query(sqlQuery, (err, resultat) => {
-            err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
-        })
-    })
-
     inPanier = (req, callback) =>{
         let sqlQuery = constants.FIND_IN_PANIER(req.body.produit, req.body.restaurant)
         connection.query(sqlQuery, (err, resultat) => {
@@ -509,15 +464,6 @@ const routerMysql = (app, sessionStore)=>{
         })
         
         let sqlQuery = constants.UPDATE_PANIER_QUANTITE(surname, password, produit, restaurant, quantite )
-        connection.query(sqlQuery, (err, resultat) => {
-            err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
-        })
-    })
-    
-    /* fn 32 payer un produits
-        PAYER_PRODUIT(surname, password, produit) */
-    app.post('/payerProduit', (req, res) => {
-        let sqlQuery = constants.PAYER_PRODUIT(req.body.surname, req.body.password, req.body.produit)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
         })
@@ -600,16 +546,6 @@ const routerMysql = (app, sessionStore)=>{
         })
     })
 
-    /* fn 39 éditer un produit
-        EDIT_PRODUIT(produit, surname, password, nom, description, photoName, categorie, restaurant, bio, prixBase) */
-    app.post('/editProduit', (req, res) => {
-        let sqlQuery = constants.EDIT_PRODUIT(req.body.produit, req.body.surname, req.body.password, req.body.nom, req.body.description, 
-                                              req.body.photoName, req.body.categorie, req.body.restaurant, req.body.bio, req.body.prixBase)
-        connection.query(sqlQuery, (err, resultat) => {
-            err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
-        })
-    })
-
     /* fn 40 éliminer un restaurant
         DEL_RESTAURANT(restaurant, surname, password, nom, description, photoName, adresse, quartier, telephone) */
     app.post('/delRestaurant', (req, res) => {
@@ -637,15 +573,6 @@ const routerMysql = (app, sessionStore)=>{
                     res.json({ ok: true, response: resultat })
                 )
             })
-        })
-    })
-
-    /* fn 42 voir les produits
-        LIST_PRODUIT_VENDEUR(surname, password) */
-    app.post('/listProduitVendeur', (req, res) => {
-        let sqlQuery = constants.LIST_PRODUIT_VENDEUR(req.body.surname, req.body.password)
-        connection.query(sqlQuery, (err, resultat) => {
-            err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
         })
     })
 
