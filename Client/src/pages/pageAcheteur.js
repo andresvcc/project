@@ -6,6 +6,7 @@ import SearchBar from '../components/searchBar/searchBar.js'
 import List from '@material-ui/core/List';
 import CardListProduitExpo from '../components/cards/cardListProduitExpo';
 import BarnerBar from '../components/barnerBar/barnerBar'
+import Pannier from '../components/pannier/pannier'
 
 
 
@@ -40,7 +41,7 @@ class PageAcheteur extends Component{
     axios.post(`http://localhost:4000/listProduits`)
         .then(res => {
             const produits = res.data.response;
-            this.setState({produits:produits, produitsRecommande:produits});
+            this.setState({produits:produits, produitsDisplay:produits});
             console.log(this.state.produits)
         })
   }
@@ -125,6 +126,10 @@ class PageAcheteur extends Component{
     console.log(nomProduit, photoProduit, nomRestaurant, photoRestaurant)
   }
 
+  delProduitPannier = (nomProduit)=>{
+    console.log('eliminern', nomProduit)
+  }
+
   render() {
     //const {count, loginStatus, typeUser, surname, sessID}=this.props
     return(
@@ -144,8 +149,11 @@ class PageAcheteur extends Component{
 
           
           <div className="form-row" style={{marginTop:'80px'}}>
-            <div className="col-md-5" style={{paddingTop:'15%'}}>
-                <p>Bio:{this.state.bioState.toString()}- dernier:{this.state.dernierRecherche}</p>
+            <div className="col-md-6" style={{paddingTop:'15%', paddingLeft:'5%', paddingRight:'10%'}}>
+                <Pannier
+                  values = {this.state.produitsDisplay}
+                  eliminer={this.delProduitPannier}
+                />
             </div>
             <div className="col-md-6" style={{paddingTop:'15%'}}>     
               <List>
