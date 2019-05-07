@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -14,12 +15,9 @@ const styles = {
     margin:18, 
     minHeight:190, 
     maxHeight:190,
-    minWidth: '85%',
-    maxWidth: '85%',
-    position:'relative',
-
-
-    
+    minWidth: '120%',
+    maxWidth: '120%',
+    position:'relative',   
   },
   media: {
     // ⚠️ object-fit is not supported by IE 11.
@@ -122,8 +120,25 @@ function CardBoxProduit(props) {
   );
 }
 
+const mapStateToProps = (state) => {
+
+  return {
+    count: state.counter.count,
+    loginStatus: state.counter.loginStatus,
+    typeUser: state.counter.typeUser,
+    surname: state.counter.surname,
+    sessID: state.counter.sessID
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+
+  }
+}
+
 CardBoxProduit.propTypes = {
-  classes: PropTypes.object.isRequired,
+classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(CardBoxProduit);
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps) (CardBoxProduit));

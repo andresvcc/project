@@ -311,3 +311,52 @@ SELECT surname, 2 as typeuser
     AND users.password = '1234';
 
 
+SELECT * 
+FROM produits_panier, restaurants, produits 
+WHERE produits_panier.id_user = (
+                    SELECT acheteurs.id_user 
+                    FROM acheteurs, users 
+                    WHERE users.surname = 'jeisy' 
+                    AND users.password = 'pass'
+                    AND acheteurs.id_user = users.id_user
+                )
+AND produits_panier.id_produit = produits.id_produit
+AND produits.id_restaurant = restaurants.id_restaurant 
+
+
+SELECT id_produit 
+FROM produits_panier 
+WHERE produits_panier.id_produit = (
+                             SELECT produits.id_produit
+                             FROM produits
+                             WHERE produits.nom = 'menu Burger'
+                             AND produits.id_restaurant = (
+                                 SELECT restaurants.id_restaurant
+                                 FROM restaurants
+                                 WHERE restaurants.nom = 'kfc'
+                             )
+                         )
+
+
+INSERT INTO produits_panier (id_user, id_produit, info, quantite)
+                    VALUES (
+                        (
+                            SELECT acheteurs.id_user 
+                            FROM acheteurs, users 
+                            WHERE users.surname = 'jeisy' 
+                            AND users.password = 'pass'
+                            AND acheteurs.id_user = users.id_user
+                         ),
+                         (
+                             SELECT produits.id_produit
+                             FROM produits
+                             WHERE produits.nom = 'choco'
+                             AND produits.id_restaurant = (
+                                 SELECT restaurants.id_restaurant
+                                 FROM restaurants
+                                 WHERE restaurants.nom = 'kfc'
+                             )
+                         ),
+                         'information',
+                         1
+                    );

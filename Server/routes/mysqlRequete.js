@@ -164,12 +164,113 @@ module.exports = Object.freeze({
             return `query` 
      },
 
-/*29*/ ADD_PRODUIT_PANIER: (surname, password, produit, quantite) => { 
-            return `query` 
+     
+/*29.04*/ PANIER_QUANTITE_PRODUIT:(produit, restaurant)=>{
+     return   `SELECT quantite 
+               FROM produits_panier 
+               WHERE produits_panier.id_produit = (
+                    SELECT produits.id_produit
+                         FROM produits
+                         WHERE produits.nom = '${produit}'
+                         AND produits.id_restaurant = (
+                              SELECT restaurants.id_restaurant
+                              FROM restaurants
+                              WHERE restaurants.nom = '${restaurant}'
+                         )
+                    )`
+},
+/*29.03*/ UPDATE_PANIER_QUANTITE:(surname, password, produit, restaurant, quantite )=>{
+            return `UPDATE produits_panier
+                    SET quantite = ${quantite}
+                    WHERE produits_panier.id_user = (
+                              SELECT acheteurs.id_user 
+                              FROM acheteurs, users 
+                              WHERE users.surname = '${surname}' 
+                              AND users.password = '${password}'
+                              AND acheteurs.id_user = users.id_user
+                         )
+                    AND produits_panier.id_produit = (
+                         SELECT produits.id_produit
+                         FROM produits
+                         WHERE produits.nom = '${produit}'
+                         AND produits.id_restaurant = (
+                              SELECT restaurants.id_restaurant
+                              FROM restaurants
+                              WHERE restaurants.nom = '${restaurant}'
+                         )
+                    );`
      },
 
-/*30*/ DEL_PRODUIT_PANIER: (surname, password, produit) => { 
-            return `query` 
+/*29.02*/ PANIER_LIST:(surname, password)=>{
+     return   `SELECT *, restaurants.photoName as photoResto, restaurants.description as descriResto, (produits.prix_base * produits_panier.quantite) as prixTotal, restaurants.nom as restaurant
+               FROM produits_panier, restaurants, produits 
+               WHERE produits_panier.id_user = (
+                         SELECT acheteurs.id_user 
+                         FROM acheteurs, users 
+                         WHERE users.surname = '${surname}' 
+                         AND users.password = '${password}'
+                         AND acheteurs.id_user = users.id_user
+                    )
+               AND produits_panier.id_produit = produits.id_produit
+               AND produits.id_restaurant = restaurants.id_restaurant `
+     },
+
+/*29.01*/ FIND_IN_PANIER:(produit, restaurant)=>{
+     return   `SELECT id_produit 
+               FROM produits_panier 
+               WHERE produits_panier.id_produit = (
+                    SELECT produits.id_produit
+                         FROM produits
+                         WHERE produits.nom = '${produit}'
+                         AND produits.id_restaurant = (
+                              SELECT restaurants.id_restaurant
+                              FROM restaurants
+                              WHERE restaurants.nom = '${restaurant}'
+                         )
+                    )`
+     },
+
+/*29*/ ADD_PRODUIT_PANIER: (surname, password, produit, restaurant, info, quantite) => { 
+            return `INSERT INTO produits_panier (id_user, id_produit, info, quantite)
+                    VALUES (
+                         (
+                              SELECT acheteurs.id_user 
+                              FROM acheteurs, users 
+                              WHERE users.surname = '${surname}' 
+                              AND users.password = '${password}'
+                              AND acheteurs.id_user = users.id_user
+                         ),
+                         (
+                              SELECT produits.id_produit
+                              FROM produits
+                              WHERE produits.nom = '${produit}'
+                              AND produits.id_restaurant = (
+                                   SELECT restaurants.id_restaurant
+                                   FROM restaurants
+                                   WHERE restaurants.nom = '${restaurant}'
+                              )
+                         ),
+                         '${info}',
+                         ${quantite}
+                    );` 
+     },
+
+/*30*/ DEL_PRODUIT_PANIER: (surname, password, produit, restaurant) => { 
+            return `DELETE FROM produits_panier 
+                    WHERE produits_panier.id_produit = (
+                              SELECT produits.id_produit
+                              FROM produits
+                              WHERE produits.nom = '${produit}'
+                              AND produits.id_restaurant = (
+                                   SELECT restaurants.id_restaurant
+                                   FROM restaurants
+                                   WHERE restaurants.nom = '${restaurant}'
+                              )
+                         )
+                    AND produits_panier.id_user =  (SELECT users.id_user 
+                                                  FROM users 
+                                                  WHERE users.surname = '${surname}'
+                                                  AND users.password = '${password}');` 
      },
 
 /*31*/ EDIT_PRODUIT_PANIER: (surname, password, produit, quantite) => { 

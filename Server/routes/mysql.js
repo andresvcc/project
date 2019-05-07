@@ -444,28 +444,71 @@ const routerMysql = (app, sessionStore)=>{
         })
     })
 
-    /* fn 29 ajouter un produits au panier
-        ADD_PRODUIT_PANIER(surname, password, produit, quantite) */
-    app.post('/addProduitPanier', (req, res) => {
-        let sqlQuery = constants.ADD_PRODUIT_PANIER(req.body.surname, req.body.password, req.body.produit, req.body.quantite)
+    inPanier = (req, callback) =>{
+        let sqlQuery = constants.FIND_IN_PANIER(req.body.produit, req.body.restaurant)
         connection.query(sqlQuery, (err, resultat) => {
-            err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
+            err ? callback( false ) : callback( resultat[0] ? false : true )
+        })
+    }
+
+    panierPlus1 = (session, req, res)=>{
+        let sqlQuery = constants.PANIER_QUANTITE_PRODUIT(req.body.produit, req.body.restaurant)
+        connection.query(sqlQuery, (err, resultat) => {
+            err ? res.json({ ok: false, error: err }) : (
+                    console.log('rest',resultat[0].quantite),
+                    connection.query(constants.UPDATE_PANIER_QUANTITE(session.surname, session.password, req.body.produit, req.body.restaurant, (resultat[0].quantite + 1)), (err, resultat) => {
+                        err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
+                    })
+                )
+        })
+    }
+
+    /* fn 29 ajouter un produits au panier
+        ADD_PRODUIT_PANIER(surname, password, produit, restaurant,quantite) */
+    app.post('/addProduitPanier', (req, res) => {
+        userSession(req, res, (session)=>{
+            let sqlQuery = constants.ADD_PRODUIT_PANIER(session.surname, session.password, req.body.produit, req.body.restaurant, req.body.info, req.body.quantite)
+            inPanier(req,(solve)=>{
+                solve ? (
+                    connection.query(sqlQuery, (err, resultat) => {
+                        err ? res.json({ok:false, err, n:-1}) : res.json({ok:true,resultat,n:1 })
+                    })
+                ):panierPlus1(session, req, res)
+            })
+        })
+    })
+
+    app.post('/listPanier', (req, res) => {
+        userSession(req, res, (session)=>{
+            let sqlQuery = constants.PANIER_LIST(session.surname, session.password)
+            connection.query(sqlQuery, (err, resultat) => {
+                err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
+            })
         })
     })
 
     /* fn 30 effacer un produits du panier
         DEL_PRODUIT_PANIER(surname, password, produit) */
     app.post('/delProduitPanier', (req, res) => {
-        let sqlQuery = constants.DEL_PRODUIT_PANIER(req.body.surname, req.body.password, req.body.produit)
-        connection.query(sqlQuery, (err, resultat) => {
-            err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
+            userSession(req, res, (session)=>{
+            let sqlQuery = constants.DEL_PRODUIT_PANIER(session.surname, session.password, req.body.produit, req.body.restaurant)
+            connection.query(sqlQuery, (err, resultat) => {
+                err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
+            })
         })
     })
-
+    
     /* fn 31 éditer un produits du panier
         EDIT_PRODUIT_PANIER(surname, password, produit, quantite) */
-    app.post('/editProduitPanier', (req, res) => {
-        let sqlQuery = constants.EDIT_PRODUIT_PANIER(req.body.surname, req.body.password, req.body.produit, req.body.quantite)
+    app.post('/editProduitPanierQuantite', (req, res) => {
+        userSession(req, res, (session)=>{
+            let sqlQuery = constants.UPDATE_PANIER_QUANTITE(session.surname, session.password, req.body.produit, req.body.restaurant, req.body.quantite)
+            connection.query(sqlQuery, (err, resultat) => {
+                err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
+            })
+        })
+        
+        let sqlQuery = constants.UPDATE_PANIER_QUANTITE(surname, password, produit, restaurant, quantite )
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
         })
