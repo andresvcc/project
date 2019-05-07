@@ -6,11 +6,11 @@ export default class CardListProduitExpo extends Component {
         var values = this.props.values.map((value, i) => {
                     
             let onAddShoppingCart = ()=>{
-                this.props.shopping(value.nom, value.photoPlat, value.restaurants, value.photoResto)
+                this.props.shopping(value)
             }
         
             return (
-                <div className ='' key={i} >
+                <div className ='' key={i} style={{paddingLeft:'50px'}}>
                     <CardBoxProduitExpo
                         title={value.nom}
                         description={value.description}

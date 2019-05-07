@@ -4,7 +4,8 @@ const initialState = {
     typeUser:0,
     surname:'inconue',
     sessID:'vide',
-    incrireVisibility:'visible'
+    incrireVisibility:'visible',
+    produitPanier:[]
 }
 
 function CounterReducer (state = initialState, action){
@@ -19,6 +20,9 @@ function CounterReducer (state = initialState, action){
             return {...state, ...action}
         }
         case "LOGOUT": {
+            return {...state, ...action}
+        }
+        case "UPDATE_PANIER": {
             return {...state, ...action}
         }
         default:

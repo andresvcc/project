@@ -1,36 +1,41 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {connect} from 'react-redux'
-import axios from 'axios'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import CardListProduitPannier from '../cards/cardListProduitPannier'
 
 const styles = theme => ({
-  root: {
-    position:'fixed',
-    width: '100%',
-    background: 'linear-gradient(#FFF8F5, rgba(255,255,255,.999))',
-    maxWidth: 550,
-    paddingRigth:'20px',
-    backgroundColor: theme.palette.background.paper,
-  },
-  inline: {
-    display: 'inline',
-  },
-});
+    root: {
+      width: '100%',
+      maxWidth: 500,
+      backgroundColor: '#FFF8F5',
+      overflow: 'auto',
+      maxHeight: 280,
+    },
+    listSection: {
+      backgroundColor: 'inherit',
+    },
+    ul: {
+      backgroundColor: 'inherit',
+      padding: 0,
+    },
+  });
 
 
 function AlignItemsList(props) {
   const { classes } = props;
   return (
-    <List className={classes.root}>
-        <h6> Pannier d'achat {props.surname}</h6>
-        <CardListProduitPannier
-            values = {props.values}
-            eliminer = {props.eliminer}
-        />
-    </List>
+    <div style={{position:'fixed', backgroundColor: '#FFF8F5', zIndex:3, textAlign:'center'}}>
+        <h5> Panier d'achat de {props.surname}</h5>
+        <List className={classes.root} subheader={<li />}>
+            <CardListProduitPannier
+                values = {props.values}
+                eliminer = {props.eliminer}
+            />
+        </List>
+        <button type="button" className="btn btn-success btn-block" onClick={console.log('payer pannier')}>Payer</button>
+    </div>
   );
 }
 

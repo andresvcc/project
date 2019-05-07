@@ -1,5 +1,7 @@
 import React from 'react';
+import {connect} from 'react-redux'
 import PropTypes from 'prop-types';
+import axios from 'axios'
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -9,12 +11,13 @@ import Typography from '@material-ui/core/Typography';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Button from '@material-ui/core/Button';
 import AlertDialog from '../dialog/alertDialog'
+import {updatePanier} from '../../actions/index'
 
 const styles = {
   card: {
     margin:18, 
-    minHeight:80, 
-    maxHeight:80,
+    minHeight:75, 
+    maxHeight:75,
     minWidth: '90%',
     maxWidth: '90%',
     position:'relative',
@@ -31,6 +34,7 @@ const styles = {
 
 
 
+
 function CardBoxProduit(props) {
 
   const bio = () =>{
@@ -40,16 +44,36 @@ function CardBoxProduit(props) {
         src="https://carpezen.fr/wp-content/uploads/2018/09/logo-bio.png" 
         alt="Smiley face" 
         height="100%" 
-        width="100%" 
+        width="35%" 
         style={{
           position:'absolute', 
-          right:'27%', 
+          right:'40%', 
           top:'20%',
           opacity:'0.175'
         }}>
       </img> 
     </div>): ''
     return res
+  }
+
+  const panierListUpdate = () =>{
+    let data = {
+      id: props.sessID
+    }
+    axios.post(`http://localhost:4000/listPanier`, data )
+    .then(res => {
+        console.log(res.data)
+        let ok = res.data.ok ? (
+            props.ajouterPanier(res.data.response),
+            true 
+        ):(
+            false
+        )
+        ok ?   console.log('UPDATE PANIER ok') : console.log('UPDATE PANIER problem')
+    })
+    .catch(err => { // then print response status
+        console.log(err)
+    })
   }
 
 
@@ -62,8 +86,6 @@ function CardBoxProduit(props) {
         contenue={props.description}
         smallContenue={''}
         image={photo}/>
-
-
     return (
           <div style={{lineHeight:'12px'}}>
             {res}
@@ -71,6 +93,27 @@ function CardBoxProduit(props) {
     )
   }
 
+  const eliminerClik=()=>{
+    let data = {
+      id: props.sessID,
+      produit:props.title,
+      restaurant:props.restaurant
+    }
+    axios.post(`http://localhost:4000/delProduitPanier`, data )
+    .then(res => {
+        console.log(res.data)
+        let ok = res.data.ok ? (
+            panierListUpdate(),
+            true 
+        ):(
+            false
+        )
+        ok ?   console.log('DEL PANIER ok') : console.log('DEL PANIER problem')
+    })
+    .catch(err => { // then print response status
+        console.log(err)
+    })
+  }
 
   const { classes } = props;
   return (
@@ -107,24 +150,44 @@ function CardBoxProduit(props) {
       <Typography gutterBottom variant="subheading" component="h6" style={{lineHeight:'20px', position:'absolute', bottom:'25%', left:'35%'}}>
         {props.categorie} 
       </Typography>
-      <Typography gutterBottom variant="h6" component="h6" style={{textAlign:'center',background:'red',color:'white',lineHeight:'20px', position:'absolute', bottom:'5%', left:'1%', width:'10%', height:'30%'}}>
-        {' X 6'} 
+      <Typography gutterBottom variant="h6" component="h6" style={{textAlign:'center',background:'red',color:'white', position:'absolute', bottom:'2%', left:'2%', width:'10%', height:'34%'}}>
+        {`X ${props.quantite}`} 
       </Typography>
-      <Typography gutterBottom variant="h6" component="h6"  style={{lineHeight:'20px', position:'absolute', bottom:'25%', left:'50%', width:'30%', height:'20%'}}>
-          {'Total :'+props.prixBase+'.-CHF'}
+      <Typography gutterBottom variant='subtitle2' component="h6"  style={{lineHeight:'20px', position:'absolute', bottom:'35%', left:'25%', width:'45%', height:'20%'}}>
+          {'PrixBase :'+props.prixBase+'.-CHF'}<br></br>
+          {'Total :'+props.prixTotal+'.-CHF'}
       </Typography>
       <div style={{position:'absolute', bottom:'30%', right:'2%'}}>
       {description()}
       </div>
-      <Button color='secondary' size="small" onClick={props.eliminerCLick} style={{position:'absolute', bottom:'5%', right:'2%', width:'10%', height:'45%'}}>
+      <Button color='secondary' size="small" onClick={eliminerClik} style={{position:'absolute', bottom:'8%', right:'2%', width:'10%', height:'45%'}}>
           <DeleteIcon color='error'/>
       </Button>
     </Card>
   );
 }
 
+const mapStateToProps = (state) => {
+  return {
+    count: state.counter.count,
+    loginStatus: state.counter.loginStatus,
+    typeUser: state.counter.typeUser,
+    surname: state.counter.surname,
+    sessID: state.counter.sessID,
+    produitPanier: state.counter.produitPanier
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    ajouterPanier: (panierList) => {  
+      dispatch(updatePanier(panierList))
+    },
+  }
+}
+
 CardBoxProduit.propTypes = {
-  classes: PropTypes.object.isRequired,
+classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(CardBoxProduit);
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps) (CardBoxProduit));

@@ -36,3 +36,11 @@ export const logout = () => {
     incrireVisibility:'visible'
   }
 }
+
+export const updatePanier = panierList => {
+  console.log('panier', panierList)
+  return {
+    type: 'UPDATE_PANIER',
+    produitPanier:panierList
+  }
+}

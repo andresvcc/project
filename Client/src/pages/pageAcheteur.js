@@ -7,7 +7,7 @@ import List from '@material-ui/core/List';
 import CardListProduitExpo from '../components/cards/cardListProduitExpo';
 import BarnerBar from '../components/barnerBar/barnerBar'
 import Pannier from '../components/pannier/pannier'
-
+import {updatePanier} from '../actions/index'
 
 
 
@@ -44,6 +44,28 @@ class PageAcheteur extends Component{
             this.setState({produits:produits, produitsDisplay:produits});
             console.log(this.state.produits)
         })
+        this.panierListUpdate()
+
+  }
+
+  panierListUpdate = () =>{
+    let data = {
+      id: this.props.sessID
+    }
+    axios.post(`http://localhost:4000/listPanier`, data )
+    .then(res => {
+        console.log(res.data)
+        let ok = res.data.ok ? (
+            this.props.ajouterPanier(res.data.response),
+            true 
+        ):(
+            false
+        )
+        ok ?   console.log('UPDATE PANIER ok') : console.log('UPDATE PANIER problem')
+    })
+    .catch(err => { // then print response status
+        console.log(err)
+    })
   }
 
   toNormalised =(cadena)=>{
@@ -122,12 +144,31 @@ class PageAcheteur extends Component{
     console.log(resultado)
   }
 
-  shoppingProduit = (nomProduit, photoProduit, nomRestaurant, photoRestaurant)=>{
-    console.log(nomProduit, photoProduit, nomRestaurant, photoRestaurant)
-  }
+  shoppingProduit = (produit)=>{
+    let data = {
+      produit:produit.nom,
+      restaurant:produit.restaurants,
+      id: this.props.sessID,
+      quantite:1
+    }
 
-  delProduitPannier = (nomProduit)=>{
-    console.log('eliminern', nomProduit)
+    console.log('evoie page acheteur', data)
+    axios.post(`http://localhost:4000/addProduitPanier`, data )
+    .then(res => {
+        console.log(res.data)
+        let ok = res.data.ok ? (
+          this.panierListUpdate(), 
+            true 
+        ):(
+          this.panierListUpdate(),
+            this.setState({msgerrNom:res.data.msg}),
+            false
+        )
+        ok ?   console.log('Produit ajouté avec success') : console.log('propduit ne pas ajouté')
+    })
+    .catch(err => { // then print response status
+        console.log(err)
+    })
   }
 
   render() {
@@ -149,13 +190,10 @@ class PageAcheteur extends Component{
 
           
           <div className="form-row" style={{marginTop:'80px'}}>
-            <div className="col-md-6" style={{paddingTop:'15%', paddingLeft:'5%', paddingRight:'10%'}}>
-                <Pannier
-                  values = {this.state.produitsDisplay}
-                  eliminer={this.delProduitPannier}
-                />
+            <div className="col-md-6" style={{paddingTop:'14%', paddingLeft:'2%', paddingRight:'5%'}}>
+                <Pannier/>
             </div>
-            <div className="col-md-6" style={{paddingTop:'15%'}}>     
+            <div className="col-md-6" style={{paddingTop:'15%', right:'-10%'}}>     
               <List>
                 <div>
                   <CardListProduitExpo 
@@ -164,8 +202,6 @@ class PageAcheteur extends Component{
                   ></CardListProduitExpo>
                 </div>
               </List> 
-            </div>
-            <div className="col-md-1" style={{paddingTop:'160px'}}>
             </div>
           </div>
           <ToastContainer autoClose={2000} position={'top-center'}/>
@@ -176,19 +212,21 @@ class PageAcheteur extends Component{
 
 
 const mapStateToProps = (state) => {
-
   return {
     count: state.counter.count,
     loginStatus: state.counter.loginStatus,
     typeUser: state.counter.typeUser,
     surname: state.counter.surname,
-    sessID: state.counter.sessID
+    sessID: state.counter.sessID,
+    produitPanier: state.counter.produitPanier
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-
+    ajouterPanier: (panierList) => {  
+      dispatch(updatePanier(panierList))
+    },
   }
 }
 

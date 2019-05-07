@@ -1,13 +1,11 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react'
+import {connect} from 'react-redux'
 import CardBoxProduitPannier from './cardBoxProduitPannier'
 
-export default class CardListProduitPannier extends Component {
+class CardListProduitPannier extends Component {
     render(){
-        var values = this.props.values.map((value, i) => {
-                    
-            let onEliminer = ()=>{
-                this.props.eliminer(value.nom)
-            }
+        var values = this.props.produitPanier.map((value, i) => {
+
         
             return (
                 <div className ='' key={i} >
@@ -17,8 +15,11 @@ export default class CardListProduitPannier extends Component {
                         bio={value.bio}
                         prixBase={value.prix_base}
                         categorie={value.categorie}
-                        photoName={value.photoPlat}
-                        eliminerCLick={onEliminer}
+                        photoName={value.photoName}
+                        quantite={value.quantite}
+                        prixTotal={value.prixTotal}
+                        restaurant={value.restaurant}
+                        all={value}
                     />
                 </div>           
             )
@@ -31,3 +32,25 @@ export default class CardListProduitPannier extends Component {
         )
     }
 }
+
+
+const mapStateToProps = (state) => {
+
+    return {
+      count: state.counter.count,
+      loginStatus: state.counter.loginStatus,
+      typeUser: state.counter.typeUser,
+      surname: state.counter.surname,
+      sessID: state.counter.sessID,
+      produitPanier: state.counter.produitPanier,
+    }
+  }
+  
+  const mapDispatchToProps = (dispatch) => {
+    return {
+  
+    }
+  }
+
+  export default connect(mapStateToProps, mapDispatchToProps)(CardListProduitPannier)
+

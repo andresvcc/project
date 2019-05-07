@@ -154,6 +154,7 @@ CREATE TABLE produits_panier (
    id_user INT(255) NOT NULL,
    id_produit INT(255) NOT NULL,
    info VARCHAR(255),
+   quantite INT(255),
    CONSTRAINT pk_produits_panier PRIMARY KEY(id_user, id_produit),
    CONSTRAINT contient FOREIGN KEY(id_produit)
       REFERENCES produits(id_produit) ON UPDATE CASCADE ON DELETE CASCADE,
