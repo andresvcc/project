@@ -190,7 +190,7 @@ class FormNewRestaurant extends Component {
     }
 
     newAcheteurQuery = (data) =>{
-        console.log('evoie', data)
+        console.log('new Acheteur', data)
         axios.post(`http://localhost:4000/newRestaurant`, data )
         .then(res => {
             console.log(res.data)

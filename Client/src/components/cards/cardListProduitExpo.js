@@ -10,7 +10,7 @@ export default class CardListProduitExpo extends Component {
             }
         
             return (
-                <div className ='' key={i} style={{paddingLeft:'50px'}}>
+                <div className ='' key={i}>
                     <CardBoxProduitExpo
                         title={value.nom}
                         description={value.description}

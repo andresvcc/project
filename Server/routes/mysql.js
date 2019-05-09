@@ -23,7 +23,8 @@ let connection = mysql.createConnection({
 });
 
 connection.connect((err)=>{ 
-    err ? console.log(gutil.colors.red(`problème de connection`)): console.log(gutil.colors.magenta(`Connected`));
+    err ? console.log(gutil.colors.red(`problème de connection avec la base des données`)): 
+            console.log(gutil.colors.magenta(`Connecté à la base des données`));
 });
 
 
@@ -137,8 +138,6 @@ const routerMysql = (app, sessionStore)=>{
             }
         })
     }
-
-    console.log(gutil.colors.green('File exists. Deleting now ...'));
 
     deleteFile=(nom)=>{   
         fs.unlink(`./public/images/${nom}`, function(err) {
@@ -492,7 +491,7 @@ const routerMysql = (app, sessionStore)=>{
             connection.query(sqlQuery, (err, resultat) => {
                 err ? res.json({ ok: false, error: err }) : (
                     userAction(session.surname,'CREER_RESTAURANT',req.body.nom),
-                    res.json({ ok: true, response: resultat, session:session })
+                    res.json({ ok: true, response: resultat})
                 )
             })
         })
@@ -505,7 +504,7 @@ const routerMysql = (app, sessionStore)=>{
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : (
                 console.log(gutil.colors.cyan('CREATE CATEGORIE', req.body.nom)),
-                res.json({ ok: true, response: resultat })
+                res.json({ ok: true,  response: resultat})
             )
         })
     })

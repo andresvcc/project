@@ -8,6 +8,7 @@ import { withStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import CheckBox from '../forms/checkBox'
 
+
 const styles = theme => ({
   root: {
     width: '100%',
@@ -125,6 +126,7 @@ function SearchAppBar(props) {
         </div>
         </Toolbar>
       </AppBar>
+      
     </div>
   );
 }

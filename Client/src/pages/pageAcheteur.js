@@ -30,7 +30,7 @@ class PageAcheteur extends Component{
     axios.post(`http://localhost:4000/listRestaurants`)
     .then(res => {
         const values = res.data.resultat;
-        console.log('cardController',values)
+        console.log('liste des restaurants',values)
         this.setState({values:values});
     })
     console.log('aqui')
@@ -42,7 +42,6 @@ class PageAcheteur extends Component{
         .then(res => {
             const produits = res.data.response;
             this.setState({produits:produits, produitsDisplay:produits});
-            console.log(this.state.produits)
         })
         this.panierListUpdate()
 
@@ -54,7 +53,7 @@ class PageAcheteur extends Component{
     }
     axios.post(`http://localhost:4000/listPanier`, data )
     .then(res => {
-        console.log(res.data)
+        console.log('list panier',res.data)
         let ok = res.data.ok ? (
             this.props.ajouterPanier(res.data.response),
             true 
@@ -152,7 +151,7 @@ class PageAcheteur extends Component{
       quantite:1
     }
 
-    console.log('evoie page acheteur', data)
+    console.log('add produit panier', data)
     axios.post(`http://localhost:4000/addProduitPanier`, data )
     .then(res => {
         console.log(res.data)
@@ -186,14 +185,23 @@ class PageAcheteur extends Component{
               />
               <BarnerBar/>
             </div>
-          </div>
 
-          
+            
+          </div>
           <div className="form-row" style={{marginTop:'80px'}}>
-            <div className="col-md-6" style={{paddingTop:'14%', paddingLeft:'2%', paddingRight:'5%'}}>
-                <Pannier/>
+            <div className="col-md-1" style={{paddingTop:'15%', position:'relative'}}>
+              <p></p>
             </div>
-            <div className="col-md-6" style={{paddingTop:'15%', right:'-10%'}}>     
+
+            <div className="col-md-4" style={{paddingTop:'14%', paddingLeft:'2%', paddingRight:'5%'}}>
+             <Pannier/>
+            </div>
+
+            <div className="col-md-2" style={{paddingTop:'15%', position:'relative'}}>
+              <p></p>
+            </div>
+
+            <div className="col-md-5" style={{paddingTop:'15%'}}>     
               <List>
                 <div>
                   <CardListProduitExpo 
@@ -203,6 +211,10 @@ class PageAcheteur extends Component{
                 </div>
               </List> 
             </div>
+
+
+
+
           </div>
           <ToastContainer autoClose={2000} position={'top-center'}/>
         </div>

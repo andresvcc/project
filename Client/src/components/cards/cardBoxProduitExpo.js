@@ -109,12 +109,12 @@ function CardBoxProduit(props) {
           {props.prixBase+'.-CHF'}
       </Typography>
       <div style={{textAlign:'center', position:'absolute', bottom:'28%', right:'5%', width:'20%', height:'20%'}}>
-      <Button size="small" onClick={props.addShoppingCart}  style={{height:'75px'}}>
-        <div style={{textAlign:'center'}}>
-          <i className="material-icons " style={{fontSize: '36px', color:'#FB8C00'}}> add_shopping_cart</i>
-          <p >Ajouter</p>
-        </div>
-      </Button>
+        <Button size="small" onClick={props.addShoppingCart}  style={{height:'75px'}}>
+          <div style={{textAlign:'center'}}>
+            <i className="material-icons " style={{fontSize: '36px', color:'#FB8C00'}}> add_shopping_cart</i>
+            <p >Ajouter</p>
+          </div>
+        </Button>
       </div>
     </Card>
   );

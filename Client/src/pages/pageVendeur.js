@@ -23,7 +23,7 @@ class PageVendeur extends Component{
     axios.post(`http://localhost:4000/listRestaurantVendeur`,{id:this.props.sessID})
     .then(res => {
         const values = res.data.response;
-        console.log('cardController',values)
+        console.log('liste des restaurants',values)
         this.setState({values:values});
     })   
   }
@@ -32,12 +32,15 @@ class PageVendeur extends Component{
     let photoNameRevise = photoName === 'null.jpg' ? 'null' : photoName // s'il n'a pas de photo eviter de eliminer la photo par defaut car ceci est partagé par plusieurs cardbox
     axios.post(`http://localhost:4000/delRestaurant`,{id:this.props.sessID, nom:nom, photoName:photoNameRevise})
     .then(res => {
-        let ok = res.data.ok ? 
-            this.updateListRestaurant() : 
-            toast.error('probleme, imposible emiliner ce restaurant')
-        console.log(ok,res.data)
+        let ok = res.data.ok ? (
+            this.updateListRestaurant(),
+            true 
+            ):( 
+            toast.error('probleme, imposible emiliner ce restaurant'),
+            false
+            )
+        console.log('reponse delRestaurant',{ok:ok, data:res.data})
     })
-    console.log('subir delet', nom)
   }
 
   componentWillMount = () => {

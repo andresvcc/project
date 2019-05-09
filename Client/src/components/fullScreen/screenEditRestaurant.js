@@ -56,7 +56,6 @@ class ScreenEditRestaurant extends Component {
             (toast.error('probleme, imposible emiliner ce produit'), 'probleme')
         console.log('eliminer',ok,res.data)
     })
-    console.log('subir del produit', nom)
   }
 
   handleClickOpen = () => {

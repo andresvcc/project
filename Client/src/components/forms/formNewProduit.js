@@ -145,10 +145,10 @@ class FormNewProduit extends Component {
     }
 
     newProduitQuery = (data) =>{
-        console.log('evoie', data)
+        console.log('new produit', data)
         axios.post(`http://localhost:4000/newProduit`, data )
         .then(res => {
-            console.log(res.data)
+            console.log('reponse new produit',res.data)
             let ok = res.data.ok ? (
                 console.log('Produit ajouté avec success'), 
                 this.props.action(),

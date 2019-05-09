@@ -13,7 +13,7 @@ class CardControllerProduit extends Component {
         axios.post(`http://localhost:4000/listRestaurantVendeur`,{id:this.props.sessID})
         .then(res => {
             const values = res.data.response;
-            console.log('cardController',values)
+            console.log('liste des produits',values)
             this.setState({values:values});
         })   
       }
