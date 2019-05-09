@@ -14,7 +14,7 @@ const styles = theme => ({
   },
   image: {
     position: 'relative',
-    height: 100,
+    height: 102,
     [theme.breakpoints.down('xs')]: {
       width: '100%', // Overrides inline-style
       height: 120,
@@ -80,23 +80,23 @@ const styles = theme => ({
 
 const images = [
   {
-    url: '',
-    title: 'Mon dernier achat',
+    url: 'http://localhost:4000/photo/1557264832543-2972.jpeg',
+    title: 'meilleurs Prix',
     width: '25%',
   },
   {
-    url: '',
-    title: 'Mon plus acheté',
+    url: 'http://localhost:4000/photo/1557266026728-8372.jpeg',
+    title: 'Dans mon quartier',
     width: '25%',
   },
   {
-    url: '',
-    title: 'Top evaluations',
+    url: 'http://localhost:4000/photo/1557265109509-5866.jpeg',
+    title: 'Top meilleures ventes',
     width: '25%',
   },
   {
-    url: '',
-    title: 'Top plus proche',
+    url: 'http://localhost:4000/photo/1557267869035-4076.jpeg',
+    title: 'Nouveautes',
     width: '25%',
   },
 ];
@@ -126,7 +126,7 @@ function BarnerBar(props) {
           <span className={classes.imageButton}>
             <Typography
               component="span"
-              variant="subtitle1"
+              variant="h6"
               color="inherit"
               className={classes.imageTitle}
             >

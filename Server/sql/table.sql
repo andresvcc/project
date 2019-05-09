@@ -23,23 +23,13 @@ CREATE TABLE users (
    CONSTRAINT pk_users PRIMARY KEY(id_user)
 )ENGINE = InnoDB;
 
-DROP TABLE IF EXISTS s_server;
-CREATE TABLE s_server (
-   id_session INT(255) AUTO_INCREMENT NOT NULL,
-   time_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-   CONSTRAINT pk_sesions PRIMARY KEY (id_session)
-)ENGINE = InnoDB;
-
 DROP TABLE IF EXISTS log;
 CREATE TABLE log (
    id_user INT(255) NOT NULL,
-   id_session INT(255) NOT NULL,
    action VARCHAR(255) NOT NULL,
    value VARCHAR(255),
    time_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-   CONSTRAINT pk_log PRIMARY KEY(id_user,id_session,time_date),
-   CONSTRAINT registre FOREIGN KEY(id_session)
-        REFERENCES s_server(id_session) ON UPDATE CASCADE ON DELETE CASCADE,
+   CONSTRAINT pk_log PRIMARY KEY(id_user,time_date),
    CONSTRAINT login FOREIGN KEY(id_user)
         REFERENCES users(id_user) ON UPDATE CASCADE ON DELETE CASCADE
 )ENGINE = InnoDB;

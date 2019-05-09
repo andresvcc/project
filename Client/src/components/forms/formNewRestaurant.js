@@ -68,7 +68,7 @@ class FormNewRestaurant extends Component {
             })
                 .then(res => { // then print response status
                     var filename = res.data[0]['filename']
-                    this.setState({ filename: filename })
+                    this.setState({ filename: filename})
                     this.terminerSumit()
                 })
                 .catch(err => { // then print response status

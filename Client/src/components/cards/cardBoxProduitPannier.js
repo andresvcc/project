@@ -132,11 +132,11 @@ function CardBoxProduit(props) {
             />
           </CardActionArea>
           </div>
-          <div className="col-6" style={{left:'-10%'}}> 
+          <div className="col-6" style={{left:'-15%'}}> 
             <CardContent>
             <div style={{position:'absolute', top:'5%'}}>
-              <Typography gutterBottom variant="h6" component="h6"  style={{lineHeight:'20px'}}>
-                {props.title}
+              <Typography gutterBottom variant='subtitle1' component="h6"  style={{lineHeight:'20px'}}>
+                {props.title.slice(0,23)}
               </Typography>
             </div>
             </CardContent>

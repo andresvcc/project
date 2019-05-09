@@ -92,9 +92,8 @@ module.exports = Object.freeze({
 /*14*/ NEW_SESSION: `INSERT INTO s_server () VALUES();`,
 
 /*15*/ USER_ACTION: (surname, action, value) => { 
-     return    `INSERT INTO log (id_user, id_session, action, value)
+     return    `INSERT INTO log (id_user, action, value)
                 SELECT (SELECT id_user FROM users WHERE surname = '${surname}'),
-                       (SELECT MAX( id_session ) FROM s_server ),
                        "${action}",
                        "${value}"` 
      },
@@ -276,7 +275,7 @@ module.exports = Object.freeze({
                          "${adresse}",
                          "${telephone}",
                          ${quartier},
-                         "${photoName} "   
+                         "${photoName}"   
                     );` 
      },
         

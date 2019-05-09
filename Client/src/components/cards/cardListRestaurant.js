@@ -9,6 +9,7 @@ export default class CardListRestaurant extends Component {
         var values = this.props.values.map((value, i) => {
         
             let onEliminerClick = ()=>{
+                console.log('onElimineCLick', value)
                 this.props.eliminer(value.nom, value.photoName)
             }
         

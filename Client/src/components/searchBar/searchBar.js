@@ -69,7 +69,7 @@ var style = {
     position: "fixed",
     left: "35%",
     right:'35%',
-    top: "13.6%",
+    top: "18%",
     zIndex:1,
     height: 'auto',
     width: "30%",

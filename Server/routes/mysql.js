@@ -23,7 +23,7 @@ let connection = mysql.createConnection({
 });
 
 connection.connect((err)=>{ 
-    err ? console.log(`problème de connection`): console.log(`Connected`);
+    err ? console.log(gutil.colors.red(`problème de connection`)): console.log(gutil.colors.magenta(`Connected`));
 });
 
 
@@ -32,22 +32,6 @@ const routerMysql = (app, sessionStore)=>{
     /*-------------------------------------------------
     |             System Fonction Aide                |
     --------------------------------------------------*/
-
-    startSessionServer =()=>{
-        let sqlQueryNewSessionServer = constants.NEW_SESSION_SERVER
-        let sqlQueryCurrenSessionServer = constants.CURRENT_SESSION_SERVER
-        connection.query(sqlQueryNewSessionServer, (err, resultat) => {
-            err ? console.log('error, imposible creer nouvelle sessionServer'): 
-                (
-                    connection.query(sqlQueryCurrenSessionServer, (err, resultat) => {
-                        err ? console.log('probleme avec la session', err): 
-                            console.log(`start session ${resultat[0].id_session} date:`, resultat[0].time_date )
-                    })
-                )
-        })
-    }
-    
-    startSessionServer();
 
     userAction = (surname, action, value) =>{
         let sqlQuery = constants.USER_ACTION(surname, action, value)
@@ -60,7 +44,14 @@ const routerMysql = (app, sessionStore)=>{
         let sid = req.body.id
         sessionStore.get(sid, (err, session)=>{
             err ? res.json({ok:false, err:err}) : (
-                callBack(session)
+                session ? (
+                    session.cookie.expires = new Date(Date.now() + (60 * 1000 * 10)),
+                    callBack(session)
+                ):(
+                    console.log(gutil.colors.red('session off detected')),
+                    res.json({ok:false, msg:'il faut faire login avant :(', err:1})
+                )
+
             )
         })
     }
@@ -103,7 +94,7 @@ const routerMysql = (app, sessionStore)=>{
                     connection.query(sqlQuery, (err, resultat) => {
                         err ? (
                             deleteUser(req.body.surname),
-                            console.log(err),
+                            console.log(gutil.colors.red(err)),
                             res.json({ ok: false, tp:3, msg:err })
                         ) : (
                             userAction(req.body.surname, 'CREATE', 'ACHETEUR'),
@@ -132,7 +123,7 @@ const routerMysql = (app, sessionStore)=>{
                     connection.query(sqlQuery, (err, resultat) => {
                         err ? (
                             deleteUser(req.body.surname),
-                            console.log(err),
+                            console.log(gutil.colors.red(err)),
                             res.json({ ok: false, tp:3, msg:err })
                         ) : (
                             userAction(req.body.surname, 'CREATE', 'ACHETEUR'),
@@ -153,7 +144,7 @@ const routerMysql = (app, sessionStore)=>{
         fs.unlink(`./public/images/${nom}`, function(err) {
             if(err && err.code == 'ENOENT') {
                 // file doens't exist
-                console.log(gutil.colors.red("File doesn't exist, won't remove it."));
+                console.log(gutil.colors.red("File doesn't exist, won't remove it.",err ));
             } else if (err) {
                 // other errors, e.g. maybe we don't have enough permission
                 console.log(gutil.colors.red("Error occurred while trying to remove file"));
@@ -306,7 +297,7 @@ const routerMysql = (app, sessionStore)=>{
         userSession(req, res, (session)=>{
             let ok = session ? (
                 sessionStore.destroy(req.body.id, (err)=>{
-                    err? console.log(err) : userAction(session.surname, 'LOGOUT', '')
+                    err? console.log(gutil.colors.red(err)) : userAction(session.surname, 'LOGOUT', '')
                 }),
                 true
             ):false
@@ -410,7 +401,6 @@ const routerMysql = (app, sessionStore)=>{
         let sqlQuery = constants.PANIER_QUANTITE_PRODUIT(req.body.produit, req.body.restaurant)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : (
-                    console.log('rest',resultat[0].quantite),
                     connection.query(constants.UPDATE_PANIER_QUANTITE(session.surname, session.password, req.body.produit, req.body.restaurant, (resultat[0].quantite + 1)), (err, resultat) => {
                         err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
                     })
@@ -502,7 +492,7 @@ const routerMysql = (app, sessionStore)=>{
             connection.query(sqlQuery, (err, resultat) => {
                 err ? res.json({ ok: false, error: err }) : (
                     userAction(session.surname,'CREER_RESTAURANT',req.body.nom),
-                    res.json({ ok: true, response: resultat })
+                    res.json({ ok: true, response: resultat, session:session })
                 )
             })
         })
@@ -554,8 +544,8 @@ const routerMysql = (app, sessionStore)=>{
             connection.query(sqlQuery, (err, resultat) => {
                 err ? res.json({ ok: false, error: err }) : (
                     userAction(session.surname,'EFFACER_RESTAURANT',req.body.nom),
-                    req.body.photoName !== 'null' ?  deleteFile(req.body.photoName) : console.log('not file'),
-                    res.json({ ok: true, response: resultat })
+                    req.body.photoName !== 'null' ?  deleteFile(req.body.photoName) : console.log('sans photo'),
+                    res.json({ ok: true, response: resultat, photoName:req.body.photoName })
                 )
             })
         })
@@ -569,7 +559,7 @@ const routerMysql = (app, sessionStore)=>{
             connection.query(sqlQuery, (err, resultat) => {
                 err ? res.json({ ok: false, error: err }) : (
                     userAction(session.surname,'EFFACER_PRODUIT',(req.body.nom+', '+req.body.restaurant)),
-                    req.body.photoName !== 'null' ?  deleteFile(req.body.photoName) : console.log('not file'),
+                    req.body.photoName !== 'null' ?  deleteFile(req.body.photoName) : console.log('sans photo'),
                     res.json({ ok: true, response: resultat })
                 )
             })
