@@ -389,8 +389,8 @@ const routerMysql = (app, sessionStore)=>{
         })
     })
 
-    inPanier = (req, callback) =>{
-        let sqlQuery = constants.FIND_IN_PANIER(req.body.produit, req.body.restaurant)
+    inPanier = (req, session,callback) =>{
+        let sqlQuery = constants.FIND_IN_PANIER(session.surname, session.password, req.body.produit, req.body.restaurant)
         connection.query(sqlQuery, (err, resultat) => {
             err ? callback( false ) : callback( resultat[0] ? false : true )
         })
@@ -401,7 +401,7 @@ const routerMysql = (app, sessionStore)=>{
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : (
                     connection.query(constants.UPDATE_PANIER_QUANTITE(session.surname, session.password, req.body.produit, req.body.restaurant, (resultat[0].quantite + 1)), (err, resultat) => {
-                        err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
+                        err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat, n:-2 })
                     })
                 )
         })
@@ -412,7 +412,7 @@ const routerMysql = (app, sessionStore)=>{
     app.post('/addProduitPanier', (req, res) => {
         userSession(req, res, (session)=>{
             let sqlQuery = constants.ADD_PRODUIT_PANIER(session.surname, session.password, req.body.produit, req.body.restaurant, req.body.info, req.body.quantite)
-            inPanier(req,(solve)=>{
+            inPanier(req,session,(solve)=>{
                 solve ? (
                     connection.query(sqlQuery, (err, resultat) => {
                         err ? res.json({ok:false, err, n:-1}) : res.json({ok:true,resultat,n:1 })
@@ -458,12 +458,66 @@ const routerMysql = (app, sessionStore)=>{
         })
     })
 
-    /* fn 33 liste des achat déjà effectues
-        ACHATS_LIST(surname, password) */
-    app.post('/achatList', (req, res) => {
-        let sqlQuery = constants.ACHATS_LIST(req.body.surname, req.body.password)
+
+    const newAchat = (req, res, session, panier) =>{
+        let sqlQuery = constants.NEW_ACHATS(session.surname, session.password)
         connection.query(sqlQuery, (err, resultat) => {
-            err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
+            err ? res.json({ ok: false, error: err }) : panierToAchat(req, res, session, panier)
+        })
+    }
+
+    const panierCall = (req, res, session) =>{
+        let sqlQuery = constants.PANIER_LIST(session.surname, session.password)
+            connection.query(sqlQuery, (err, resultat) => {
+                err ? res.json({ ok: false, error: err }) : (
+                    console.log('panier',resultat),
+                    resultat.length > 0 ? newAchat(req, res, session, resultat) : res.json({ ok: false, msg: 'panier vide' })
+                    ) 
+        })
+    }
+
+    const panierToAchat = (req, res, session, panier) =>{
+        var resFinal = panier.map((value, i)=>{
+            console.log(value.nom, i, session.surname, session.password, value.id_produit, value.prixTotal, value.quantite)
+            let sqlQuery = constants.ADD_PRODUIT_ACHAT(session.surname, session.password, value.id_produit, value.prixTotal, value.quantite)
+            connection.query(sqlQuery, (err, resultat) => {
+                err ? res.json({ ok: false, error: err }) : console.log('ok panierToAchat')
+            })
+            return {nom:value.nom, total:value.prixTotal, quantite:value.quantite, status:'ok'}
+        })
+        viderPanier(req, res, session, resFinal)
+    }
+
+    const viderPanier = (req, res, session, response)=>{
+        let sqlQuery = constants.DEL_PANIER(session.surname, session.password)
+            connection.query(sqlQuery, (err, resultat) => {
+                err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: response })
+        })
+    }
+
+    app.post('/newAchat', (req, res) => {
+            userSession(req, res, (session)=>{
+                panierCall(req, res, session)
+        })
+    }) 
+
+    app.post('/listAchat', (req, res) => {
+            userSession(req, res, (session)=>{
+            let sqlQuery = constants.ACHATS_LIST(session.surname, session.password)
+            connection.query(sqlQuery, (err, resultat) => {
+                err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
+            })
+        })
+    }) 
+    
+    /* fn 33 liste des achat déjà effectues
+    ACHATS_LIST(surname, password) */
+    app.post('/numAchatList', (req, res) => {
+        userSession(req, res, (session)=>{
+            let sqlQuery = constants.PRODUITS_ACHATS_LIST(session.surname, session.password, req.body.idAchat)
+            connection.query(sqlQuery, (err, resultat) => {
+                err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
+            })
         })
     })
 

@@ -172,7 +172,7 @@ module.exports = Object.freeze({
                AND produits.id_restaurant = restaurants.id_restaurant `
      },
 
-/*29.01*/ FIND_IN_PANIER:(produit, restaurant)=>{
+/*29.01*/ FIND_IN_PANIER:(surname, password, produit, restaurant)=>{
      return   `SELECT id_produit 
                FROM produits_panier 
                WHERE produits_panier.id_produit = (
@@ -184,6 +184,13 @@ module.exports = Object.freeze({
                               FROM restaurants
                               WHERE restaurants.nom = '${restaurant}'
                          )
+                    )
+               AND  produits_panier.id_user = (
+                         SELECT acheteurs.id_user 
+                         FROM acheteurs, users 
+                         WHERE users.surname = '${surname}' 
+                         AND users.password = '${password}'
+                         AND acheteurs.id_user = users.id_user
                     )`
      },
 
@@ -230,30 +237,84 @@ module.exports = Object.freeze({
                                                   AND users.password = '${password}');` 
      },
 
+/*30.1*/ DEL_PANIER:(surname, password)=>{
+            return `DELETE FROM produits_panier 
+                    WHERE produits_panier.id_user =  (SELECT users.id_user 
+                                                  FROM users 
+                                                  WHERE users.surname = '${surname}'
+                                                  AND users.password = '${password}')`
+     },
+
 /*31*/ UPDATE_PANIER_QUANTITE:(surname, password, produit, restaurant, quantite )=>{
-     return `UPDATE produits_panier
-     SET quantite = ${quantite}
-     WHERE produits_panier.id_user = (
-               SELECT acheteurs.id_user 
-               FROM acheteurs, users 
-               WHERE users.surname = '${surname}' 
-               AND users.password = '${password}'
-               AND acheteurs.id_user = users.id_user
-          )
-     AND produits_panier.id_produit = (
-          SELECT produits.id_produit
-          FROM produits
-          WHERE produits.nom = '${produit}'
-          AND produits.id_restaurant = (
-               SELECT restaurants.id_restaurant
-               FROM restaurants
-               WHERE restaurants.nom = '${restaurant}'
-          )
-     );`
+            return `UPDATE produits_panier
+                    SET quantite = ${quantite}
+                    WHERE produits_panier.id_user = (
+                              SELECT acheteurs.id_user 
+                              FROM acheteurs, users 
+                              WHERE users.surname = '${surname}' 
+                              AND users.password = '${password}'
+                              AND acheteurs.id_user = users.id_user
+                         )
+                    AND produits_panier.id_produit = (
+                         SELECT produits.id_produit
+                         FROM produits
+                         WHERE produits.nom = '${produit}'
+                         AND produits.id_restaurant = (
+                              SELECT restaurants.id_restaurant
+                              FROM restaurants
+                              WHERE restaurants.nom = '${restaurant}'
+                         )
+                    );`
+     },
+
+/*33.1*/ NEW_ACHATS:(surname, password, nomCard, numCard)=>{
+            return `INSERT INTO achats (id_user, payment)
+                    VALUES (
+                              (
+                                   SELECT acheteurs.id_user 
+                                   FROM acheteurs, users 
+                                   WHERE users.surname = '${surname}' 
+                                   AND users.password = '${password}'
+                                   AND acheteurs.id_user = users.id_user
+                              ),
+                              0
+                    );`
+     },
+
+/*33.2*/ ADD_PRODUIT_ACHAT:(surname, password, idProduit, prixFinal, quantite)=>{
+            return `INSERT INTO produits_achete (id_achat, id_produit, prix_final, quantite, evaluation)
+                    VALUES (
+                         (
+                              SELECT MAX(achats.id_achat) as id 
+                              FROM achats, users
+                              WHERE users.surname = '${surname}' 
+                              AND users.password = '${password}'
+                              AND users.id_user = achats.id_user
+                         ),
+                         ${idProduit},
+                         ${prixFinal},
+                         ${quantite},
+                         1
+                    );` 
 },
 
+PRODUITS_ACHATS_LIST: (surname, password, idAchat) => { 
+       return `SELECT id_produit, prix_final as total, quantite, payment, evaluation
+               FROM produits_achete, achats, users
+               Where achats.id_achat = produits_achete.id_achat
+               and achats.id_achat = ${idAchat} 
+               and achats.id_user = users.id_user
+               and users.surname = '${surname}'
+               and users.password = '${password}';` 
+},
+
+
 /*33*/ ACHATS_LIST: (surname, password) => { 
-            return `query` 
+            return `SELECT achats.id_achat, achats.payment, date_achat  
+                    FROM achats, users
+                    Where achats.id_user = users.id_user
+                    and users.surname = '${surname}'
+                    and users.password = '${password}'` 
      },
 
 /*34*/ EVALUER_PRODUIT: (surname, password, produit) => { 

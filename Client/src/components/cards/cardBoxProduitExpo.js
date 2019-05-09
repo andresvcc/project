@@ -105,7 +105,7 @@ function CardBoxProduit(props) {
       <Typography gutterBottom variant="subheading" component="h6" style={{lineHeight:'20px', position:'absolute', bottom:'25%', left:'45%'}}>
         {props.categorie} 
       </Typography>
-      <Typography gutterBottom variant="h6" component="h6"  style={{lineHeight:'20px', position:'absolute', bottom:'1%', left:'45%', width:'10%', height:'20%'}}>
+      <Typography gutterBottom variant="h6" component="h6"  style={{lineHeight:'20px', position:'absolute', bottom:'1%', left:'45%', width:'35%', height:'20%'}}>
           {props.prixBase+'.-CHF'}
       </Typography>
       <div style={{textAlign:'center', position:'absolute', bottom:'28%', right:'5%', width:'20%', height:'20%'}}>

@@ -43,19 +43,6 @@ CREATE TABLE acheteurs (
       REFERENCES users(id_user) ON UPDATE CASCADE ON DELETE CASCADE
 )ENGINE = InnoDB;
 
-DROP TABLE IF EXISTS achats;
-CREATE TABLE achats (
-   id_achat INT(255) AUTO_INCREMENT NOT NULL,
-   id_user INT(255) NOT NULL,
-   payment boolean not null default 0,
-   nom_card INT(255),
-   num_card INT(255),
-   date_achat TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-   CONSTRAINT pk_achats PRIMARY KEY(id_achat),
-   CONSTRAINT fk3_acheteurs FOREIGN KEY(id_user)
-      REFERENCES acheteurs(id_user) ON UPDATE CASCADE ON DELETE CASCADE
-)ENGINE = InnoDB;
-
 DROP TABLE IF EXISTS vendeurs;
 CREATE TABLE vendeurs (
    id_user INT(255) NOT NULL,
@@ -109,13 +96,24 @@ CREATE TABLE produits (
       REFERENCES categories(id_categorie) ON UPDATE CASCADE ON DELETE CASCADE 
 )ENGINE = InnoDB;
 
+DROP TABLE IF EXISTS achats;
+CREATE TABLE achats (
+   id_achat INT(255) AUTO_INCREMENT NOT NULL,
+   id_user INT(255) NOT NULL,
+   payment boolean not null default 0,
+   date_achat TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   CONSTRAINT pk_achats PRIMARY KEY(id_achat),
+   CONSTRAINT fk3_acheteurs FOREIGN KEY(id_user)
+      REFERENCES acheteurs(id_user) ON UPDATE CASCADE ON DELETE CASCADE
+)ENGINE = InnoDB;
+
 DROP TABLE IF EXISTS produits_achete;
 CREATE TABLE produits_achete (
    id_achat INT(255) NOT NULL,
    id_produit INT(255) NOT NULL,
    prix_final INT(255) NOT NULL,
    quantite INT(255) DEFAULT 1,
-   evaluation INT(8) DEFAULT 1,
+   evaluation INT(255) DEFAULT 1,
    CONSTRAINT pk_produits_achete PRIMARY KEY(id_achat,id_produit),
    CONSTRAINT rattache FOREIGN KEY(id_achat) 
       REFERENCES achats(id_achat) ON UPDATE CASCADE ON DELETE CASCADE,
