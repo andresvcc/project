@@ -41,12 +41,9 @@ app.use(session({
     secret: 'session_cookie_secret',
     store: sessionStore,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie  : { expires : new Date(Date.now() + (60 * 1000 * 60)) }
 }));
-
-
-
-
 
 router.api(app, sessionStore) //envoie app vers routage de api
 bd.routerMysql(app, sessionStore ) //envoie app vers routage de mysql

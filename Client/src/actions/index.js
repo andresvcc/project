@@ -15,7 +15,7 @@ export const decrementCount = count => {
 }
 
 export const login = dataUser => {
-  console.log('de nuevo', dataUser)
+  console.log('Login reponse', dataUser)
   return {
     type: 'LOGIN',
     loginStatus: true,
@@ -38,7 +38,7 @@ export const logout = () => {
 }
 
 export const updatePanier = panierList => {
-  console.log('panier', panierList)
+  console.log('produits dans le panier', panierList)
   return {
     type: 'UPDATE_PANIER',
     produitPanier:panierList

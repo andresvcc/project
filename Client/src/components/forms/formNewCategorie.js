@@ -76,10 +76,10 @@ export default class FormNewCategorie extends Component {
     }
 
     newCategorieQuery = (data) =>{
-        console.log('evoie', data)
+        console.log('new Categorie', data)
         axios.post(`http://localhost:4000/newCategorie`, data )
         .then(res => {
-            console.log(res.data)
+            console.log('reponse new Categorie',res.data)
             let ok = res.data.ok ? (
                 console.log('Categorie ajouté avec success'),
                 this.props.action(),

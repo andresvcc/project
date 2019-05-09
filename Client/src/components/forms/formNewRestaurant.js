@@ -68,7 +68,7 @@ class FormNewRestaurant extends Component {
             })
                 .then(res => { // then print response status
                     var filename = res.data[0]['filename']
-                    this.setState({ filename: filename })
+                    this.setState({ filename: filename})
                     this.terminerSumit()
                 })
                 .catch(err => { // then print response status
@@ -129,7 +129,7 @@ class FormNewRestaurant extends Component {
                 draggable: true
             }),
             this.setState({ errorNom: false }),
-            this.newAcheteurQuery(data),
+            this.newRestaurantQuery(data),
             true
         ):(
             toast.error('Rentre le nom',{
@@ -180,11 +180,11 @@ class FormNewRestaurant extends Component {
         });
     }
 
-    newAcheteurQuery = (data) =>{
-        console.log('evoie', data)
+    newRestaurantQuery = (data) =>{
+        console.log('new restaurant', data)
         axios.post(`http://localhost:4000/newRestaurant`, data )
         .then(res => {
-            console.log(res.data)
+            console.log('new restaurant reponse',res.data)
             let ok = res.data.ok ? (
                 console.log('Restaurant ajouté avec success'), 
                 this.props.action(),

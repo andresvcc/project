@@ -150,17 +150,14 @@ export default class FormNewAcheteur extends Component {
                 toast.warn(`la copmte n'a pas été crée, verifier les champ SVP`),
                 false
             )
-        console.log(ok,'data', data)
+        console.log('envoie New vendeur',{ok, data})
     }
 
     newVendeurQuery = (data) =>{
         axios.post(`http://localhost:4000/newVendeur`, data )
         .then(res => {
-            console.log(res.data)
-            let ok = res.data.ok ? (
-                console.log('compte crée'), 
-                true 
-            ):(
+            console.log('reponse New vendeur',res.data)
+            let ok = res.data.ok ? true :(
                 this.setState({msgerrNom:res.data.msg}),
                 toast.error(res.data.msg), 
                 false

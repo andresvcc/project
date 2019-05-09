@@ -343,14 +343,14 @@ INSERT INTO produits_panier (id_user, id_produit, info, quantite)
                         (
                             SELECT acheteurs.id_user 
                             FROM acheteurs, users 
-                            WHERE users.surname = 'jeisy' 
+                            WHERE users.surname = 'luz' 
                             AND users.password = 'pass'
                             AND acheteurs.id_user = users.id_user
                          ),
                          (
                              SELECT produits.id_produit
                              FROM produits
-                             WHERE produits.nom = 'choco'
+                             WHERE produits.nom = 'pollo'
                              AND produits.id_restaurant = (
                                  SELECT restaurants.id_restaurant
                                  FROM restaurants
@@ -381,3 +381,71 @@ UPDATE produits_panier
                               WHERE restaurants.nom = 'kfc'
                          )
                     );
+
+
+/*consulter le panier d'un utilisateur*/
+SELECT * 
+FROM produits_panier, restaurants, produits 
+WHERE produits_panier.id_user = (
+                    SELECT acheteurs.id_user 
+                    FROM acheteurs, users 
+                    WHERE users.surname = 'jeisy' 
+                    AND users.password = 'pass'
+                    AND acheteurs.id_user = users.id_user
+                )
+AND produits_panier.id_produit = produits.id_produit
+AND produits.id_restaurant = restaurants.id_restaurant 
+
+/* effacer le panier d'un tuilisateur*/
+DELETE FROM produits_panier 
+WHERE produits_panier.id_user =  (SELECT users.id_user 
+                                FROM users 
+                                WHERE users.surname = 'jeisy'
+                                AND users.password = 'pass');
+
+
+
+select * from achats
+
+/* creer une achat*/
+INSERT INTO achats (id_user, payment, nom_card, num_card )
+VALUES (
+    (
+        SELECT acheteurs.id_user 
+        FROM acheteurs, users 
+        WHERE users.surname = 'luz' 
+        AND users.password = 'pass'
+        AND acheteurs.id_user = users.id_user
+        ),
+        0,
+        1,
+        1
+);
+
+/*ajouter des produits dans une achat*/
+INSERT INTO produits_achete (id_achat, id_produit, prix_final, quantite, evaluation)
+VALUES (
+    (
+        SELECT MAX(achats.id_achat) as id 
+        FROM achats, users
+        WHERE users.surname = 'luz' 
+        AND users.password = 'pass'
+        AND users.id_user = achats.id_user
+    ),
+    3,
+    1,
+    3,
+    10
+);
+
+
+
+
+SELECT achats.id_achat, id_produit, prix_final as total, quantite, payment, evaluation
+FROM produits_achete, achats, users
+Where achats.id_achat = produits_achete.id_achat
+and achats.id_user = users.id_user
+and users.surname = 'jeisy'
+and users.password = 'pass'
+
+
