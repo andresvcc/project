@@ -42,7 +42,7 @@ app.use(session({
     store: sessionStore,
     resave: false,
     saveUninitialized: false,
-    cookie  : { expires : new Date(Date.now() + (60 * 1000 * 10)) }
+    cookie  : { expires : new Date(Date.now() + (60 * 1000 * 60)) }
 }));
 
 router.api(app, sessionStore) //envoie app vers routage de api

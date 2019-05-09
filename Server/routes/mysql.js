@@ -46,7 +46,7 @@ const routerMysql = (app, sessionStore)=>{
         sessionStore.get(sid, (err, session)=>{
             err ? res.json({ok:false, err:err}) : (
                 session ? (
-                    session.cookie.expires = new Date(Date.now() + (60 * 1000 * 10)),
+                    session.cookie.expires = new Date(Date.now() + (60 * 1000 * 60)),
                     callBack(session)
                 ):(
                     console.log(gutil.colors.red('session off detected')),
