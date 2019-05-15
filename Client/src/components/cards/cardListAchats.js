@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import axios from 'axios';
+import CardBoxAchat from './cardBoxAchat'
 
 class CardListAchats extends Component {
 
@@ -26,7 +27,7 @@ class CardListAchats extends Component {
         .catch(err => { // then print response status
             console.log('error list des achat querry',err)
         })
-      }
+    }
     
     payement=(value)=>{
        let res = value === 1 ? 'payement confirmé':'payement sans confirmer'
@@ -35,11 +36,13 @@ class CardListAchats extends Component {
 
     render(){
         var values = this.state.values.map((value, i) => {
-
-            console.log(value, i)
             return (
                 <div className ='' key={i} >
-                    <h6>id_achat: {value.id_achat} - {this.payement(value.payment)} - {value.date_achat}</h6>
+                    <CardBoxAchat 
+                        id = {value.id_achat}
+                        dateAchat = {value.date_achat} 
+                        total = {value.total}
+                    />
                 </div>           
             )
         })

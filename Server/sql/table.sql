@@ -102,6 +102,7 @@ CREATE TABLE achats (
    id_user INT(255) NOT NULL,
    payment boolean not null default 0,
    date_achat TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   total INT(255) default 0,
    CONSTRAINT pk_achats PRIMARY KEY(id_achat),
    CONSTRAINT fk3_acheteurs FOREIGN KEY(id_user)
       REFERENCES acheteurs(id_user) ON UPDATE CASCADE ON DELETE CASCADE

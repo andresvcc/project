@@ -470,7 +470,7 @@ const routerMysql = (app, sessionStore)=>{
         let sqlQuery = constants.PANIER_LIST(session.surname, session.password)
             connection.query(sqlQuery, (err, resultat) => {
                 err ? res.json({ ok: false, error: err }) : (
-                    console.log('panier',resultat),
+                    //console.log('panier',resultat),
                     resultat.length > 0 ? newAchat(req, res, session, resultat) : res.json({ ok: false, msg: 'panier vide' })
                     ) 
         })
@@ -478,7 +478,7 @@ const routerMysql = (app, sessionStore)=>{
 
     const panierToAchat = (req, res, session, panier) =>{
         var resFinal = panier.map((value, i)=>{
-            console.log(value.nom, i, session.surname, session.password, value.id_produit, value.prixTotal, value.quantite)
+           // console.log(value.nom, i, session.surname, session.password, value.id_produit, value.prixTotal, value.quantite)
             let sqlQuery = constants.ADD_PRODUIT_ACHAT(session.surname, session.password, value.id_produit, value.prixTotal, value.quantite)
             connection.query(sqlQuery, (err, resultat) => {
                 err ? res.json({ ok: false, error: err }) : console.log('ok panierToAchat')
