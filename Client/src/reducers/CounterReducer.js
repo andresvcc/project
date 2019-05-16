@@ -5,7 +5,8 @@ const initialState = {
     surname:'inconue',
     sessID:'vide',
     incrireVisibility:'visible',
-    produitPanier:[]
+    produitPanier:[],
+    panierTotal:0
 }
 
 function CounterReducer (state = initialState, action){

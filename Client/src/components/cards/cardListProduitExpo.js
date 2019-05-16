@@ -5,8 +5,12 @@ export default class CardListProduitExpo extends Component {
     render(){
         var values = this.props.values.map((value, i) => {
                     
-            let onAddShoppingCart = ()=>{
-                this.props.shopping(value)
+            let onAddShoppingCart = (quantite)=>{
+                this.props.shopping(value, quantite)
+            }
+
+            let onRecomendation = (valueRec, quantite)=>{
+                this.props.shopping(valueRec, quantite)
             }
         
             return (
@@ -19,6 +23,7 @@ export default class CardListProduitExpo extends Component {
                         categorie={value.categorie}
                         photoName={value.photoPlat}
                         addShoppingCart={onAddShoppingCart}
+                        recomendation = {onRecomendation}
                     />
                 </div>           
             )

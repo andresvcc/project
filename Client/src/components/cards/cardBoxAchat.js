@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import ResumenDialog from '../dialog/resumenDialog'
 
 const styles = {
   card: {
@@ -21,7 +22,7 @@ const styles = {
 };
 
 function CardBoxRestaurant(props) {
-  function date() {
+  const date = () => {
 
     var date =new Date(props.dateAchat);
     var ans = date.getFullYear();
@@ -77,7 +78,10 @@ function CardBoxRestaurant(props) {
           </Typography>
         </div>
         <div className="col-sm-3">
-        
+          <ResumenDialog
+            id={props.id}
+            total={props.total}
+          />
         </div>
       </div>
       </CardContent>

@@ -123,8 +123,22 @@ module.exports = Object.freeze({
             return `query` 
      },
 
-/*23*/ RECOMMANDATION: (surname) => { 
-            return `query` 
+/*23*/ RECOMMANDATION: (nom) => { 
+            return `SELECT produits.nom, produits.description, produits.photoName, restaurants.nom as restaurants, COUNT(1) AS quantite
+                    FROM produits_achete, produits, restaurants
+                    WHERE id_achat IN (
+                              SELECT achats.id_achat
+                              FROM achats, produits_achete, produits
+                              WHERE achats.id_achat = produits_achete.id_achat
+                              AND produits.id_produit = produits_achete.id_produit
+                              AND produits.nom = '${nom}'
+                         )
+                    AND produits.id_restaurant = restaurants.id_restaurant
+                    AND produits.id_produit = produits_achete.id_produit
+                    AND produits.nom <> '${nom}'
+                    GROUP BY produits.nom, produits.description, produits.photoName, restaurants.nom
+                    HAVING COUNT(1) > 1
+                    ORDER BY quantite DESC LIMIT 1` 
      },
 
 /*24*/ TOP5_PRODUIT_CATEGORIE: (categorie) => { 
@@ -332,13 +346,15 @@ module.exports = Object.freeze({
 },
 
 PRODUITS_ACHATS_LIST: (surname, password, idAchat) => { 
-       return `SELECT id_produit, prix_final as total, quantite, payment, evaluation
-               FROM produits_achete, achats, users
-               Where achats.id_achat = produits_achete.id_achat
-               and achats.id_achat = ${idAchat} 
-               and achats.id_user = users.id_user
-               and users.surname = '${surname}'
-               and users.password = '${password}';` 
+       return `SELECT produits.*, restaurants.nom as restaurant, prix_final as prixTotal, produits_achete.quantite as quantite
+               FROM produits_achete, achats, users, produits, restaurants
+               WHERE achats.id_achat = produits_achete.id_achat
+               AND produits_achete.id_produit = produits.id_produit
+               AND restaurants.id_restaurant =  produits.id_restaurant
+               AND achats.id_achat = ${idAchat}
+               AND achats.id_user = users.id_user
+               AND users.surname = '${surname}'
+               AND users.password = '${password}';` 
 },
 
 

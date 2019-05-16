@@ -49,6 +49,7 @@ class CardListAchats extends Component {
         
         return (
             <div>   
+                    <h2>Liste des Achats</h2>
                     {values}
             </div>
         )

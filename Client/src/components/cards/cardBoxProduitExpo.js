@@ -6,8 +6,8 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import AlertDialog from '../dialog/alertDialog'
+import AchatDialog from '../dialog/achatDialog'
 
 
 const styles = {
@@ -102,6 +102,7 @@ function CardBoxProduit(props) {
             </CardContent>
           </div>
       </div>
+      
       <Typography gutterBottom variant="subheading" component="h6" style={{lineHeight:'20px', position:'absolute', bottom:'25%', left:'45%'}}>
         {props.categorie} 
       </Typography>
@@ -109,12 +110,12 @@ function CardBoxProduit(props) {
           {props.prixBase+'.-CHF'}
       </Typography>
       <div style={{textAlign:'center', position:'absolute', bottom:'28%', right:'5%', width:'20%', height:'20%'}}>
-        <Button size="small" onClick={props.addShoppingCart}  style={{height:'75px'}}>
-          <div style={{textAlign:'center'}}>
-            <i className="material-icons " style={{fontSize: '36px', color:'#FB8C00'}}> add_shopping_cart</i>
-            <p >Ajouter</p>
-          </div>
-        </Button>
+        <AchatDialog 
+          action ={props.addShoppingCart} 
+          title = {props.title}  
+          contenue = {props.description}
+          image = {`http://localhost:4000/photo/${props.photoName}`}
+          recomendation={props.recomendation}/>
       </div>
     </Card>
   );

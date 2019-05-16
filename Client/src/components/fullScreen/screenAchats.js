@@ -76,7 +76,6 @@ class ScreenAchats extends Component {
               </Button>
             </Toolbar>
           </AppBar>
-          <h1>List des Achats</h1>
           <div className="form-row" style={{marginTop:'65px', background: 'linear-gradient(#FFF8F5, rgba(255,255,255,.999))'}}>
             <div className="col-md-2">
                   

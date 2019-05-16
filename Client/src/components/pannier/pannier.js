@@ -68,11 +68,11 @@ function AlignItemsList(props) {
   const { classes } = props;
   return (
     <div style={{position:'fixed', backgroundColor: '#FFF8F5', zIndex:3, textAlign:'center'}}>
-        <h5> Panier d'achat de {props.surname}</h5>
+        <h5>Panier d'achat de {props.surname}</h5>
         <List className={classes.root} subheader={<li />}>
             <CardListProduitPannier/>
         </List>
-        <button type="button" className="btn btn-success btn-block" onClick={onClikPayer}>Payer</button>
+        <button type="button" className="btn btn-success btn-block" onClick={onClikPayer}>Payer {props.panierTotal}.-CHF</button>
         <ScreenAchats/>
 
 
@@ -89,6 +89,7 @@ const mapStateToProps = (state) => {
       surname: state.counter.surname,
       sessID: state.counter.sessID,
       produitPanier: state.counter.produitPanier,
+      panierTotal: state.counter.panierTotal
     }
   }
   

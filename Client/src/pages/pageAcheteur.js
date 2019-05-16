@@ -11,6 +11,7 @@ import {updatePanier} from '../actions/index'
 
 
 
+
 //import { Button } from '@material-ui/core';
 
 
@@ -143,12 +144,18 @@ class PageAcheteur extends Component{
     console.log(resultado)
   }
 
-  shoppingProduit = (produit)=>{
+  achatProduitDialog = (produit, quantite)=>{
+
+    this.shoppingProduit(produit, quantite)
+  }
+
+
+  shoppingProduit = (produit, quantite)=>{
     let data = {
       produit:produit.nom,
       restaurant:produit.restaurants,
       id: this.props.sessID,
-      quantite:1
+      quantite:quantite
     }
 
     console.log('add produit panier', data)
@@ -198,6 +205,7 @@ class PageAcheteur extends Component{
             </div>
 
             <div className="col-md-2" style={{paddingTop:'15%', position:'relative'}}>
+
               <p></p>
             </div>
 
@@ -206,7 +214,7 @@ class PageAcheteur extends Component{
                 <div>
                   <CardListProduitExpo 
                       values ={this.state.bioState? this.state.bio : this.state.produitsDisplay} 
-                      shopping={this.shoppingProduit}
+                      shopping={this.achatProduitDialog}
                   ></CardListProduitExpo>
                 </div>
               </List> 

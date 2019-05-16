@@ -344,10 +344,10 @@ const routerMysql = (app, sessionStore)=>{
         })
     })
 
-    /* fn 23 liste de produits recommande
-        RECOMMANDATION(surname) */
+    /* fn 23 produit recommandé apartire d'une autre produit, ( La plupart des acheteurs qui ont acheté X ont aussi acheté Y )
+    RECOMMANDATION(surname) */
     app.post('/recommandation', (req, res) => {
-        let sqlQuery = constants.RECOMMANDATION(req.body.surname)
+        let sqlQuery = constants.RECOMMANDATION(req.body.nom)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat })
         })
@@ -400,7 +400,7 @@ const routerMysql = (app, sessionStore)=>{
         let sqlQuery = constants.PANIER_QUANTITE_PRODUIT(req.body.produit, req.body.restaurant)
         connection.query(sqlQuery, (err, resultat) => {
             err ? res.json({ ok: false, error: err }) : (
-                    connection.query(constants.UPDATE_PANIER_QUANTITE(session.surname, session.password, req.body.produit, req.body.restaurant, (resultat[0].quantite + 1)), (err, resultat) => {
+                    connection.query(constants.UPDATE_PANIER_QUANTITE(session.surname, session.password, req.body.produit, req.body.restaurant, req.body.quantite), (err, resultat) => {
                         err ? res.json({ ok: false, error: err }) : res.json({ ok: true, response: resultat, n:-2 })
                     })
                 )
