@@ -76,15 +76,14 @@ class ScreenAchats extends Component {
               </Button>
             </Toolbar>
           </AppBar>
-
           <div className="form-row" style={{marginTop:'65px', background: 'linear-gradient(#FFF8F5, rgba(255,255,255,.999))'}}>
-            <div className="col-md-8 " style={{paddingTop:'10%', paddingLeft:'10%'}}>
-                  <CardListAchats/>
-            </div>
-            <div className="col-md-2">     
-      
-            </div>
             <div className="col-md-2">
+                  
+            </div>
+            <div className="col-md-6" style={{paddingTop:'5%'}}>     
+                <CardListAchats/>
+            </div>
+            <div className="col-md-4">
 
             </div>
           </div>

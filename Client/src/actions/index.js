@@ -37,10 +37,20 @@ export const logout = () => {
   }
 }
 
+function add(accumulator, a) {
+  return accumulator + a;
+}
+
 export const updatePanier = panierList => {
   console.log('produits dans le panier', panierList)
+  
+  let total1 = panierList.map((value, i) => {
+    return value.prixTotal
+  })
+
   return {
     type: 'UPDATE_PANIER',
-    produitPanier:panierList
+    produitPanier:panierList,
+    panierTotal:total1.reduce(add,0)
   }
 }
